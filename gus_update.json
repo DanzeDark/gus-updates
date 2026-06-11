@@ -1,6 +1,6 @@
 {
-    "version":  "1.8",
+    "version":  "1.9.5",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T09:47:49+03:00",
-    "notes":  "Version 1.8: fixed GitHub Pages manifest reading and UTF-8 BOM issue."
+    "createdAt":  "2026-06-11T11:58:45+03:00",
+    "notes":  "Version 1.9.5: handles MAX not found numbers and empty only-you groups without sending messages."
 }
