@@ -8,3 +8,4 @@ https://danzedark.github.io/gus-updates/
 https://danzedark.github.io/gus-updates/gus_update.json
 https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip
 https://danzedark.github.io/gus-updates/VERSION.txt
+https://danzedark.github.io/gus-updates/gus_accounts.json

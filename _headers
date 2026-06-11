@@ -9,3 +9,6 @@
 
 /VERSION.txt
   Content-Type: text/plain; charset=utf-8
+
+/gus_accounts.json
+  Content-Type: application/json; charset=utf-8
