@@ -1,0 +1,11 @@
+﻿/*
+  Access-Control-Allow-Origin: *
+
+/gus_update.json
+  Content-Type: application/json; charset=utf-8
+
+/Gus-MaxContactTool-update.zip
+  Content-Type: application/zip
+
+/VERSION.txt
+  Content-Type: text/plain; charset=utf-8
