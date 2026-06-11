@@ -1,7 +1,14 @@
-{
-    "enabled":  false,
-    "updatedAt":  "2026-06-11T20:13:13+03:00",
+﻿{
+    "enabled":  true,
+    "updatedAt":  "2026-06-11T20:26:12+03:00",
     "accounts":  [
-
+                     {
+                         "login":  "arter",
+                         "name":  "Кирилл",
+                         "keyHash":  "61d85d65b046a23952437f0af749b3bb1261d322b591b8eea66edf3c9195b76d",
+                         "active":  true,
+                         "createdAt":  "2026-06-11 20:26:12",
+                         "note":  ""
+                     }
                  ]
 }
