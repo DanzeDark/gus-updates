@@ -1,6 +1,6 @@
-﻿{
-    "version":  "1.7",
+{
+    "version":  "1.8",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T09:27:19+03:00",
-    "notes":  "Version 1.7: added Rainbow theme for update channel test."
+    "createdAt":  "2026-06-11T09:47:49+03:00",
+    "notes":  "Version 1.8: fixed GitHub Pages manifest reading and UTF-8 BOM issue."
 }
