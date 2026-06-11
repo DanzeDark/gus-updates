@@ -1,6 +1,6 @@
 {
-    "version":  "1.9.6",
+    "version":  "1.9.7",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T14:14:37+03:00",
-    "notes":  "Version 1.9.6: live MAX messages list shows latest 5 one-line notifications newest first and scans faster."
+    "createdAt":  "2026-06-11T14:52:06+03:00",
+    "notes":  "Version 1.9.7: fixes empty MAX group cleanup by confirming the final Leave button and stopping if deletion fails."
 }
