@@ -1,6 +1,6 @@
 {
-    "version":  "1.9.5",
+    "version":  "1.9.6",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T11:58:45+03:00",
-    "notes":  "Version 1.9.5: handles MAX not found numbers and empty only-you groups without sending messages."
+    "createdAt":  "2026-06-11T14:14:37+03:00",
+    "notes":  "Version 1.9.6: live MAX messages list shows latest 5 one-line notifications newest first and scans faster."
 }
