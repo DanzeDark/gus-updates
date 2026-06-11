@@ -1,6 +1,6 @@
 {
-    "version":  "1.10.2",
+    "version":  "1.10.3",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T20:31:22+03:00",
-    "notes":  "Version 1.10.2: login window stays open, refreshes account list from the site, and opens the app after valid account/password."
+    "createdAt":  "2026-06-11T20:44:59+03:00",
+    "notes":  "Version 1.10.3: fixes account list refresh, shows loaded account names, and clarifies GitHub upload after publishing accounts."
 }

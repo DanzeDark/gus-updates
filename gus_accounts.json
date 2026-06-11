@@ -1,13 +1,21 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-11T20:26:12+03:00",
+    "updatedAt":  "2026-06-11T20:39:01+03:00",
     "accounts":  [
                      {
                          "login":  "arter",
                          "name":  "Кирилл",
-                         "keyHash":  "61d85d65b046a23952437f0af749b3bb1261d322b591b8eea66edf3c9195b76d",
+                         "keyHash":  "429298d49e3e38b073304e8e01c673aa3c4d44d5f1b6a10e4f381c79316ece43",
                          "active":  true,
                          "createdAt":  "2026-06-11 20:26:12",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "123",
+                         "name":  "123",
+                         "keyHash":  "8d348d6039297acf833dbca20357b19d0f0091901e3d79b2764e8f69e9b825d3",
+                         "active":  true,
+                         "createdAt":  "2026-06-11 20:38:41",
                          "note":  ""
                      }
                  ]
