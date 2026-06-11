@@ -1,6 +1,6 @@
 ﻿{
-    "version":  "1.6",
+    "version":  "1.7",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-11T08:42:39+03:00",
-    "notes":  "Version 1.6: ready website update folder and one-click web updater."
+    "createdAt":  "2026-06-11T09:27:19+03:00",
+    "notes":  "Version 1.7: added Rainbow theme for update channel test."
 }

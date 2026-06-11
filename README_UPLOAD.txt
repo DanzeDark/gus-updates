@@ -1,10 +1,10 @@
 ﻿Залей содержимое этой папки на сайт обновлений.
-Для Netlify можно загрузить архив "Сайт обновлений.zip".
+Для GitHub открой репозиторий gus-updates, нажми Add file -> Upload files и замени этими файлами старые.
 
-После публикации пришли ссылку сайта, например:
-https://name.netlify.app/
+Адрес сайта обновлений:
+https://danzedark.github.io/gus-updates/
 
 На сайте должны открываться файлы:
-gus_update.json
-Gus-MaxContactTool-update.zip
-VERSION.txt
+https://danzedark.github.io/gus-updates/gus_update.json
+https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip
+https://danzedark.github.io/gus-updates/VERSION.txt
