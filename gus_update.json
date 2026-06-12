@@ -1,6 +1,6 @@
 {
-    "version":  "1.11.2",
+    "version":  "1.11.3",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T13:09:57+03:00",
-    "notes":  "Version 1.11.2: fixes group creation after adding contacts by waiting for the contact form to close, removing page reload during group creation, and restoring safer MAX sync waits."
+    "createdAt":  "2026-06-12T13:18:16+03:00",
+    "notes":  "Version 1.11.3: fixes group creation on the new MAX chat list by detecting and clicking the top-right plus button when Start chat is missing."
 }
