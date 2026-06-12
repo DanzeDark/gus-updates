@@ -1,6 +1,6 @@
 {
-    "version":  "1.11",
+    "version":  "1.11.1",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T12:27:21+03:00",
-    "notes":  "Version 1.11: improves group creation on new MAX accounts with sync wait/retry and adds saved login in the account sign-in window."
+    "createdAt":  "2026-06-12T12:37:23+03:00",
+    "notes":  "Version 1.11.1: makes per-person timing affect internal MAX waits, reduces pause before message after group creation, and shortens sync waits/timeouts in fast mode."
 }
