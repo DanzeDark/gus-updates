@@ -1,6 +1,6 @@
 {
-    "version":  "1.11.1",
+    "version":  "1.11.2",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T12:37:23+03:00",
-    "notes":  "Version 1.11.1: makes per-person timing affect internal MAX waits, reduces pause before message after group creation, and shortens sync waits/timeouts in fast mode."
+    "createdAt":  "2026-06-12T13:09:57+03:00",
+    "notes":  "Version 1.11.2: fixes group creation after adding contacts by waiting for the contact form to close, removing page reload during group creation, and restoring safer MAX sync waits."
 }
