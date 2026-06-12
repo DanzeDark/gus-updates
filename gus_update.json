@@ -1,6 +1,6 @@
 {
-    "version":  "1.10.5",
+    "version":  "1.11",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T10:51:50+03:00",
-    "notes":  "Version 1.10.5: removed temporary MAX restriction filtering; every selected open MAX is used for work again."
+    "createdAt":  "2026-06-12T12:27:21+03:00",
+    "notes":  "Version 1.11: improves group creation on new MAX accounts with sync wait/retry and adds saved login in the account sign-in window."
 }
