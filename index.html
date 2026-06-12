@@ -1,52 +1,19 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Гусь - обновления</title>
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #101217;
-      --panel: #191d26;
-      --text: #f4f7fb;
-      --muted: #a8b0bf;
-      --line: #303644;
-      --accent: #31a5ff;
-    }
+    :root { color-scheme: dark; --bg: #101217; --panel: #191d26; --text: #f4f7fb; --muted: #a8b0bf; --line: #303644; --accent: #31a5ff; }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: grid;
-      place-items: center;
-      padding: 32px 16px;
-    }
-    main {
-      width: min(720px, 100%);
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 24px;
-    }
+    body { margin: 0; min-height: 100vh; font-family: "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); display: grid; place-items: center; padding: 32px 16px; }
+    main { width: min(720px, 100%); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 24px; }
     h1 { margin: 0 0 8px; font-size: 28px; font-weight: 700; }
     p { margin: 0 0 18px; color: var(--muted); line-height: 1.5; }
     .version { color: var(--text); font-weight: 700; }
     .files { display: grid; gap: 10px; margin-top: 18px; }
-    a {
-      color: var(--text);
-      text-decoration: none;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      min-width: 0;
-    }
+    a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: flex; justify-content: space-between; gap: 12px; min-width: 0; }
     a:hover { border-color: var(--accent); }
     span { color: var(--muted); overflow-wrap: anywhere; }
     footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
@@ -55,15 +22,15 @@
 <body>
   <main>
     <h1>Гусь - обновления</h1>
-    <p>Канал обновлений работает. Текущая версия: <span class="version">v1.10.3</span>.</p>
+    <p>Канал обновлений работает. Текущая версия: <span class="version">v1.10.4</span>.</p>
     <p>Рабочие ПК читают файл manifest и скачивают zip-пакет по кнопке "Обновить".</p>
     <div class="files">
-      <a href="https://danzedark.github.io/gus-updates/gus_update.json?t=1/gus_update.json"><strong>Manifest</strong><span>gus_update.json</span></a>
-      <a href="https://danzedark.github.io/gus-updates/gus_update.json?t=1/Gus-MaxContactTool-update.zip"><strong>Пакет</strong><span>Gus-MaxContactTool-update.zip</span></a>
-      <a href="https://danzedark.github.io/gus-updates/gus_update.json?t=1/VERSION.txt"><strong>Версия</strong><span>VERSION.txt</span></a>
-      <a href="https://danzedark.github.io/gus-updates/gus_update.json?t=1/gus_accounts.json"><strong>Аккаунты</strong><span>gus_accounts.json</span></a>
+      <a href="https://danzedark.github.io/gus-updates/gus_update.json"><strong>Manifest</strong><span>gus_update.json</span></a>
+      <a href="https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip"><strong>Пакет</strong><span>Gus-MaxContactTool-update.zip</span></a>
+      <a href="https://danzedark.github.io/gus-updates/VERSION.txt"><strong>Версия</strong><span>VERSION.txt</span></a>
+      <a href="https://danzedark.github.io/gus-updates/gus_accounts.json"><strong>Аккаунты</strong><span>gus_accounts.json</span></a>
     </div>
-    <footer>Собрано: 2026-06-12 08:43:51</footer>
+    <footer>Собрано: 2026-06-12 09:21:20</footer>
   </main>
 </body>
 </html>

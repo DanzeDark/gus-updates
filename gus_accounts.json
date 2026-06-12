@@ -1,22 +1,7 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-12T08:43:51+03:00",
+    "updatedAt":  "2026-06-12T08:45:25+03:00",
     "accounts":  [
-                     {
-                         "login":  "arter",
-                         "name":  "Кирилл",
-                         "keyHash":  "7e8d56d95868f87c2cc07fd695782f57dddd2c6551899f346088f2464c3e33bd",
-                         "active":  true,
-                         "createdAt":  "2026-06-11 20:26:12",
-                         "note":  ""
-                     },
-                     {
-                         "login":  "guzzini",
-                         "name":  "Некит",
-                         "keyHash":  "3ff077fa61131932c90bc741659eb61ee7ac401117e4bcf3d4b7a174499785fc",
-                         "active":  true,
-                         "createdAt":  "2026-06-12 08:42:43",
-                         "note":  ""
-                     }
+
                  ]
 }

@@ -1,9 +1,11 @@
-﻿Залей содержимое этой папки на сайт обновлений.
+Залей содержимое этой папки на сайт обновлений.
+Для GitHub открой репозиторий gus-updates, нажми Add file -> Upload files и замени этими файлами старые.
 
-Адрес канала: https://danzedark.github.io/gus-updates/gus_update.json?t=1
+Адрес сайта обновлений:
+https://danzedark.github.io/gus-updates/
 
 На сайте должны открываться файлы:
-https://danzedark.github.io/gus-updates/gus_update.json?t=1/gus_update.json
-https://danzedark.github.io/gus-updates/gus_update.json?t=1/Gus-MaxContactTool-update.zip
-https://danzedark.github.io/gus-updates/gus_update.json?t=1/VERSION.txt
-https://danzedark.github.io/gus-updates/gus_update.json?t=1/gus_accounts.json
+https://danzedark.github.io/gus-updates/gus_update.json
+https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip
+https://danzedark.github.io/gus-updates/VERSION.txt
+https://danzedark.github.io/gus-updates/gus_accounts.json
