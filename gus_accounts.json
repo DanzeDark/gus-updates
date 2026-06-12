@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-12T10:53:04+03:00",
+    "updatedAt":  "2026-06-12T14:59:08+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -22,7 +22,7 @@
                          "login":  "cepochka",
                          "name":  "Cepochka",
                          "keyHash":  "14c292a34c97fb4a16964aeb61cc33e334a5d38af1686dc69b6db8764453e5d8",
-                         "active":  true,
+                         "active":  false,
                          "createdAt":  "2026-06-12 09:46:48",
                          "note":  ""
                      },
