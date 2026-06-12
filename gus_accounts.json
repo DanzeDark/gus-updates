@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-12T09:46:48+03:00",
+    "updatedAt":  "2026-06-12T09:55:16+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -24,6 +24,14 @@
                          "keyHash":  "14c292a34c97fb4a16964aeb61cc33e334a5d38af1686dc69b6db8764453e5d8",
                          "active":  true,
                          "createdAt":  "2026-06-12 09:46:48",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "symer",
+                         "name":  "Symer",
+                         "keyHash":  "a1f2d06265c4589271ec9cb8275c46c22b75ccea4955e8500b9badf88bd9a2f4",
+                         "active":  true,
+                         "createdAt":  "2026-06-12 09:55:16",
                          "note":  ""
                      }
                  ]
