@@ -1,6 +1,6 @@
 {
-    "version":  "1.10.4",
+    "version":  "1.10.5",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T09:21:19+03:00",
-    "notes":  "Version 1.10.4: auto-publishes accounts to GitHub, adds one-command GitHub update publishing, and fixes Git warning handling."
+    "createdAt":  "2026-06-12T10:46:47+03:00",
+    "notes":  "Version 1.10.5: detects temporary MAX profile restrictions, checks whether the 10-day restriction period has expired, and skips still-restricted MAX profiles without breaking the queue."
 }
