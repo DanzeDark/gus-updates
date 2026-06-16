@@ -1,12 +1,12 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-16T15:58:23+03:00",
+    "updatedAt":  "2026-06-16T15:59:28+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
                          "name":  "kyzyu",
                          "keyHash":  "845ffdcf66587846b4aa78b0d6e802405413a59823ab66959972bce15c3a8383",
-                         "active":  false,
+                         "active":  true,
                          "createdAt":  "2026-06-12 09:25:15",
                          "note":  ""
                      },
