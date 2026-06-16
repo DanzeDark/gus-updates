@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-16T15:10:05+03:00",
+    "updatedAt":  "2026-06-16T15:56:18+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -46,7 +46,7 @@
                          "login":  "puchok",
                          "name":  "puchok",
                          "keyHash":  "9e0ede3ac46cc4c87b1b00cd3a02c8fcd2280f705f0fa8cbb4188c965b229dd7",
-                         "active":  true,
+                         "active":  false,
                          "createdAt":  "2026-06-16 15:10:04",
                          "note":  ""
                      }
