@@ -1,6 +1,6 @@
 {
     "version":  "1.11.4",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-18T09:45:20+03:00",
-    "notes":  "Version 1.11.4: adds a per-MAX written people counter column to the MAX table and updates it after successful message sending."
+    "createdAt":  "2026-06-18T10:00:10+03:00",
+    "notes":  "Version 1.11.4: hotfixes the per-MAX written people counter so it refreshes immediately during processing and avoids duplicate counts."
 }
