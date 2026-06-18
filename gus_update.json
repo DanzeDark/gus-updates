@@ -1,6 +1,6 @@
 {
-    "version":  "1.11.4",
+    "version":  "1.11.5",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-18T10:00:10+03:00",
-    "notes":  "Version 1.11.4: hotfixes the per-MAX written people counter so it refreshes immediately during processing and avoids duplicate counts."
+    "createdAt":  "2026-06-18T10:03:14+03:00",
+    "notes":  "Version 1.11.5: publishes the live per-MAX written counter fix under a higher version so PCs already on 1.11.4 can update normally."
 }
