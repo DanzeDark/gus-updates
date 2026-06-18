@@ -1,6 +1,6 @@
 {
-    "version":  "1.11.3",
+    "version":  "1.11.4",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-12T13:18:16+03:00",
-    "notes":  "Version 1.11.3: fixes group creation on the new MAX chat list by detecting and clicking the top-right plus button when Start chat is missing."
+    "createdAt":  "2026-06-18T09:45:20+03:00",
+    "notes":  "Version 1.11.4: adds a per-MAX written people counter column to the MAX table and updates it after successful message sending."
 }
