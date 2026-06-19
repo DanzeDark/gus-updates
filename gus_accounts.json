@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-19T10:28:43+03:00",
+    "updatedAt":  "2026-06-19T10:31:23+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -64,6 +64,14 @@
                          "keyHash":  "f55b98a9430ee6c1cc66dc7d14feb3c24a803a2dc3daecfaa31d12421b559e1b",
                          "active":  true,
                          "createdAt":  "2026-06-19 08:29:29",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "stepaz228",
+                         "name":  "stepaz228",
+                         "keyHash":  "4ccf0f7b935716322ca5cdc6101f91703ba4394b400562a1959b22002b6903a2",
+                         "active":  true,
+                         "createdAt":  "2026-06-19 10:31:23",
                          "note":  ""
                      }
                  ]
