@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-19T08:33:22+03:00",
+    "updatedAt":  "2026-06-19T10:28:43+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -64,14 +64,6 @@
                          "keyHash":  "f55b98a9430ee6c1cc66dc7d14feb3c24a803a2dc3daecfaa31d12421b559e1b",
                          "active":  true,
                          "createdAt":  "2026-06-19 08:29:29",
-                         "note":  ""
-                     },
-                     {
-                         "login":  "wwwww12184540",
-                         "name":  "wwwww12184540",
-                         "keyHash":  "6ed1532bc3be34b1c9ed5d3212f961cbf84648c349b3329f65f8e76ec1fb7b3d",
-                         "active":  true,
-                         "createdAt":  "2026-06-19 08:33:22",
                          "note":  ""
                      }
                  ]
