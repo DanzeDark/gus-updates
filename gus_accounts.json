@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-18T11:07:28+03:00",
+    "updatedAt":  "2026-06-19T08:29:29+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -56,6 +56,14 @@
                          "keyHash":  "1ccea656a8cb048163edd066f8295401d03ef30c527f9b9303ef4a36beff2011",
                          "active":  true,
                          "createdAt":  "2026-06-18 11:07:28",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "frodochka1312",
+                         "name":  "Frodochka1312",
+                         "keyHash":  "f55b98a9430ee6c1cc66dc7d14feb3c24a803a2dc3daecfaa31d12421b559e1b",
+                         "active":  true,
+                         "createdAt":  "2026-06-19 08:29:29",
                          "note":  ""
                      }
                  ]
