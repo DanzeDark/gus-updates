@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.1",
+    "version":  "1.12.2",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-24T22:20:52+03:00",
-    "notes":  "Version 1.12.1: Family Package now keeps one selected main MAX and rotates all other open MAX accounts as writers for each next client."
+    "createdAt":  "2026-06-24T22:46:32+03:00",
+    "notes":  "Version 1.12.2: adds Gus-MaxContactTool.exe launcher and rebuilds the full installer with bundled Maxitochka support while keeping private profiles, sessions and tokenbase out of the installer."
 }
