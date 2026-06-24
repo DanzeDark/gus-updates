@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.4",
+    "version":  "1.12.5",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-24T23:19:29+03:00",
-    "notes":  "Version 1.12.4: full installer now shows a game-style Goose loading window with progress during installation."
+    "createdAt":  "2026-06-24T23:49:35+03:00",
+    "notes":  "Version 1.12.5: fixed installer folder creation, desktop shortcut creation, and temp path handling on other PCs."
 }
