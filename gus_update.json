@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.2",
+    "version":  "1.12.3",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-24T22:46:32+03:00",
-    "notes":  "Version 1.12.2: adds Gus-MaxContactTool.exe launcher and rebuilds the full installer with bundled Maxitochka support while keeping private profiles, sessions and tokenbase out of the installer."
+    "createdAt":  "2026-06-24T23:01:46+03:00",
+    "notes":  "Version 1.12.3: full installer now lets the user choose the install folder and creates only a Goose desktop shortcut with the goose icon."
 }
