@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.3",
+    "version":  "1.12.4",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-24T23:01:46+03:00",
-    "notes":  "Version 1.12.3: full installer now lets the user choose the install folder and creates only a Goose desktop shortcut with the goose icon."
+    "createdAt":  "2026-06-24T23:19:29+03:00",
+    "notes":  "Version 1.12.4: full installer now shows a game-style Goose loading window with progress during installation."
 }
