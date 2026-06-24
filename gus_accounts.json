@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-24T10:47:26+03:00",
+    "updatedAt":  "2026-06-24T10:50:59+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -38,7 +38,7 @@
                          "login":  "rapuncel",
                          "name":  "Rapuncel",
                          "keyHash":  "cc97c74edd17d0a73fe6f9b32cbe554728adeb91eff1993d7b40e50d9d3c39df",
-                         "active":  true,
+                         "active":  false,
                          "createdAt":  "2026-06-12 10:53:04",
                          "note":  ""
                      },
