@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-24T10:47:17+03:00",
+    "updatedAt":  "2026-06-24T10:47:26+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -72,6 +72,14 @@
                          "keyHash":  "4ccf0f7b935716322ca5cdc6101f91703ba4394b400562a1959b22002b6903a2",
                          "active":  true,
                          "createdAt":  "2026-06-19 10:31:23",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "czyan",
+                         "name":  "czyan",
+                         "keyHash":  "e12bc93a23ac72f30cfc2756a2666cf19b29a50bcd5997667be7ca1427912612",
+                         "active":  true,
+                         "createdAt":  "2026-06-24 10:47:26",
                          "note":  ""
                      }
                  ]
