@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-24T10:50:59+03:00",
+    "updatedAt":  "2026-06-25T14:39:55+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -80,6 +80,14 @@
                          "keyHash":  "e12bc93a23ac72f30cfc2756a2666cf19b29a50bcd5997667be7ca1427912612",
                          "active":  true,
                          "createdAt":  "2026-06-24 10:47:26",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "ave",
+                         "name":  "AVE",
+                         "keyHash":  "f0e281d608c386c7fc5827c50cc018d872ca6a05e0ad5e8ad09c22ad5756dedd",
+                         "active":  true,
+                         "createdAt":  "2026-06-25 14:39:55",
                          "note":  ""
                      }
                  ]
