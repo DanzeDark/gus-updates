@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.8",
+    "version":  "1.12.9",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-29T14:27:54+03:00",
-    "notes":  "Version 1.12.8: fixed Maxitochka detection when multiple MAX windows use the same DevTools port on different loopback addresses."
+    "createdAt":  "2026-06-29T14:31:53+03:00",
+    "notes":  "Version 1.12.9: fixed Maxitochka scanning crash caused by PowerShell Host variable conflict."
 }
