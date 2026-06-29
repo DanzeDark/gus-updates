@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-28T21:53:43+03:00",
+    "updatedAt":  "2026-06-29T09:58:24+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -96,6 +96,14 @@
                          "keyHash":  "1435cbdbcead9589d0c3a17d289c3a42ed9da7986d2c3d6fb57db41dab48bfb4",
                          "active":  true,
                          "createdAt":  "2026-06-28 21:53:43",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "huntersuck",
+                         "name":  "huntersuck",
+                         "keyHash":  "56efe596ab22aa50d28c44a4389013a82fc1b2c2615d0340160f0b16a6835410",
+                         "active":  true,
+                         "createdAt":  "2026-06-29 09:58:24",
                          "note":  ""
                      }
                  ]
