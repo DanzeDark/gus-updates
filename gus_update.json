@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.5",
+    "version":  "1.12.6",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-24T23:49:35+03:00",
-    "notes":  "Version 1.12.5: fixed installer folder creation, desktop shortcut creation, and temp path handling on other PCs."
+    "createdAt":  "2026-06-29T09:17:19+03:00",
+    "notes":  "Version 1.12.6: improved MAX detection, live DevTools port owner matching, and readiness checks for partially loaded MAX windows."
 }
