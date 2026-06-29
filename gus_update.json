@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.7",
+    "version":  "1.12.8",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-29T09:42:32+03:00",
-    "notes":  "Version 1.12.7: fixed Maxitochka scanning crash caused by PowerShell PID variable conflict."
+    "createdAt":  "2026-06-29T14:27:54+03:00",
+    "notes":  "Version 1.12.8: fixed Maxitochka detection when multiple MAX windows use the same DevTools port on different loopback addresses."
 }
