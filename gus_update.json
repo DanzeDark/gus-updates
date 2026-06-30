@@ -1,6 +1,6 @@
 {
-    "version":  "1.13",
+    "version":  "1.13.1",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-30T09:00:29+03:00",
-    "notes":  "Version 1.13: mixed MAX run with group writers and direct-message writers, plus separate LS selection in MAX table."
+    "createdAt":  "2026-06-30T09:09:10+03:00",
+    "notes":  "Version 1.13.1: made work tables more transparent on wallpaper themes so the background text is easier to see."
 }
