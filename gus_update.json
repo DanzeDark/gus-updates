@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.3",
+    "version":  "1.13.4",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-30T09:38:57+03:00",
-    "notes":  "Version 1.13.3: removed separate direct-message button; Start now routes MAX with LS checkbox to direct messages only, all other selected MAX write in groups."
+    "createdAt":  "2026-06-30T11:15:00+03:00",
+    "notes":  "Version 1.13.4: added name placeholders in message and group templates: surname/last, name/first, patronymic."
 }
