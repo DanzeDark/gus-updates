@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-30T12:53:54+03:00",
+    "updatedAt":  "2026-06-30T15:07:26+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -110,7 +110,7 @@
                          "login":  "bdanx1103",
                          "name":  "bdanx1103",
                          "keyHash":  "13799e04925aebd10744cba8db75425b2f7080fabe39873432e50159899bf320",
-                         "active":  true,
+                         "active":  false,
                          "createdAt":  "2026-06-30 12:53:54",
                          "note":  ""
                      }
