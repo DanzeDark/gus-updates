@@ -1,6 +1,6 @@
 {
-    "version":  "1.12.9",
+    "version":  "1.13",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-29T14:31:53+03:00",
-    "notes":  "Version 1.12.9: fixed Maxitochka scanning crash caused by PowerShell Host variable conflict."
+    "createdAt":  "2026-06-30T09:00:29+03:00",
+    "notes":  "Version 1.13: mixed MAX run with group writers and direct-message writers, plus separate LS selection in MAX table."
 }
