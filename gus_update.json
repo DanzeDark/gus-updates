@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.4",
+    "version":  "1.13.5",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-06-30T11:15:00+03:00",
-    "notes":  "Version 1.13.4: added name placeholders in message and group templates: surname/last, name/first, patronymic."
+    "createdAt":  "2026-07-01T08:34:00+03:00",
+    "notes":  "Version 1.13.5: improved semi-transparent DataGridView rendering over wallpaper, including empty table areas and resize alignment."
 }
