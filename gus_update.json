@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.5",
+    "version":  "1.13.6",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-01T08:34:00+03:00",
-    "notes":  "Version 1.13.5: improved semi-transparent DataGridView rendering over wallpaper, including empty table areas and resize alignment."
+    "createdAt":  "2026-07-02T13:43:15+03:00",
+    "notes":  "Version 1.13.6: added recovery for frozen MAX windows, including Windows hung-window detection and per-profile MAX process restart when tab reload is not enough."
 }
