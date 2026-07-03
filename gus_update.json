@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.6",
+    "version":  "1.13.7",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-02T13:43:15+03:00",
-    "notes":  "Version 1.13.6: added recovery for frozen MAX windows, including Windows hung-window detection and per-profile MAX process restart when tab reload is not enough."
+    "createdAt":  "2026-07-03T13:32:07+03:00",
+    "notes":  "Version 1.13.7: optimized weak-PC performance by reducing unnecessary MAX health checks, forced message scans, and artificial waits while keeping recovery checks for frozen windows."
 }
