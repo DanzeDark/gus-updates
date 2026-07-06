@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.7",
+    "version":  "1.13.8",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-03T13:32:07+03:00",
-    "notes":  "Version 1.13.7: optimized weak-PC performance by reducing unnecessary MAX health checks, forced message scans, and artificial waits while keeping recovery checks for frozen windows."
+    "createdAt":  "2026-07-06T09:44:17+03:00",
+    "notes":  "Version 1.13.8: automatically normalizes contact full names from uppercase text files to proper capitalization for contact names, templates, and group titles."
 }
