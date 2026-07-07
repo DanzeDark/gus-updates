@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.9",
+    "version":  "1.13.10",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T08:02:14+03:00",
-    "notes":  "Version 1.13.9: republished update channel with GitHub Pages static-file marker so workers can receive the latest package."
+    "createdAt":  "2026-07-07T11:13:55+03:00",
+    "notes":  "Version 1.13.10: fixed MAX detection by scanning the full local DevTools port range, keeping sessions from other Maxitochka paths, and retrying slow DevTools discovery before marking windows as missing."
 }
