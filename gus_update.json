@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.13",
+    "version":  "1.13.14",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T11:47:10+03:00",
-    "notes":  "Version 1.13.13: fixed participant selection by removing phone-number search in the group picker, using name-only queries, clicking the first visible participant fallback, and stopping faster on contact-not-found results."
+    "createdAt":  "2026-07-07T11:54:31+03:00",
+    "notes":  "Version 1.13.14: fixed participant selection click by targeting the right-side selection circle/row in the MAX group picker instead of restarting the client search after a visible result."
 }
