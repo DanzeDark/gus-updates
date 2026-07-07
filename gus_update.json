@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.15",
+    "version":  "1.13.16",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T12:03:44+03:00",
-    "notes":  "Version 1.13.15: improved MAX participant selection by identifying the real contact row, accepting higher rows in the picker, and clicking the right-side selection circle more reliably."
+    "createdAt":  "2026-07-07T12:36:20+03:00",
+    "notes":  "Restored stable contact adding and group creation logic from version 1.13.5."
 }
