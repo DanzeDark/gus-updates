@@ -1,6 +1,6 @@
 {
     "version":  "1.13.9",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-06T11:10:47+03:00",
-    "notes":  "Version 1.13.9: optimized weak-PC workflow by speeding up MAX checks and text entry, improved hung MAX recovery, and hardened message sending to prevent duplicate text and typed-mismatch stops."
+    "createdAt":  "2026-07-07T08:02:14+03:00",
+    "notes":  "Version 1.13.9: republished update channel with GitHub Pages static-file marker so workers can receive the latest package."
 }
