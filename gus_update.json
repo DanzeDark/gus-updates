@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.10",
+    "version":  "1.13.11",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T11:13:55+03:00",
-    "notes":  "Version 1.13.10: fixed MAX detection by scanning the full local DevTools port range, keeping sessions from other Maxitochka paths, and retrying slow DevTools discovery before marking windows as missing."
+    "createdAt":  "2026-07-07T11:29:51+03:00",
+    "notes":  "Version 1.13.11: fixed message sending retries so MAX does not duplicate text in the composer, added stronger composer clearing, and improved clicking the send arrow with pointer/mouse events."
 }
