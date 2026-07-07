@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.14",
+    "version":  "1.13.15",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T11:54:31+03:00",
-    "notes":  "Version 1.13.14: fixed participant selection click by targeting the right-side selection circle/row in the MAX group picker instead of restarting the client search after a visible result."
+    "createdAt":  "2026-07-07T12:03:44+03:00",
+    "notes":  "Version 1.13.15: improved MAX participant selection by identifying the real contact row, accepting higher rows in the picker, and clicking the right-side selection circle more reliably."
 }
