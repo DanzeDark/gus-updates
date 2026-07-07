@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.11",
+    "version":  "1.13.12",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T11:29:51+03:00",
-    "notes":  "Version 1.13.11: fixed message sending retries so MAX does not duplicate text in the composer, added stronger composer clearing, and improved clicking the send arrow with pointer/mouse events."
+    "createdAt":  "2026-07-07T11:40:30+03:00",
+    "notes":  "Version 1.13.12: restored human-like typing for contact and participant search fields, fixed participant picker search targeting, and prioritizes contacts inside the participant selection dialog."
 }
