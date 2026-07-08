@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.16",
+    "version":  "1.13.17",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-07T12:36:20+03:00",
-    "notes":  "Restored stable contact adding and group creation logic from version 1.13.5."
+    "createdAt":  "2026-07-08T14:27:17+03:00",
+    "notes":  "Optimized Start button: selected open MAX sessions are used immediately, while responsiveness checks and recovery happen during actual processing."
 }
