@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-06-30T15:07:26+03:00",
+    "updatedAt":  "2026-07-08T10:57:34+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -112,6 +112,14 @@
                          "keyHash":  "13799e04925aebd10744cba8db75425b2f7080fabe39873432e50159899bf320",
                          "active":  false,
                          "createdAt":  "2026-06-30 12:53:54",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "kri_09kk",
+                         "name":  "kri_09kk",
+                         "keyHash":  "1bc67ab1ed294e158a50067884fab19c504c4d9e0231e8acb0e4f9fdf1d0fb37",
+                         "active":  true,
+                         "createdAt":  "2026-07-08 10:57:34",
                          "note":  ""
                      }
                  ]
