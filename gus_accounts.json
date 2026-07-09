@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-07-08T10:57:34+03:00",
+    "updatedAt":  "2026-07-09T11:45:30+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -120,6 +120,14 @@
                          "keyHash":  "1bc67ab1ed294e158a50067884fab19c504c4d9e0231e8acb0e4f9fdf1d0fb37",
                          "active":  true,
                          "createdAt":  "2026-07-08 10:57:34",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "muhich",
+                         "name":  "Muhich",
+                         "keyHash":  "ccd5d31e06e3ee5aafb3869205cf597fa2648feab70e29b77bf8b47afcd33335",
+                         "active":  true,
+                         "createdAt":  "2026-07-09 11:45:30",
                          "note":  ""
                      }
                  ]
