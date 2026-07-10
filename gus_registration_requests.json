@@ -1,16 +1,4 @@
 {
-  "updatedAt": "2026-07-10T14:47:14.321Z",
-  "requests": [
-    {
-      "id": "cca96fd9-393e-407e-b453-6453a59d579b",
-      "login": "codex_probe_1783694832742",
-      "name": "Codex Probe",
-      "keyHash": "731084ee97dbb5fcb68805f3e295b025651cd429a79ae607b016a621c8bed506",
-      "note": "temporary setup test",
-      "status": "pending",
-      "createdAt": "2026-07-10T14:47:14.321Z",
-      "decidedAt": "",
-      "decisionNote": ""
-    }
-  ]
+  "updatedAt": "2026-07-10T14:47:41.467Z",
+  "requests": []
 }
