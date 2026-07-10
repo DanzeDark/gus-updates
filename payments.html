@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Гусь - оплаты</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1017;
+      --panel: rgba(20, 24, 34, 0.92);
+      --panel-2: rgba(29, 35, 49, 0.9);
+      --line: rgba(124, 141, 176, 0.24);
+      --text: #f5f7fb;
+      --muted: #aab4c8;
+      --accent: #4ca8ff;
+      --paid: #47d18c;
+      --soon: #ffd166;
+      --due: #ff7a7a;
+      --debt: #ff4d6d;
+      --off: #8792a6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(76, 168, 255, 0.2), transparent 30%),
+        radial-gradient(circle at 88% 12%, rgba(255, 77, 109, 0.14), transparent 28%),
+        linear-gradient(135deg, #090b10, #111827 48%, #090b10);
+      color: var(--text);
+      padding: 28px;
+    }
+
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-end;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1;
+    }
+
+    .hint, .updated {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .metric, .tools, .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .metric {
+      padding: 14px;
+      min-height: 84px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .metric strong {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .tools {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 190px auto;
+      gap: 10px;
+    }
+
+    input, select, button {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(8, 11, 17, 0.72);
+      color: var(--text);
+      font: inherit;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+      background: #176cc1;
+      border-color: #2689eb;
+      font-weight: 700;
+      min-width: 120px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 300px);
+      min-height: 360px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(25, 31, 44, 0.96);
+      color: #dfe7f7;
+      font-size: 13px;
+    }
+
+    tbody tr {
+      background: rgba(14, 18, 27, 0.64);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(20, 26, 39, 0.68);
+    }
+
+    tbody tr:hover {
+      background: rgba(76, 168, 255, 0.12);
+    }
+
+    .name {
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid currentColor;
+    }
+
+    .paid { color: var(--paid); }
+    .soon { color: var(--soon); }
+    .due { color: var(--due); }
+    .debt { color: var(--debt); }
+    .off, .empty { color: var(--off); }
+    .note { white-space: normal; min-width: 220px; color: var(--muted); }
+    .error { color: var(--due); }
+
+    @media (max-width: 760px) {
+      body { padding: 14px; }
+      header { display: grid; }
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tools { grid-template-columns: 1fr; }
+      .table-wrap { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Гусь - оплаты</h1>
+        <div class="hint">Онлайн-таблица аккаунтов, оплат и долгов. Обновляется автоматически.</div>
+      </div>
+      <div class="updated" id="updated">Загрузка...</div>
+    </header>
+
+    <section class="summary" aria-label="Сводка">
+      <div class="metric"><span>Всего</span><strong id="total">0</strong></div>
+      <div class="metric"><span>Оплачено</span><strong id="paid">0</strong></div>
+      <div class="metric"><span>Скоро платить</span><strong id="soon">0</strong></div>
+      <div class="metric"><span>Пора платить</span><strong id="due">0</strong></div>
+      <div class="metric"><span>Долг</span><strong id="debt">0</strong></div>
+    </section>
+
+    <section class="tools">
+      <input id="search" type="search" placeholder="Поиск по логину, имени или заметке">
+      <select id="filter">
+        <option value="all">Все статусы</option>
+        <option value="paid">Оплачен</option>
+        <option value="soon">Скоро платить</option>
+        <option value="due">Пора платить</option>
+        <option value="debt">Долг</option>
+        <option value="empty">Не задано</option>
+        <option value="off">Выключен</option>
+      </select>
+      <button id="refresh" type="button">Обновить</button>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Аккаунт</th>
+            <th>Имя</th>
+            <th>Статус</th>
+            <th>Начал</th>
+            <th>Оплатил</th>
+            <th>Платить до</th>
+            <th>Сумма</th>
+            <th>Долг</th>
+            <th>Заметка</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr><td colspan="9">Загрузка...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    const DATA_URL = 'gus_payments.json';
+    const refreshMs = 15000;
+    let rows = [];
+
+    const $ = (id) => document.getElementById(id);
+    const text = (value) => value == null || value === '' ? '...' : String(value);
+
+    function parseDate(value) {
+      if (!value) return null;
+      const normalized = String(value).trim();
+      if (!normalized) return null;
+      const date = new Date(normalized.length <= 10 ? normalized + 'T00:00:00' : normalized);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function money(value) {
+      const cleaned = String(value || '').replace(',', '.').replace(/[^\d.]/g, '');
+      const parsed = Number(cleaned);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function calcStatus(row) {
+      if (row.active === false) return { key: 'off', label: 'Выключен' };
+      if (money(row.debt) > 0) return { key: 'debt', label: 'Долг' };
+
+      const due = parseDate(row.dueAt);
+      if (!due) {
+        const manual = String(row.status || '').trim();
+        if (manual) return { key: 'empty', label: manual };
+        return { key: 'empty', label: 'Не задано' };
+      }
+
+      const today = startOfDay(new Date());
+      const diff = Math.floor((startOfDay(due) - today) / 86400000);
+      if (diff < 0) return { key: 'due', label: 'Пора платить' };
+      if (diff <= 3) return { key: 'soon', label: 'Скоро платить' };
+      return { key: 'paid', label: 'Оплачен' };
+    }
+
+    function setMetric(id, value) {
+      $(id).textContent = value;
+    }
+
+    function render() {
+      const query = $('search').value.trim().toLowerCase();
+      const filter = $('filter').value;
+      const counts = { total: rows.length, paid: 0, soon: 0, due: 0, debt: 0 };
+      const body = $('rows');
+      body.textContent = '';
+
+      const visible = rows.filter((row) => {
+        const status = calcStatus(row);
+        row._status = status;
+        if (counts[status.key] != null) counts[status.key] += 1;
+        if (filter !== 'all' && status.key !== filter) return false;
+        if (!query) return true;
+        return [row.login, row.name, row.note, row.status].some((part) => String(part || '').toLowerCase().includes(query));
+      });
+
+      setMetric('total', counts.total);
+      setMetric('paid', counts.paid);
+      setMetric('soon', counts.soon);
+      setMetric('due', counts.due);
+      setMetric('debt', counts.debt);
+
+      if (visible.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 9;
+        td.textContent = 'Ничего не найдено';
+        tr.append(td);
+        body.append(tr);
+        return;
+      }
+
+      for (const row of visible) {
+        const tr = document.createElement('tr');
+        const cells = [
+          text(row.login),
+          text(row.name),
+          row._status.label,
+          text(row.startedAt),
+          text(row.paidAt),
+          text(row.dueAt),
+          text(row.amount),
+          text(row.debt),
+          text(row.note)
+        ];
+
+        cells.forEach((value, index) => {
+          const td = document.createElement('td');
+          if (index === 1) td.className = 'name';
+          if (index === 2) {
+            const badge = document.createElement('span');
+            badge.className = 'badge ' + row._status.key;
+            badge.textContent = value;
+            td.append(badge);
+          } else {
+            td.textContent = value;
+          }
+          if (index === 8) td.className = 'note';
+          tr.append(td);
+        });
+        body.append(tr);
+      }
+    }
+
+    async function load() {
+      try {
+        const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const data = await response.json();
+        rows = Array.isArray(data.accounts) ? data.accounts : [];
+        $('updated').textContent = 'Обновлено: ' + (data.updatedAt || new Date().toLocaleString('ru-RU'));
+        render();
+      } catch (error) {
+        $('updated').innerHTML = '<span class="error">Ошибка загрузки таблицы</span>';
+        const body = $('rows');
+        body.textContent = '';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 9;
+        td.className = 'error';
+        td.textContent = 'Не удалось прочитать gus_payments.json: ' + error.message;
+        tr.append(td);
+        body.append(tr);
+      }
+    }
+
+    $('search').addEventListener('input', render);
+    $('filter').addEventListener('change', render);
+    $('refresh').addEventListener('click', load);
+    load();
+    setInterval(load, refreshMs);
+  </script>
+</body>
+</html>
