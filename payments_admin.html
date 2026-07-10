@@ -121,6 +121,11 @@
       white-space: nowrap;
     }
 
+    button:disabled {
+      cursor: wait;
+      opacity: 0.58;
+    }
+
     button.secondary {
       background: rgba(8, 11, 17, 0.62);
       border-color: var(--line);
@@ -372,9 +377,11 @@
     const TOKEN_KEY = 'gus_github_token_session';
     const API_URL_KEY = 'gus_registration_api_url';
     const ADMIN_KEY_KEY = 'gus_registration_admin_key_session';
+    const REQUEST_TIMEOUT_MS = 12000;
     let config = { authEnabled: true, passwordHash: '' };
     let rows = [];
     let loadedPaymentLogins = new Set();
+    let rowsLoading = false;
 
     const $ = (id) => document.getElementById(id);
 
@@ -388,6 +395,32 @@
       const node = $('status');
       node.textContent = text;
       node.className = 'status ' + kind;
+    }
+
+    function getErrorMessage(error) {
+      if (!error) return 'Неизвестная ошибка.';
+      if (error.name === 'AbortError') return 'сервер долго не отвечает';
+      return error.message || String(error);
+    }
+
+    function isSoftReadError(error) {
+      const message = getErrorMessage(error);
+      return /Not found|Not Found|404|Failed to fetch|NetworkError|server.*not.*answer|сервер долго не отвечает/i.test(message);
+    }
+
+    async function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          throw new Error('сервер долго не отвечает');
+        }
+        throw error;
+      } finally {
+        clearTimeout(timer);
+      }
     }
 
     function setRequestStatus(text, kind = '') {
@@ -405,7 +438,7 @@
     }
 
     async function loadConfig() {
-      const response = await fetch(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      const response = await fetchWithTimeout(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) throw new Error('Не удалось загрузить payments_config.json');
       config = await response.json();
       $('repoOwner').value = config.repoOwner || 'DanzeDark';
@@ -492,12 +525,23 @@
     }
 
     async function loadRows() {
-      setStatus('Загрузка таблицы...');
-      const data = await loadPaymentsDocument(config.paymentsPath || DATA_URL);
-      rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
-      loadedPaymentLogins = paymentLoginSet(rows);
-      renderRows();
-      setStatus('Загружено строк: ' + rows.length, 'ok');
+      if (rowsLoading) return;
+      rowsLoading = true;
+      const reloadButton = $('reload');
+      if (reloadButton) reloadButton.disabled = true;
+      try {
+        setStatus('Загрузка таблицы...');
+        const data = await loadPaymentsDocument(config.paymentsPath || DATA_URL);
+        rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
+        loadedPaymentLogins = paymentLoginSet(rows);
+        renderRows();
+        setStatus('Загружено строк: ' + rows.length, 'ok');
+      } catch (error) {
+        setStatus('Ошибка загрузки таблицы: ' + getErrorMessage(error), 'bad');
+      } finally {
+        rowsLoading = false;
+        if (reloadButton) reloadButton.disabled = false;
+      }
     }
 
     function input(value, field, index, type = 'text') {
@@ -616,7 +660,7 @@
           const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
           if (current && current.json) return current.json;
         } catch (error) {
-          if (!String(error.message || '').includes('Not found') && !String(error.message || '').includes('404')) throw error;
+          if (!isSoftReadError(error)) throw error;
         }
       }
 
@@ -634,7 +678,7 @@
       }
 
       try {
-        const response = await fetch(accountsPath + '?t=' + Date.now(), { cache: 'no-store' });
+        const response = await fetchWithTimeout(accountsPath + '?t=' + Date.now(), { cache: 'no-store' });
         if (response.ok) return response.json();
       } catch (_) {}
 
@@ -647,7 +691,7 @@
           const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
           if (current && current.json) return current.json;
         } catch (error) {
-          if (!String(error.message || '').includes('Not found') && !String(error.message || '').includes('404')) throw error;
+          if (!isSoftReadError(error)) throw error;
         }
       }
 
@@ -665,7 +709,7 @@
       }
 
       try {
-        const response = await fetch(paymentsPath + '?t=' + Date.now(), { cache: 'no-store' });
+        const response = await fetchWithTimeout(paymentsPath + '?t=' + Date.now(), { cache: 'no-store' });
         if (response.ok) return response.json();
       } catch (_) {}
 
@@ -792,7 +836,7 @@
         'X-GitHub-Api-Version': '2022-11-28'
       };
       if (options.body) headers['Content-Type'] = 'application/json';
-      const response = await fetch(url, { ...options, headers });
+      const response = await fetchWithTimeout(url, { ...options, headers });
       const text = await response.text();
       let data = null;
       try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
@@ -814,7 +858,7 @@
         ...(options.headers || {})
       };
       if (options.body) headers['Content-Type'] = 'application/json';
-      const response = await fetch(apiUrl + path, { ...options, headers });
+      const response = await fetchWithTimeout(apiUrl + path, { ...options, headers });
       const text = await response.text();
       let data = null;
       try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
