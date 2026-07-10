@@ -1,0 +1,9 @@
+name = "guzzini"
+main = "registration_worker.js"
+compatibility_date = "2026-07-10"
+workers_dev = true
+
+[vars]
+REPO_OWNER = "DanzeDark"
+REPO_NAME = "gus-updates"
+BRANCH = "main"

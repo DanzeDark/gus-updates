@@ -1,0 +1,61 @@
+Gus registration Worker setup
+=============================
+
+Why this is needed
+------------------
+GitHub Pages is static and cannot safely receive registration requests by itself.
+The public site must call a small private API. This API is Cloudflare Worker.
+
+Do not put GitHub token into index.html or any public file.
+GitHub token must be stored only as a Worker secret.
+
+Files
+-----
+registration_worker.js - Worker API code.
+wrangler.toml - Worker deploy config.
+Deploy-RegistrationWorker.bat - one-click deploy helper.
+Deploy-RegistrationWorker.ps1 - deploy helper script.
+gus_registration_requests.json - registration request storage.
+gus_accounts.json - approved app accounts.
+gus_payments.json - payment table.
+payments_config.json - public config with registrationApiUrl.
+
+Fast setup
+----------
+1. Run Deploy-RegistrationWorker.bat.
+2. If Cloudflare opens, sign in and press Allow/Authorize for Wrangler.
+3. Paste GitHub token into the console prompt. It is hidden while typing.
+4. The script creates registration_admin_key.txt and deploys the Worker.
+5. Open https://guzzini.peresehan145.workers.dev/health
+6. It should show {"ok":true}.
+
+Manual Cloudflare setup
+-----------------------
+1. Open Cloudflare Dashboard.
+2. Go to Workers & Pages.
+3. Open or create Worker named guzzini.
+4. Paste all code from registration_worker.js and deploy.
+5. Go to Worker Settings -> Variables.
+6. Add these variables:
+   REPO_OWNER = DanzeDark
+   REPO_NAME = gus-updates
+   BRANCH = main
+7. Add these secrets:
+   GITHUB_TOKEN = GitHub token with Contents Read/Write for gus-updates
+   ADMIN_KEY = long private admin password, for example GusAdmin-...
+8. Save and deploy.
+9. Check https://guzzini.peresehan145.workers.dev/health
+10. Open admin page:
+    https://danzedark.github.io/gus-updates/payments_admin.html
+11. In API settings put:
+    API URL = https://guzzini.peresehan145.workers.dev
+    Admin Key = the same ADMIN_KEY from Worker secrets
+
+How it works
+------------
+1. User opens the public site and sends registration request.
+2. Worker saves it into gus_registration_requests.json.
+3. Admin opens payments_admin.html and sees pending requests.
+4. Admin presses Approve.
+5. Worker adds the account into gus_accounts.json and adds payment row into gus_payments.json.
+6. The user can log into the program.
