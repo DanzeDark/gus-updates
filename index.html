@@ -21,9 +21,9 @@
     .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
     .tabs label { cursor: pointer; border: 1px solid var(--line); border-radius: 6px; padding: 11px 14px; background: rgba(10,14,22,.66); color: var(--muted); font-weight: 700; }
     input[name="tab"] { position: absolute; opacity: 0; pointer-events: none; }
-    #tab-install:checked ~ .tabs label[for="tab-install"], #tab-features:checked ~ .tabs label[for="tab-features"], #tab-versions:checked ~ .tabs label[for="tab-versions"] { background: #176cc1; border-color: #2689eb; color: white; }
+    #tab-install:checked ~ .tabs label[for="tab-install"], #tab-register:checked ~ .tabs label[for="tab-register"], #tab-features:checked ~ .tabs label[for="tab-features"], #tab-versions:checked ~ .tabs label[for="tab-versions"] { background: #176cc1; border-color: #2689eb; color: white; }
     .tab-panel { display: none; border: 1px solid var(--line); background: rgba(9,13,22,.46); border-radius: 8px; padding: 18px; }
-    #tab-install:checked ~ .panels #panel-install, #tab-features:checked ~ .panels #panel-features, #tab-versions:checked ~ .panels #panel-versions { display: block; }
+    #tab-install:checked ~ .panels #panel-install, #tab-register:checked ~ .panels #panel-register, #tab-features:checked ~ .panels #panel-features, #tab-versions:checked ~ .panels #panel-versions { display: block; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
     a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 13px 16px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-width: 180px; font-weight: 700; }
     a.primary { background: #176cc1; border-color: #2689eb; }
@@ -40,6 +40,13 @@
     .version-card span { color: var(--muted); font-size: 13px; }
     .version-card p { margin: 0; }
     .version-card a { width: fit-content; min-width: 160px; padding: 10px 12px; }
+    .register-form { display: grid; gap: 10px; max-width: 560px; }
+    .register-form input, .register-form textarea { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: rgba(8,11,17,.72); color: var(--text); font: inherit; padding: 0 12px; outline: none; }
+    .register-form textarea { min-height: 86px; padding: 10px 12px; resize: vertical; }
+    .register-form button { min-height: 42px; border: 1px solid #2689eb; border-radius: 6px; background: #176cc1; color: white; font: inherit; font-weight: 800; cursor: pointer; }
+    .register-status { min-height: 22px; color: var(--muted); }
+    .register-status.ok { color: var(--ok); }
+    .register-status.bad { color: #ff7a7a; }
     footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
     @media (max-width: 720px) { main { padding: 18px; } .features { grid-template-columns: 1fr; } a { width: 100%; } }
   </style>
@@ -52,10 +59,12 @@
     </header>
 
     <input id="tab-install" name="tab" type="radio" checked>
+    <input id="tab-register" name="tab" type="radio">
     <input id="tab-features" name="tab" type="radio">
     <input id="tab-versions" name="tab" type="radio">
     <nav class="tabs" aria-label="Разделы">
       <label for="tab-install">Установка</label>
+      <label for="tab-register">Регистрация</label>
       <label for="tab-features">Что умеет программа</label>
       <label for="tab-versions">Старые версии</label>
     </nav>
@@ -73,6 +82,19 @@
           <div class="step"><strong>2.</strong>Запусти файл и выбери папку установки.</div>
           <div class="step"><strong>3.</strong>После установки открывай программу через ярлык на рабочем столе.</div>
         </div>
+      </article>
+
+      <article class="tab-panel" id="panel-register">
+        <h2>Регистрация</h2>
+        <p>Оставь заявку на доступ. После подтверждения владельцем аккаунт появится в программе, и можно будет войти по этому логину и паролю.</p>
+        <form class="register-form" id="registerForm">
+          <input id="registerLogin" autocomplete="username" placeholder="Логин латиницей, например egorka">
+          <input id="registerName" autocomplete="name" placeholder="Имя">
+          <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Пароль для входа в программу">
+          <textarea id="registerNote" placeholder="Комментарий, кто ты и на какой ПК нужен доступ"></textarea>
+          <button type="submit">Отправить заявку</button>
+          <div class="register-status" id="registerStatus"></div>
+        </form>
       </article>
 
       <article class="tab-panel" id="panel-features">
@@ -101,5 +123,48 @@
     </section>
     <footer>Собрано: 2026-07-10 15:20:00</footer>
   </main>
+  <script>
+    const configUrl = 'payments_config.json';
+    const statusNode = document.getElementById('registerStatus');
+    const formNode = document.getElementById('registerForm');
+
+    function setRegisterStatus(text, kind) {
+      statusNode.textContent = text;
+      statusNode.className = 'register-status ' + (kind || '');
+    }
+
+    async function loadRegisterConfig() {
+      const response = await fetch(configUrl + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Не удалось загрузить настройки регистрации.');
+      return response.json();
+    }
+
+    formNode.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      try {
+        setRegisterStatus('Отправляю заявку...', '');
+        const cfg = await loadRegisterConfig();
+        const apiUrl = String(cfg.registrationApiUrl || '').replace(/\/+$/, '');
+        if (!apiUrl) throw new Error('Регистрация ещё не подключена владельцем.');
+        const body = {
+          login: document.getElementById('registerLogin').value,
+          name: document.getElementById('registerName').value,
+          password: document.getElementById('registerPassword').value,
+          note: document.getElementById('registerNote').value
+        };
+        const response = await fetch(apiUrl + '/request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok === false) throw new Error(data.error || 'Не удалось отправить заявку.');
+        formNode.reset();
+        setRegisterStatus(data.message || 'Заявка отправлена. Жди подтверждения владельца.', 'ok');
+      } catch (error) {
+        setRegisterStatus(error.message || String(error), 'bad');
+      }
+    });
+  </script>
 </body>
 </html>

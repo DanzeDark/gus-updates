@@ -200,6 +200,36 @@
     .status.bad, .auth-error { color: var(--bad); }
     .hidden { display: none !important; }
     .auth-error { min-height: 20px; font-size: 13px; }
+    .request-list { display: grid; gap: 10px; margin-top: 12px; }
+    .request-card {
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: rgba(8, 11, 17, 0.45);
+    }
+    .request-card header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .request-card strong { font-size: 16px; }
+    .request-card p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .request-meta { color: var(--muted); font-size: 12px; }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 9px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .pill.pending { color: #ffd166; }
+    .pill.approved { color: var(--ok); }
+    .pill.denied { color: var(--bad); }
 
     @media (max-width: 860px) {
       body { padding: 14px; }
@@ -253,6 +283,30 @@
           <input id="branch" value="main">
         </div>
       </div>
+    </section>
+
+    <section class="panel">
+      <h2>API и заявки регистрации</h2>
+      <div class="grid">
+        <div class="field">
+          <label for="registrationApiUrl">API URL</label>
+          <input id="registrationApiUrl" placeholder="https://...workers.dev">
+        </div>
+        <div class="field">
+          <label for="registrationAdminKey">Admin Key</label>
+          <input id="registrationAdminKey" type="password" autocomplete="off" placeholder="Секрет админа Worker">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button id="saveApiSettings" type="button">Сохранить API</button>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="secondary" id="refreshRequests" type="button">Обновить заявки</button>
+        </div>
+      </div>
+      <div class="status" id="requestStatus">Заявки ещё не загружены.</div>
+      <div class="request-list" id="requestRows"></div>
     </section>
 
     <section class="panel">
@@ -315,6 +369,8 @@
     const CONFIG_URL = 'payments_config.json';
     const AUTH_KEY = 'gus_payments_auth_hash';
     const TOKEN_KEY = 'gus_github_token_session';
+    const API_URL_KEY = 'gus_registration_api_url';
+    const ADMIN_KEY_KEY = 'gus_registration_admin_key_session';
     let config = { authEnabled: true, passwordHash: '' };
     let rows = [];
 
@@ -332,6 +388,20 @@
       node.className = 'status ' + kind;
     }
 
+    function setRequestStatus(text, kind = '') {
+      const node = $('requestStatus');
+      node.textContent = text;
+      node.className = 'status ' + kind;
+    }
+
+    function getApiUrl() {
+      return String($('registrationApiUrl').value || '').trim().replace(/\/+$/, '');
+    }
+
+    function getAdminKey() {
+      return String($('registrationAdminKey').value || '').trim();
+    }
+
     async function loadConfig() {
       const response = await fetch(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) throw new Error('Не удалось загрузить payments_config.json');
@@ -340,6 +410,7 @@
       $('repoName').value = config.repoName || 'gus-updates';
       $('branch').value = config.branch || 'main';
       $('passwordHint').value = config.passwordHint || '';
+      $('registrationApiUrl').value = localStorage.getItem(API_URL_KEY) || config.registrationApiUrl || '';
     }
 
     function showApp() {
@@ -347,7 +418,10 @@
       $('app').classList.remove('hidden');
       const token = sessionStorage.getItem(TOKEN_KEY);
       if (token) $('githubToken').value = token;
+      const adminKey = sessionStorage.getItem(ADMIN_KEY_KEY);
+      if (adminKey) $('registrationAdminKey').value = adminKey;
       loadRows();
+      loadRequests().catch(() => {});
     }
 
     async function checkSavedAuth() {
@@ -521,7 +595,36 @@
       return data;
     }
 
+    async function adminApiRequest(path, options = {}) {
+      const apiUrl = getApiUrl();
+      const adminKey = getAdminKey();
+      if (!apiUrl || !adminKey) throw new Error('Укажи API URL и Admin Key.');
+      localStorage.setItem(API_URL_KEY, apiUrl);
+      sessionStorage.setItem(ADMIN_KEY_KEY, adminKey);
+      const headers = {
+        'X-Admin-Key': adminKey,
+        ...(options.headers || {})
+      };
+      if (options.body) headers['Content-Type'] = 'application/json';
+      const response = await fetch(apiUrl + path, { ...options, headers });
+      const text = await response.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+      if (!response.ok || (data && data.ok === false)) {
+        const message = data && data.error ? data.error : (data && data.message ? data.message : text);
+        throw new Error(message || ('API HTTP ' + response.status));
+      }
+      return data;
+    }
+
     async function publishFile(filePath, content, message) {
+      if (getApiUrl() && getAdminKey()) {
+        return adminApiRequest('/admin/file', {
+          method: 'PUT',
+          body: JSON.stringify({ path: filePath, content, message })
+        });
+      }
+
       const branch = $('branch').value.trim() || 'main';
       let sha = null;
       try {
@@ -600,6 +703,92 @@
       }
     }
 
+    function renderRequests(items) {
+      const list = $('requestRows');
+      list.textContent = '';
+      const requests = Array.isArray(items) ? items : [];
+      const pending = requests.filter((item) => item.status === 'pending');
+      const visible = pending.length ? pending : requests.slice(0, 8);
+      if (!visible.length) {
+        const empty = document.createElement('div');
+        empty.className = 'request-card';
+        empty.textContent = 'Новых заявок нет.';
+        list.append(empty);
+        return;
+      }
+      visible.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'request-card';
+        const top = document.createElement('header');
+        const title = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.textContent = item.login || '-';
+        const meta = document.createElement('div');
+        meta.className = 'request-meta';
+        meta.textContent = [item.name, item.createdAt].filter(Boolean).join(' | ');
+        title.append(strong, meta);
+        const pill = document.createElement('span');
+        pill.className = 'pill ' + (item.status || '');
+        pill.textContent = item.status || '-';
+        top.append(title, pill);
+        card.append(top);
+        if (item.note) {
+          const note = document.createElement('p');
+          note.textContent = item.note;
+          card.append(note);
+        }
+        if (item.status === 'pending') {
+          const actions = document.createElement('div');
+          actions.className = 'actions';
+          const approve = document.createElement('button');
+          approve.type = 'button';
+          approve.textContent = 'Подтвердить';
+          approve.addEventListener('click', () => decideRequest(item.id, 'approve'));
+          const deny = document.createElement('button');
+          deny.type = 'button';
+          deny.className = 'danger';
+          deny.textContent = 'Не подтверждать';
+          deny.addEventListener('click', () => decideRequest(item.id, 'deny'));
+          actions.append(approve, deny);
+          card.append(actions);
+        }
+        list.append(card);
+      });
+    }
+
+    async function loadRequests() {
+      try {
+        if (!getApiUrl() || !getAdminKey()) {
+          setRequestStatus('Укажи API URL и Admin Key, потом нажми "Обновить заявки".');
+          renderRequests([]);
+          return;
+        }
+        setRequestStatus('Загружаю заявки...');
+        const data = await adminApiRequest('/requests', { method: 'GET' });
+        const requests = Array.isArray(data.requests) ? data.requests : [];
+        renderRequests(requests);
+        const pending = requests.filter((item) => item.status === 'pending').length;
+        setRequestStatus('Заявок всего: ' + requests.length + ' | ожидают: ' + pending, 'ok');
+      } catch (error) {
+        setRequestStatus('Ошибка заявок: ' + error.message, 'bad');
+      }
+    }
+
+    async function decideRequest(id, action) {
+      try {
+        setRequestStatus(action === 'approve' ? 'Подтверждаю заявку...' : 'Отклоняю заявку...');
+        await adminApiRequest('/requests/' + encodeURIComponent(id) + '/' + action, {
+          method: 'POST',
+          body: JSON.stringify({})
+        });
+        await loadRequests();
+        await loadRows();
+        setRequestStatus(action === 'approve' ? 'Заявка подтверждена. Аккаунт добавлен в программу.' : 'Заявка отклонена.', 'ok');
+      } catch (error) {
+        setRequestStatus('Ошибка обработки заявки: ' + error.message, 'bad');
+      }
+    }
+
     $('authForm').addEventListener('submit', login);
     $('logout').addEventListener('click', () => {
       sessionStorage.removeItem(AUTH_KEY);
@@ -614,6 +803,12 @@
     $('download').addEventListener('click', downloadJson);
     $('reload').addEventListener('click', loadRows);
     $('publishPassword').addEventListener('click', publishPassword);
+    $('saveApiSettings').addEventListener('click', () => {
+      localStorage.setItem(API_URL_KEY, getApiUrl());
+      sessionStorage.setItem(ADMIN_KEY_KEY, getAdminKey());
+      setRequestStatus('API настройки сохранены в этом браузере.', 'ok');
+    });
+    $('refreshRequests').addEventListener('click', loadRequests);
     checkSavedAuth();
   </script>
 </body>

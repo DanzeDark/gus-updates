@@ -31,6 +31,12 @@
 /payments_config.json
   Content-Type: application/json; charset=utf-8
 
+/gus_registration_requests.json
+  Content-Type: application/json; charset=utf-8
+
+/registration_worker.js
+  Content-Type: text/javascript; charset=utf-8
+
 /versions.json
   Content-Type: application/json; charset=utf-8
 

@@ -7,5 +7,7 @@
   "branch": "main",
   "paymentsPath": "gus_payments.json",
   "configPath": "payments_config.json",
+  "registrationApiUrl": "https://guzzini.peresehan145.workers.dev",
+  "registrationRequestsPath": "gus_registration_requests.json",
   "updatedAt": "2026-07-10T14:45:00+03:00"
 }
