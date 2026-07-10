@@ -1,5 +1,6 @@
 param(
     [string]$WorkerUrl = 'https://guzzini.peresehan145.workers.dev',
+    [string]$CloudflareAccountId = 'fb2976230dfa0a4972247e0cddab1e52',
     [switch]$SkipLogin,
     [switch]$UseCloudflareApiToken,
     [switch]$DeployOnly
@@ -48,6 +49,43 @@ function Get-GusPnpm {
     if (Test-Path -LiteralPath $candidate -PathType Leaf) { return $candidate }
 
     throw 'pnpm not found. Install Node.js or run from Codex runtime.'
+}
+
+function Get-GitFromGitHubDesktop {
+    $candidates = @(
+        (Join-Path $env:LOCALAPPDATA 'GitHubDesktop\app-*\resources\app\git\cmd\git.exe'),
+        (Join-Path $env:LOCALAPPDATA 'GitHubDesktop\app-*\resources\app\git\mingw64\bin\git.exe'),
+        (Join-Path $env:ProgramFiles 'Git\cmd\git.exe')
+    )
+
+    foreach ($candidate in $candidates) {
+        $found = Get-Item $candidate -ErrorAction SilentlyContinue | Sort-Object FullName -Descending | Select-Object -First 1
+        if ($found -and (Test-Path -LiteralPath $found.FullName -PathType Leaf)) {
+            return [string]$found.FullName
+        }
+    }
+
+    $cmd = Get-Command git -ErrorAction SilentlyContinue
+    if ($cmd -and $cmd.Source) { return [string]$cmd.Source }
+
+    return ''
+}
+
+function Get-GitHubTokenFromCredentialManager {
+    $git = Get-GitFromGitHubDesktop
+    if ([string]::IsNullOrWhiteSpace($git)) { return '' }
+
+    $inputText = "protocol=https`nhost=github.com`n`n"
+    $credential = $inputText | & $git credential fill 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $credential) { return '' }
+
+    foreach ($line in $credential) {
+        if ($line -match '^password=(.+)$') {
+            return [string]$matches[1]
+        }
+    }
+
+    return ''
 }
 
 function Invoke-Wrangler {
@@ -102,11 +140,20 @@ if (-not (Test-Path -LiteralPath (Join-Path $root 'wrangler.toml') -PathType Lea
 Push-Location -LiteralPath $root
 try {
     if ($UseCloudflareApiToken) {
-        $cloudflareToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste Cloudflare API token with Workers Scripts Edit' -AsSecureString)
+        $cloudflareToken = [string]$env:CLOUDFLARE_API_TOKEN
+        if ([string]::IsNullOrWhiteSpace($cloudflareToken)) {
+            $cloudflareToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste Cloudflare API token with Workers Scripts Edit' -AsSecureString)
+        }
         if ([string]::IsNullOrWhiteSpace($cloudflareToken)) {
             throw 'Cloudflare API token is empty.'
         }
-        $accountId = Read-Host 'Paste Cloudflare Account ID'
+        $accountId = [string]$env:CLOUDFLARE_ACCOUNT_ID
+        if ([string]::IsNullOrWhiteSpace($accountId)) {
+            $accountId = Read-Host "Paste Cloudflare Account ID or press Enter for $CloudflareAccountId"
+        }
+        if ([string]::IsNullOrWhiteSpace($accountId)) {
+            $accountId = $CloudflareAccountId
+        }
         if ([string]::IsNullOrWhiteSpace($accountId)) {
             throw 'Cloudflare Account ID is empty.'
         }
@@ -125,7 +172,13 @@ try {
     }
 
     if (-not $DeployOnly) {
-        $githubToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste GitHub token with repo Contents Read/Write' -AsSecureString)
+        $githubToken = Get-GitHubTokenFromCredentialManager
+        if (-not [string]::IsNullOrWhiteSpace($githubToken)) {
+            Write-Host 'GitHub token found in Windows Credential Manager.'
+        }
+        else {
+            $githubToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste GitHub token with repo Contents Read/Write' -AsSecureString)
+        }
         if ([string]::IsNullOrWhiteSpace($githubToken)) {
             throw 'GitHub token is empty.'
         }
