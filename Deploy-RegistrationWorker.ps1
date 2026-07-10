@@ -81,7 +81,13 @@ function Set-WranglerSecret {
 function New-AdminKey {
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'.ToCharArray()
     $bytes = New-Object byte[] 24
-    [Security.Cryptography.RandomNumberGenerator]::Fill($bytes)
+    $rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $rng.GetBytes($bytes)
+    }
+    finally {
+        if ($rng) { $rng.Dispose() }
+    }
     return 'GusAdmin-' + (($bytes | ForEach-Object { $chars[$_ % $chars.Length] }) -join '')
 }
 
