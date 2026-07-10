@@ -1,0 +1,6 @@
+{
+    "version":  "1.13.17",
+    "package":  "Gus-MaxContactTool-update.zip",
+    "createdAt":  "2026-07-08T14:27:17+03:00",
+    "notes":  "Optimized Start button: selected open MAX sessions are used immediately, while responsiveness checks and recovery happen during actual processing."
+}
