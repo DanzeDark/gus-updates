@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T14:59:59.614Z",
+  "updatedAt": "2026-07-10T15:00:16.591Z",
   "requests": [
     {
       "id": "aaf57867-736e-4e2d-b3e3-850668f00382",
@@ -7,10 +7,10 @@
       "name": "Кузя",
       "keyHash": "5aaca332eae85d835275d51f78e4709724f37852c039d4926f2baf302b5ae7fc",
       "note": "ЭТО КУЗЯЯЯЯ)",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-10T14:59:59.614Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-10T15:00:16.591Z",
+      "decisionNote": "approved"
     },
     {
       "id": "9e2b7472-1e4f-407f-8f82-818c20d48614",
