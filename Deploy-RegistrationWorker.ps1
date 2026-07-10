@@ -1,6 +1,7 @@
 param(
     [string]$WorkerUrl = 'https://guzzini.peresehan145.workers.dev',
-    [switch]$SkipLogin
+    [switch]$SkipLogin,
+    [switch]$UseCloudflareApiToken
 )
 
 $ErrorActionPreference = 'Stop'
@@ -93,7 +94,19 @@ if (-not (Test-Path -LiteralPath (Join-Path $root 'wrangler.toml') -PathType Lea
 
 Push-Location -LiteralPath $root
 try {
-    if (-not $SkipLogin) {
+    if ($UseCloudflareApiToken) {
+        $cloudflareToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste Cloudflare API token with Workers Scripts Edit' -AsSecureString)
+        if ([string]::IsNullOrWhiteSpace($cloudflareToken)) {
+            throw 'Cloudflare API token is empty.'
+        }
+        $accountId = Read-Host 'Paste Cloudflare Account ID'
+        if ([string]::IsNullOrWhiteSpace($accountId)) {
+            throw 'Cloudflare Account ID is empty.'
+        }
+        $env:CLOUDFLARE_API_TOKEN = $cloudflareToken
+        $env:CLOUDFLARE_ACCOUNT_ID = $accountId
+    }
+    elseif (-not $SkipLogin) {
         Write-Host 'Checking Cloudflare login...'
         try {
             Invoke-Wrangler -Arguments @('whoami')

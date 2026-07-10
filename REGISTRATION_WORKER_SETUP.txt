@@ -29,6 +29,21 @@ Fast setup
 5. Open https://guzzini.peresehan145.workers.dev/health
 6. It should show {"ok":true}.
 
+If Cloudflare login does not work
+---------------------------------
+Use Deploy-RegistrationWorker-CloudflareToken.bat instead.
+It does not open browser login. It asks for:
+1. Cloudflare API token with Workers Scripts Edit permission.
+2. Cloudflare Account ID.
+3. GitHub token with Contents Read/Write for gus-updates.
+
+Where to get Cloudflare API token:
+Cloudflare Dashboard -> profile icon -> My Profile -> API Tokens -> Create Token.
+Use a token that can edit Workers Scripts for your account.
+
+Where to get Account ID:
+Cloudflare Dashboard -> Workers & Pages -> any Worker/account page -> Account ID in the right sidebar or account settings.
+
 Manual Cloudflare setup
 -----------------------
 1. Open Cloudflare Dashboard.
