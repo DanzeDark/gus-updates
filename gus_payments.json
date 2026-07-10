@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T15:05:13.320Z",
+  "updatedAt": "2026-07-10T15:18:37.471Z",
   "accounts": [
     {
       "login": "ave",
@@ -192,6 +192,18 @@
       "debt": "",
       "status": "",
       "note": ""
+    },
+    {
+      "login": "egorrr",
+      "name": "Никита",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": "Гузини"
     },
     {
       "login": "kuzyazya",

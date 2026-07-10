@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "updatedAt": "2026-07-10T15:05:13.320Z",
+  "updatedAt": "2026-07-10T15:18:37.471Z",
   "accounts": [
     {
       "login": "kyzyu",
@@ -129,6 +129,14 @@
       "active": true,
       "createdAt": "2026-07-09 11:45:30",
       "note": ""
+    },
+    {
+      "login": "egorrr",
+      "name": "Никита",
+      "keyHash": "14b714c9578c43704acf93cbe626751db0d6f082cdccd2b035d109cfa7404e55",
+      "active": true,
+      "createdAt": "2026-07-10T14:49:42.423Z",
+      "note": "Регистрация с сайта. Гузини"
     },
     {
       "login": "kuzyazya",

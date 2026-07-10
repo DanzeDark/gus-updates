@@ -374,6 +374,7 @@
     const ADMIN_KEY_KEY = 'gus_registration_admin_key_session';
     let config = { authEnabled: true, passwordHash: '' };
     let rows = [];
+    let loadedPaymentLogins = new Set();
 
     const $ = (id) => document.getElementById(id);
 
@@ -484,12 +485,17 @@
       };
     }
 
+    function normalizeRowWithPassword(row) {
+      const normalized = normalizeRow(row || {});
+      normalized.accountPassword = String((row && row.accountPassword) || '').trim();
+      return normalized;
+    }
+
     async function loadRows() {
       setStatus('Загрузка таблицы...');
-      const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!response.ok) throw new Error('Не удалось загрузить gus_payments.json');
-      const data = await response.json();
+      const data = await loadPaymentsDocument(config.paymentsPath || DATA_URL);
       rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
+      loadedPaymentLogins = paymentLoginSet(rows);
       renderRows();
       setStatus('Загружено строк: ' + rows.length, 'ok');
     }
@@ -581,6 +587,16 @@
       return String(value || '').replace(/\s+/g, '').trim().toLowerCase();
     }
 
+    function isValidAccountLogin(login) {
+      return /^[a-z0-9._-]{2,64}$/.test(String(login || ''));
+    }
+
+    function paymentLoginSet(sourceRows) {
+      return new Set((sourceRows || [])
+        .map((row) => sanitizeAccountLogin(row && row.login))
+        .filter(isValidAccountLogin));
+    }
+
     async function accountKeyHash(login, password) {
       return sha256('GUS-ACCOUNT-V1|' + sanitizeAccountLogin(login) + '|' + String(password || ''));
     }
@@ -595,6 +611,11 @@
     }
 
     async function loadAccountsDocument(accountsPath) {
+      if (getApiUrl() && getAdminKey()) {
+        const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
+        if (current && current.json) return current.json;
+      }
+
       const branch = $('branch').value.trim() || 'main';
       const token = $('githubToken').value.trim();
       if (token) {
@@ -616,22 +637,89 @@
       return { enabled: true, updatedAt: '', accounts: [] };
     }
 
-    async function buildAccountsData() {
+    async function loadPaymentsDocument(paymentsPath) {
+      if (getApiUrl() && getAdminKey()) {
+        const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
+        if (current && current.json) return current.json;
+      }
+
+      const branch = $('branch').value.trim() || 'main';
+      const token = $('githubToken').value.trim();
+      if (token) {
+        try {
+          const current = await githubRequest(`contents/${encodeURIComponent(paymentsPath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
+          if (current && current.content) {
+            return JSON.parse(fromBase64(current.content));
+          }
+        } catch (error) {
+          if (!String(error.message || '').includes('Not Found')) throw error;
+        }
+      }
+
+      try {
+        const response = await fetch(paymentsPath + '?t=' + Date.now(), { cache: 'no-store' });
+        if (response.ok) return response.json();
+      } catch (_) {}
+
+      return { updatedAt: '', accounts: [] };
+    }
+
+    function mergePaymentsData(latestDoc, currentRowsSource) {
+      const latestRows = Array.isArray(latestDoc && latestDoc.accounts) ? latestDoc.accounts.map(normalizeRow) : [];
+      const currentRows = Array.isArray(currentRowsSource) ? currentRowsSource.map(normalizeRowWithPassword) : [];
+      const currentLogins = paymentLoginSet(currentRows);
+      const removedLogins = new Set([...loadedPaymentLogins].filter((login) => !currentLogins.has(login)));
+      const mergedRows = [];
+      const accountRows = [];
+      const mergedLogins = new Set();
+      let preserved = 0;
+
+      for (const row of latestRows) {
+        const login = sanitizeAccountLogin(row.login);
+        if (isValidAccountLogin(login) && removedLogins.has(login)) continue;
+        if (isValidAccountLogin(login) && currentLogins.has(login)) continue;
+        mergedRows.push(row);
+        accountRows.push(row);
+        if (isValidAccountLogin(login)) mergedLogins.add(login);
+        preserved += 1;
+      }
+
+      for (const row of currentRows) {
+        mergedRows.push(normalizeRow(row));
+        accountRows.push(row);
+        const login = sanitizeAccountLogin(row.login);
+        if (isValidAccountLogin(login)) mergedLogins.add(login);
+      }
+
+      return {
+        data: {
+          ...(latestDoc || {}),
+          updatedAt: new Date().toISOString(),
+          accounts: mergedRows
+        },
+        accountRows,
+        removedLogins,
+        preserved
+      };
+    }
+
+    async function buildAccountsData(paymentRows, removedLogins) {
       const accountsPath = config.accountsPath || 'gus_accounts.json';
       const doc = await loadAccountsDocument(accountsPath);
-      const desiredLogins = new Set(rows.map((row) => sanitizeAccountLogin(row.login)).filter((login) => /^[a-z0-9._-]{2,64}$/.test(login)));
+      const sourceRows = Array.isArray(paymentRows) ? paymentRows : rows;
+      const removeSet = removedLogins || new Set();
       const originalAccounts = Array.isArray(doc.accounts) ? doc.accounts.slice() : [];
-      const accounts = originalAccounts.filter((account) => desiredLogins.has(sanitizeAccountLogin(account.login)));
+      const accounts = originalAccounts.filter((account) => !removeSet.has(sanitizeAccountLogin(account.login)));
       const byLogin = new Map(accounts.map((account) => [sanitizeAccountLogin(account.login), account]));
       const missingPassword = [];
       let created = 0;
       let updated = 0;
       const removed = originalAccounts.length - accounts.length;
 
-      for (const paymentRow of rows) {
+      for (const paymentRow of sourceRows) {
         const row = normalizeRow(paymentRow);
         const login = sanitizeAccountLogin(row.login);
-        if (!login || !/^[a-z0-9._-]{2,64}$/.test(login)) continue;
+        if (!login || !isValidAccountLogin(login)) continue;
         const existing = byLogin.get(login);
         if (existing) {
           existing.name = row.name || existing.name || login;
@@ -642,7 +730,7 @@
 
         const password = String(paymentRow.accountPassword || '').trim();
         if (!password) {
-          missingPassword.push(login);
+          if (row.active !== false) missingPassword.push(login);
           continue;
         }
 
@@ -762,17 +850,20 @@
     async function publishPayments() {
       try {
         setStatus('Публикую таблицу и аккаунты на GitHub...');
-        const accountsSync = await buildAccountsData();
-        const data = collectPaymentsData();
         const filePath = config.paymentsPath || 'gus_payments.json';
-        await publishFile(filePath, JSON.stringify(data, null, 2), 'Update Gus payments table');
+        const latestPayments = await loadPaymentsDocument(filePath);
+        const merged = mergePaymentsData(latestPayments, rows);
+        const accountsSync = await buildAccountsData(merged.accountRows, merged.removedLogins);
+        if (accountsSync.missingPassword.length) {
+          throw new Error('Для новых активных аккаунтов нужен пароль входа: ' + accountsSync.missingPassword.join(', '));
+        }
+        await publishFile(filePath, JSON.stringify(merged.data, null, 2), 'Update Gus payments table');
         await publishFile(accountsSync.path, JSON.stringify(accountsSync.data, null, 2), 'Sync Gus app accounts from payments table');
-        rows = data.accounts;
+        rows = merged.data.accounts.map(normalizeRow);
+        loadedPaymentLogins = paymentLoginSet(rows);
         renderRows();
-        const warning = accountsSync.missingPassword.length
-          ? ' Не добавлены в программу без пароля: ' + accountsSync.missingPassword.join(', ') + '.'
-          : '';
-        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + ', удалено: ' + accountsSync.removed + '.' + warning, warning ? '' : 'ok');
+        const preserved = merged.preserved ? ' Сохранено свежих строк: ' + merged.preserved + '.' : '';
+        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + ', удалено: ' + accountsSync.removed + '.' + preserved, 'ok');
       } catch (error) {
         setStatus('Ошибка публикации: ' + error.message, 'bad');
       }

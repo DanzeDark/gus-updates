@@ -306,6 +306,16 @@ async function writeAdminFile(request, env) {
   return jsonResponse({ ok: true, path: filePath });
 }
 
+async function readAdminFile(request, env) {
+  requireAdmin(request, env);
+  const url = new URL(request.url);
+  const allowed = new Set([PAYMENTS_PATH, 'payments_config.json', ACCOUNTS_PATH]);
+  const filePath = String(url.searchParams.get('path') || '');
+  if (!allowed.has(filePath)) return jsonResponse({ ok: false, error: 'Path is not allowed.' }, 403);
+  const current = await readGitFile(env, filePath, {});
+  return jsonResponse({ ok: true, path: filePath, json: current.json, sha: current.sha || null });
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders });
@@ -318,6 +328,7 @@ export default {
       if (approveMatch && request.method === 'POST') return await approveRequest(request, env, approveMatch[1]);
       const denyMatch = url.pathname.match(/^\/requests\/([^/]+)\/deny$/);
       if (denyMatch && request.method === 'POST') return await denyRequest(request, env, denyMatch[1]);
+      if (url.pathname === '/admin/file' && request.method === 'GET') return await readAdminFile(request, env);
       if (url.pathname === '/admin/file' && request.method === 'PUT') return await writeAdminFile(request, env);
       return textResponse('Not found', 404);
     } catch (error) {
