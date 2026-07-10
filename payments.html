@@ -60,6 +60,24 @@
       font-size: 14px;
     }
 
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .top-actions a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      background: rgba(8, 11, 17, 0.5);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
     .summary {
       display: grid;
       grid-template-columns: repeat(5, minmax(130px, 1fr));
@@ -181,6 +199,40 @@
     .note { white-space: normal; min-width: 220px; color: var(--muted); }
     .error { color: var(--due); }
 
+    .hidden { display: none !important; }
+
+    .auth-screen {
+      width: min(460px, 100%);
+      margin: min(14vh, 90px) auto 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+    }
+
+    .auth-screen h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .auth-screen p {
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+
+    .auth-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .auth-error {
+      min-height: 20px;
+      color: var(--due);
+      font-size: 13px;
+    }
+
     @media (max-width: 760px) {
       body { padding: 14px; }
       header { display: grid; }
@@ -191,13 +243,29 @@
   </style>
 </head>
 <body>
-  <main>
+  <section class="auth-screen" id="authScreen">
+    <h1>Гусь - оплаты</h1>
+    <p>Введите пароль, чтобы открыть таблицу оплат.</p>
+    <form class="auth-row" id="authForm">
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Пароль">
+      <button type="submit">Войти</button>
+      <div class="auth-error" id="authError"></div>
+    </form>
+  </section>
+
+  <main class="hidden" id="app">
     <header>
       <div>
         <h1>Гусь - оплаты</h1>
         <div class="hint">Онлайн-таблица аккаунтов, оплат и долгов. Обновляется автоматически.</div>
       </div>
-      <div class="updated" id="updated">Загрузка...</div>
+      <div>
+        <div class="updated" id="updated">Загрузка...</div>
+        <div class="top-actions">
+          <a href="payments_admin.html">Админка</a>
+          <a href="#" id="logout">Выйти</a>
+        </div>
+      </div>
     </header>
 
     <section class="summary" aria-label="Сводка">
@@ -246,11 +314,69 @@
 
   <script>
     const DATA_URL = 'gus_payments.json';
+    const CONFIG_URL = 'payments_config.json';
+    const AUTH_KEY = 'gus_payments_auth_hash';
     const refreshMs = 15000;
     let rows = [];
+    let config = { authEnabled: true, passwordHash: '' };
+    let refreshTimer = null;
 
     const $ = (id) => document.getElementById(id);
     const text = (value) => value == null || value === '' ? '...' : String(value);
+
+    async function sha256(value) {
+      const bytes = new TextEncoder().encode(value);
+      const hash = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function loadConfig() {
+      try {
+        const response = await fetch(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        config = await response.json();
+      } catch (error) {
+        config = { authEnabled: true, passwordHash: '' };
+        $('authError').textContent = 'Не удалось загрузить настройки входа.';
+      }
+    }
+
+    function showApp() {
+      $('authScreen').classList.add('hidden');
+      $('app').classList.remove('hidden');
+      load();
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = setInterval(load, refreshMs);
+    }
+
+    async function checkSavedAuth() {
+      await loadConfig();
+      if (config.authEnabled === false) {
+        showApp();
+        return;
+      }
+      const saved = sessionStorage.getItem(AUTH_KEY);
+      if (saved && config.passwordHash && saved === config.passwordHash) {
+        showApp();
+      }
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      $('authError').textContent = '';
+      const password = $('authPassword').value;
+      if (!password) {
+        $('authError').textContent = 'Введите пароль.';
+        return;
+      }
+      const hash = await sha256(password);
+      if (config.passwordHash && hash === config.passwordHash) {
+        sessionStorage.setItem(AUTH_KEY, hash);
+        showApp();
+        return;
+      }
+      $('authError').textContent = 'Неверный пароль.';
+    }
 
     function parseDate(value) {
       if (!value) return null;
@@ -381,8 +507,13 @@
     $('search').addEventListener('input', render);
     $('filter').addEventListener('change', render);
     $('refresh').addEventListener('click', load);
-    load();
-    setInterval(load, refreshMs);
+    $('authForm').addEventListener('submit', login);
+    $('logout').addEventListener('click', (event) => {
+      event.preventDefault();
+      sessionStorage.removeItem(AUTH_KEY);
+      location.reload();
+    });
+    checkSavedAuth();
   </script>
 </body>
 </html>

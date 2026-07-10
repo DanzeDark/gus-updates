@@ -1,0 +1,11 @@
+{
+  "authEnabled": true,
+  "passwordHash": "4e82f4cb6775c4bc74bdc4c529e2773094c68003071c7117c347b8130321d636",
+  "passwordHint": "Пароль у владельца",
+  "repoOwner": "DanzeDark",
+  "repoName": "gus-updates",
+  "branch": "main",
+  "paymentsPath": "gus_payments.json",
+  "configPath": "payments_config.json",
+  "updatedAt": "2026-07-10T14:45:00+03:00"
+}

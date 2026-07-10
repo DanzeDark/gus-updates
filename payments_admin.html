@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Гусь - админ оплат</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1017;
+      --panel: rgba(20, 24, 34, 0.94);
+      --panel-2: rgba(29, 35, 49, 0.92);
+      --line: rgba(124, 141, 176, 0.24);
+      --text: #f5f7fb;
+      --muted: #aab4c8;
+      --accent: #4ca8ff;
+      --ok: #47d18c;
+      --bad: #ff7a7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(76, 168, 255, 0.22), transparent 30%),
+        radial-gradient(circle at 90% 8%, rgba(255, 77, 109, 0.13), transparent 28%),
+        linear-gradient(135deg, #090b10, #111827 48%, #090b10);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    main {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    h1 { font-size: clamp(26px, 4vw, 40px); }
+    h2 { font-size: 18px; margin-bottom: 12px; }
+
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .hint, .status, label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel, .auth-screen, .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .panel { padding: 14px; }
+
+    .auth-screen {
+      width: min(460px, 100%);
+      margin: min(14vh, 90px) auto 0;
+      padding: 22px;
+    }
+
+    .auth-screen p {
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 10px 0 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .grid.wide {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    input, button, textarea {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(8, 11, 17, 0.72);
+      color: var(--text);
+      font: inherit;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 76px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    button {
+      cursor: pointer;
+      background: #176cc1;
+      border-color: #2689eb;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    button.secondary {
+      background: rgba(8, 11, 17, 0.62);
+      border-color: var(--line);
+    }
+
+    button.danger {
+      background: #7d2032;
+      border-color: #ad3650;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .actions button, .actions a {
+      width: auto;
+      min-width: 150px;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      background: rgba(8, 11, 17, 0.54);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 390px);
+      min-height: 380px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1240px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 9px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(25, 31, 44, 0.98);
+      text-align: left;
+      font-size: 12px;
+      color: #dfe7f7;
+    }
+
+    td {
+      background: rgba(14, 18, 27, 0.64);
+    }
+
+    td input {
+      min-height: 34px;
+      font-size: 13px;
+    }
+
+    td input[type="checkbox"] {
+      width: 18px;
+      min-height: 18px;
+      accent-color: var(--accent);
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.bad, .auth-error { color: var(--bad); }
+    .hidden { display: none !important; }
+    .auth-error { min-height: 20px; font-size: 13px; }
+
+    @media (max-width: 860px) {
+      body { padding: 14px; }
+      header { display: grid; }
+      .grid, .grid.wide { grid-template-columns: 1fr; }
+      .actions button, .actions a { width: 100%; }
+      .table-wrap { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="auth-screen" id="authScreen">
+    <h1>Гусь - админ</h1>
+    <p>Введите пароль сайта, чтобы открыть настройку оплат.</p>
+    <form class="field" id="authForm">
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Пароль">
+      <button type="submit">Войти</button>
+      <div class="auth-error" id="authError"></div>
+    </form>
+  </section>
+
+  <main class="hidden" id="app">
+    <header>
+      <div>
+        <h1>Гусь - админ оплат</h1>
+        <div class="hint">Редактируй даты, суммы и долги. После сохранения таблица обновится на сайте.</div>
+      </div>
+      <div class="actions">
+        <a href="payments.html">Открыть таблицу</a>
+        <button class="secondary" id="logout" type="button">Выйти</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2>GitHub публикация</h2>
+      <div class="grid wide">
+        <div class="field">
+          <label for="githubToken">GitHub Token</label>
+          <input id="githubToken" type="password" autocomplete="off" placeholder="ghp... или fine-grained token">
+        </div>
+        <div class="field">
+          <label for="repoOwner">Владелец</label>
+          <input id="repoOwner" value="DanzeDark">
+        </div>
+        <div class="field">
+          <label for="repoName">Репозиторий</label>
+          <input id="repoName" value="gus-updates">
+        </div>
+        <div class="field">
+          <label for="branch">Ветка</label>
+          <input id="branch" value="main">
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Действия</h2>
+      <div class="actions">
+        <button id="addRow" type="button">Добавить строку</button>
+        <button id="publish" type="button">Опубликовать оплату</button>
+        <button class="secondary" id="download" type="button">Скачать JSON</button>
+        <button class="secondary" id="reload" type="button">Перезагрузить</button>
+      </div>
+      <div class="status" id="status">Загрузка...</div>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Логин</th>
+            <th>Имя</th>
+            <th>Вкл.</th>
+            <th>Начал</th>
+            <th>Оплатил</th>
+            <th>Платить до</th>
+            <th>Сумма</th>
+            <th>Долг</th>
+            <th>Статус</th>
+            <th>Заметка</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Сменить пароль сайта</h2>
+      <div class="grid">
+        <div class="field">
+          <label for="newPassword">Новый пароль</label>
+          <input id="newPassword" type="password" autocomplete="new-password" placeholder="Новый пароль">
+        </div>
+        <div class="field">
+          <label for="newPasswordAgain">Повтор</label>
+          <input id="newPasswordAgain" type="password" autocomplete="new-password" placeholder="Повторить пароль">
+        </div>
+        <div class="field">
+          <label for="passwordHint">Подсказка</label>
+          <input id="passwordHint" placeholder="Например: пароль у владельца">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button id="publishPassword" type="button">Сменить пароль</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DATA_URL = 'gus_payments.json';
+    const CONFIG_URL = 'payments_config.json';
+    const AUTH_KEY = 'gus_payments_auth_hash';
+    const TOKEN_KEY = 'gus_github_token_session';
+    let config = { authEnabled: true, passwordHash: '' };
+    let rows = [];
+
+    const $ = (id) => document.getElementById(id);
+
+    async function sha256(value) {
+      const bytes = new TextEncoder().encode(value);
+      const hash = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    function setStatus(text, kind = '') {
+      const node = $('status');
+      node.textContent = text;
+      node.className = 'status ' + kind;
+    }
+
+    async function loadConfig() {
+      const response = await fetch(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Не удалось загрузить payments_config.json');
+      config = await response.json();
+      $('repoOwner').value = config.repoOwner || 'DanzeDark';
+      $('repoName').value = config.repoName || 'gus-updates';
+      $('branch').value = config.branch || 'main';
+      $('passwordHint').value = config.passwordHint || '';
+    }
+
+    function showApp() {
+      $('authScreen').classList.add('hidden');
+      $('app').classList.remove('hidden');
+      const token = sessionStorage.getItem(TOKEN_KEY);
+      if (token) $('githubToken').value = token;
+      loadRows();
+    }
+
+    async function checkSavedAuth() {
+      try {
+        await loadConfig();
+        if (config.authEnabled === false || sessionStorage.getItem(AUTH_KEY) === config.passwordHash) {
+          showApp();
+        }
+      } catch (error) {
+        $('authError').textContent = error.message;
+      }
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      $('authError').textContent = '';
+      const password = $('authPassword').value;
+      if (!password) {
+        $('authError').textContent = 'Введите пароль.';
+        return;
+      }
+      const hash = await sha256(password);
+      if (config.passwordHash && hash === config.passwordHash) {
+        sessionStorage.setItem(AUTH_KEY, hash);
+        showApp();
+        return;
+      }
+      $('authError').textContent = 'Неверный пароль.';
+    }
+
+    function blankRow() {
+      return {
+        login: '',
+        name: '',
+        active: true,
+        startedAt: '',
+        paidAt: '',
+        dueAt: '',
+        amount: '',
+        debt: '',
+        status: '',
+        note: ''
+      };
+    }
+
+    function normalizeRow(row) {
+      return {
+        login: String(row.login || '').trim(),
+        name: String(row.name || '').trim(),
+        active: row.active !== false,
+        startedAt: String(row.startedAt || '').trim(),
+        paidAt: String(row.paidAt || '').trim(),
+        dueAt: String(row.dueAt || '').trim(),
+        amount: String(row.amount || '').trim(),
+        debt: String(row.debt || '').trim(),
+        status: String(row.status || '').trim(),
+        note: String(row.note || '').trim()
+      };
+    }
+
+    async function loadRows() {
+      setStatus('Загрузка таблицы...');
+      const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Не удалось загрузить gus_payments.json');
+      const data = await response.json();
+      rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
+      renderRows();
+      setStatus('Загружено строк: ' + rows.length, 'ok');
+    }
+
+    function input(value, field, index, type = 'text') {
+      const element = document.createElement('input');
+      element.type = type;
+      element.value = value || '';
+      element.dataset.field = field;
+      element.dataset.index = String(index);
+      element.addEventListener('input', onCellChange);
+      return element;
+    }
+
+    function renderRows() {
+      const body = $('rows');
+      body.textContent = '';
+      rows.forEach((row, index) => {
+        const tr = document.createElement('tr');
+        [
+          input(row.login, 'login', index),
+          input(row.name, 'name', index),
+          (() => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = row.active !== false;
+            checkbox.dataset.field = 'active';
+            checkbox.dataset.index = String(index);
+            checkbox.addEventListener('change', onCellChange);
+            return checkbox;
+          })(),
+          input(row.startedAt, 'startedAt', index, 'date'),
+          input(row.paidAt, 'paidAt', index, 'date'),
+          input(row.dueAt, 'dueAt', index, 'date'),
+          input(row.amount, 'amount', index),
+          input(row.debt, 'debt', index),
+          input(row.status, 'status', index),
+          input(row.note, 'note', index),
+          (() => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'danger';
+            button.textContent = 'Удалить';
+            button.addEventListener('click', () => {
+              rows.splice(index, 1);
+              renderRows();
+              setStatus('Строка удалена. Не забудь опубликовать.', '');
+            });
+            return button;
+          })()
+        ].forEach((node) => {
+          const td = document.createElement('td');
+          td.append(node);
+          tr.append(td);
+        });
+        body.append(tr);
+      });
+    }
+
+    function onCellChange(event) {
+      const element = event.currentTarget;
+      const index = Number(element.dataset.index);
+      const field = element.dataset.field;
+      if (!rows[index]) return;
+      rows[index][field] = element.type === 'checkbox' ? element.checked : element.value;
+      setStatus('Есть несохранённые изменения.', '');
+    }
+
+    function collectData() {
+      return {
+        updatedAt: new Date().toISOString(),
+        accounts: rows.map(normalizeRow).filter((row) => row.login || row.name)
+      };
+    }
+
+    function toBase64(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = '';
+      bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
+      return btoa(binary);
+    }
+
+    async function githubRequest(path, options = {}) {
+      const token = $('githubToken').value.trim();
+      if (!token) throw new Error('Вставь GitHub Token.');
+      sessionStorage.setItem(TOKEN_KEY, token);
+
+      const owner = $('repoOwner').value.trim();
+      const repo = $('repoName').value.trim();
+      const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${path}`;
+      const headers = {
+        Accept: 'application/vnd.github+json',
+        Authorization: 'Bearer ' + token,
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+      if (options.body) headers['Content-Type'] = 'application/json';
+      const response = await fetch(url, { ...options, headers });
+      const text = await response.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+      if (!response.ok) {
+        const message = data && data.message ? data.message : text;
+        throw new Error(message || ('GitHub HTTP ' + response.status));
+      }
+      return data;
+    }
+
+    async function publishFile(filePath, content, message) {
+      const branch = $('branch').value.trim() || 'main';
+      let sha = null;
+      try {
+        const current = await githubRequest(`contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
+        sha = current.sha || null;
+      } catch (error) {
+        if (!String(error.message || '').includes('Not Found')) throw error;
+      }
+
+      const body = {
+        message,
+        content: toBase64(content),
+        branch
+      };
+      if (sha) body.sha = sha;
+
+      return githubRequest(`contents/${encodeURIComponent(filePath)}`, {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      });
+    }
+
+    async function publishPayments() {
+      try {
+        setStatus('Публикую таблицу на GitHub...');
+        const data = collectData();
+        const filePath = config.paymentsPath || 'gus_payments.json';
+        await publishFile(filePath, JSON.stringify(data, null, 2), 'Update Gus payments table');
+        rows = data.accounts;
+        renderRows();
+        setStatus('Опубликовано. Таблица на сайте обновится через минуту.', 'ok');
+      } catch (error) {
+        setStatus('Ошибка публикации: ' + error.message, 'bad');
+      }
+    }
+
+    function downloadJson() {
+      const data = collectData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'gus_payments.json';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    async function publishPassword() {
+      try {
+        const password = $('newPassword').value;
+        const again = $('newPasswordAgain').value;
+        if (!password || password.length < 6) throw new Error('Пароль должен быть минимум 6 символов.');
+        if (password !== again) throw new Error('Пароли не совпадают.');
+
+        setStatus('Меняю пароль сайта...');
+        const hash = await sha256(password);
+        const nextConfig = {
+          ...config,
+          authEnabled: true,
+          passwordHash: hash,
+          passwordHint: $('passwordHint').value.trim() || 'Пароль у владельца',
+          repoOwner: $('repoOwner').value.trim() || 'DanzeDark',
+          repoName: $('repoName').value.trim() || 'gus-updates',
+          branch: $('branch').value.trim() || 'main',
+          paymentsPath: config.paymentsPath || 'gus_payments.json',
+          configPath: config.configPath || 'payments_config.json',
+          updatedAt: new Date().toISOString()
+        };
+        await publishFile(nextConfig.configPath, JSON.stringify(nextConfig, null, 2), 'Update Gus payments password');
+        config = nextConfig;
+        sessionStorage.setItem(AUTH_KEY, hash);
+        $('newPassword').value = '';
+        $('newPasswordAgain').value = '';
+        setStatus('Пароль изменён. GitHub Pages обновится через минуту.', 'ok');
+      } catch (error) {
+        setStatus('Ошибка смены пароля: ' + error.message, 'bad');
+      }
+    }
+
+    $('authForm').addEventListener('submit', login);
+    $('logout').addEventListener('click', () => {
+      sessionStorage.removeItem(AUTH_KEY);
+      location.reload();
+    });
+    $('addRow').addEventListener('click', () => {
+      rows.push(blankRow());
+      renderRows();
+      setStatus('Добавлена новая строка. Заполни и опубликуй.', '');
+    });
+    $('publish').addEventListener('click', publishPayments);
+    $('download').addEventListener('click', downloadJson);
+    $('reload').addEventListener('click', loadRows);
+    $('publishPassword').addEventListener('click', publishPassword);
+    checkSavedAuth();
+  </script>
+</body>
+</html>
