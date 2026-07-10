@@ -619,11 +619,14 @@
     async function buildAccountsData() {
       const accountsPath = config.accountsPath || 'gus_accounts.json';
       const doc = await loadAccountsDocument(accountsPath);
-      const accounts = Array.isArray(doc.accounts) ? doc.accounts.slice() : [];
+      const desiredLogins = new Set(rows.map((row) => sanitizeAccountLogin(row.login)).filter((login) => /^[a-z0-9._-]{2,64}$/.test(login)));
+      const originalAccounts = Array.isArray(doc.accounts) ? doc.accounts.slice() : [];
+      const accounts = originalAccounts.filter((account) => desiredLogins.has(sanitizeAccountLogin(account.login)));
       const byLogin = new Map(accounts.map((account) => [sanitizeAccountLogin(account.login), account]));
       const missingPassword = [];
       let created = 0;
       let updated = 0;
+      const removed = originalAccounts.length - accounts.length;
 
       for (const paymentRow of rows) {
         const row = normalizeRow(paymentRow);
@@ -667,6 +670,7 @@
         },
         created,
         updated,
+        removed,
         missingPassword
       };
     }
@@ -768,7 +772,7 @@
         const warning = accountsSync.missingPassword.length
           ? ' Не добавлены в программу без пароля: ' + accountsSync.missingPassword.join(', ') + '.'
           : '';
-        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + '.' + warning, warning ? '' : 'ok');
+        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + ', удалено: ' + accountsSync.removed + '.' + warning, warning ? '' : 'ok');
       } catch (error) {
         setStatus('Ошибка публикации: ' + error.message, 'bad');
       }
