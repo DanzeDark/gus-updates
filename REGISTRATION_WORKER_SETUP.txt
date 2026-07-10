@@ -44,6 +44,17 @@ Use a token that can edit Workers Scripts for your account.
 Where to get Account ID:
 Cloudflare Dashboard -> Workers & Pages -> any Worker/account page -> Account ID in the right sidebar or account settings.
 
+Deploy only after code changes
+------------------------------
+If the Worker secrets are already configured and you only need to upload new Worker code, run:
+Deploy-RegistrationWorker-CodeOnly-CloudflareToken.bat
+
+It asks only for:
+1. Cloudflare API token.
+2. Cloudflare Account ID.
+
+It does not ask for GitHub token and does not change Worker secrets.
+
 Manual Cloudflare setup
 -----------------------
 1. Open Cloudflare Dashboard.

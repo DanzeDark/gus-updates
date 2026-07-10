@@ -1,7 +1,8 @@
 param(
     [string]$WorkerUrl = 'https://guzzini.peresehan145.workers.dev',
     [switch]$SkipLogin,
-    [switch]$UseCloudflareApiToken
+    [switch]$UseCloudflareApiToken,
+    [switch]$DeployOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -123,24 +124,29 @@ try {
         }
     }
 
-    $githubToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste GitHub token with repo Contents Read/Write' -AsSecureString)
-    if ([string]::IsNullOrWhiteSpace($githubToken)) {
-        throw 'GitHub token is empty.'
-    }
+    if (-not $DeployOnly) {
+        $githubToken = ConvertFrom-SecureStringToPlain (Read-Host 'Paste GitHub token with repo Contents Read/Write' -AsSecureString)
+        if ([string]::IsNullOrWhiteSpace($githubToken)) {
+            throw 'GitHub token is empty.'
+        }
 
-    $adminKey = ''
-    if (Test-Path -LiteralPath $adminKeyFile -PathType Leaf) {
-        $adminKey = [string]((Get-Content -LiteralPath $adminKeyFile -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -First 1))
-    }
-    if ([string]::IsNullOrWhiteSpace($adminKey)) {
-        $adminKey = New-AdminKey
-        $utf8NoBom = New-Object Text.UTF8Encoding($false)
-        [IO.File]::WriteAllText($adminKeyFile, $adminKey, $utf8NoBom)
-    }
+        $adminKey = ''
+        if (Test-Path -LiteralPath $adminKeyFile -PathType Leaf) {
+            $adminKey = [string]((Get-Content -LiteralPath $adminKeyFile -Encoding UTF8 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -First 1))
+        }
+        if ([string]::IsNullOrWhiteSpace($adminKey)) {
+            $adminKey = New-AdminKey
+            $utf8NoBom = New-Object Text.UTF8Encoding($false)
+            [IO.File]::WriteAllText($adminKeyFile, $adminKey, $utf8NoBom)
+        }
 
-    Write-Host 'Saving Worker secrets...'
-    Set-WranglerSecret -Name 'GITHUB_TOKEN' -Value $githubToken
-    Set-WranglerSecret -Name 'ADMIN_KEY' -Value $adminKey
+        Write-Host 'Saving Worker secrets...'
+        Set-WranglerSecret -Name 'GITHUB_TOKEN' -Value $githubToken
+        Set-WranglerSecret -Name 'ADMIN_KEY' -Value $adminKey
+    }
+    else {
+        Write-Host 'Deploy only mode: existing Worker secrets will not be changed.'
+    }
 
     Write-Host 'Deploying Worker...'
     Invoke-Wrangler -Arguments @('deploy')
@@ -148,8 +154,10 @@ try {
     Write-Host ''
     Write-Host 'Done.'
     Write-Host "Worker URL: $WorkerUrl"
-    Write-Host "Admin Key saved locally: $adminKeyFile"
-    Write-Host 'Put this Admin Key into the admin page API settings.'
+    if (-not $DeployOnly) {
+        Write-Host "Admin Key saved locally: $adminKeyFile"
+        Write-Host 'Put this Admin Key into the admin page API settings.'
+    }
 }
 finally {
     Pop-Location
