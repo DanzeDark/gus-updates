@@ -3,137 +3,1031 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Гусь - установка</title>
+  <title>Гусь - установка и доступ</title>
   <style>
-    :root { color-scheme: dark; --bg: #0b0f18; --panel: rgba(18, 23, 35, .88); --text: #f4f7fb; --muted: #a8b0bf; --line: rgba(143, 160, 196, .24); --accent: #31a5ff; --ok: #47d18c; --warn: #ffd166; }
+    :root {
+      color-scheme: dark;
+      --bg: #090b0d;
+      --bg-soft: #101417;
+      --panel: rgba(16, 20, 23, 0.82);
+      --panel-strong: rgba(22, 27, 31, 0.94);
+      --line: rgba(223, 232, 226, 0.16);
+      --text: #f4f7f2;
+      --muted: #aab4ad;
+      --soft: #d7e1db;
+      --green: #42d392;
+      --cyan: #70d6ff;
+      --amber: #ffbe4d;
+      --coral: #ff6f6f;
+      --ink: #06080a;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    }
+
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; font-family: "Segoe UI", Arial, sans-serif; color: var(--text); overflow-x: hidden; background: var(--bg); padding: 28px 16px; }
-    body::before, body::after { content: ""; position: fixed; inset: -20%; z-index: -2; background: conic-gradient(from 120deg at 45% 50%, rgba(49,165,255,.18), rgba(71,209,140,.14), rgba(255,209,102,.12), rgba(255,91,142,.14), rgba(49,165,255,.18)); animation: spin-bg 18s linear infinite; }
-    body::after { z-index: -1; background: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 42px); opacity: .24; animation: road 10s linear infinite; }
-    @keyframes spin-bg { to { transform: rotate(360deg); } }
-    @keyframes road { to { background-position: 420px 420px; } }
-    main { width: min(980px, 100%); margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 26px; box-shadow: 0 22px 70px rgba(0,0,0,.38); backdrop-filter: blur(10px); }
-    header { display: grid; gap: 10px; margin-bottom: 20px; }
-    h1 { margin: 0; font-size: clamp(42px, 8vw, 82px); line-height: .9; font-weight: 850; }
-    h2 { margin: 0 0 12px; font-size: 24px; }
-    p { margin: 0 0 16px; color: var(--muted); line-height: 1.55; }
-    .version { color: var(--text); font-weight: 700; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
-    .tabs label { cursor: pointer; border: 1px solid var(--line); border-radius: 6px; padding: 11px 14px; background: rgba(10,14,22,.66); color: var(--muted); font-weight: 700; }
-    input[name="tab"] { position: absolute; opacity: 0; pointer-events: none; }
-    #tab-install:checked ~ .tabs label[for="tab-install"], #tab-register:checked ~ .tabs label[for="tab-register"], #tab-features:checked ~ .tabs label[for="tab-features"], #tab-versions:checked ~ .tabs label[for="tab-versions"] { background: #176cc1; border-color: #2689eb; color: white; }
-    .tab-panel { display: none; border: 1px solid var(--line); background: rgba(9,13,22,.46); border-radius: 8px; padding: 18px; }
-    #tab-install:checked ~ .panels #panel-install, #tab-register:checked ~ .panels #panel-register, #tab-features:checked ~ .panels #panel-features, #tab-versions:checked ~ .panels #panel-versions { display: block; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
-    a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 13px 16px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-width: 180px; font-weight: 700; }
-    a.primary { background: #176cc1; border-color: #2689eb; }
-    a:hover { border-color: var(--accent); }
-    .steps { display: grid; gap: 10px; margin-top: 18px; }
-    .step, .feature, .version-card { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; background: rgba(18,24,36,.66); color: var(--muted); }
-    .step strong { color: var(--ok); margin-right: 8px; }
-    .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .feature { transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease; transform-origin: center; will-change: transform; }
-    .feature:hover { transform: translateY(-4px) scale(1.025); border-color: rgba(49,165,255,.72); background: rgba(24,33,52,.86); box-shadow: 0 16px 36px rgba(0,0,0,.28), 0 0 0 1px rgba(49,165,255,.12); }
-    .feature strong { display: block; color: var(--text); margin-bottom: 6px; }
-    .versions { display: grid; gap: 10px; }
-    .version-card { display: grid; gap: 8px; }
-    .version-card div { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-    .version-card strong { color: var(--warn); font-size: 18px; }
-    .version-card span { color: var(--muted); font-size: 13px; }
-    .version-card p { margin: 0; }
-    .version-card a { width: fit-content; min-width: 160px; padding: 10px 12px; }
-    .register-form { display: grid; gap: 10px; max-width: 560px; }
-    .register-form input, .register-form textarea { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: rgba(8,11,17,.72); color: var(--text); font: inherit; padding: 0 12px; outline: none; }
-    .register-form textarea { min-height: 86px; padding: 10px 12px; resize: vertical; }
-    .register-form button { min-height: 42px; border: 1px solid #2689eb; border-radius: 6px; background: #176cc1; color: white; font: inherit; font-weight: 800; cursor: pointer; }
-    .register-status { min-height: 22px; color: var(--muted); }
-    .register-status.ok { color: var(--ok); }
-    .register-status.bad { color: #ff7a7a; }
-    footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
-    @media (max-width: 720px) { main { padding: 18px; } .features { grid-template-columns: 1fr; } a { width: 100%; } }
-    @media (prefers-reduced-motion: reduce) { .feature { transition: none; } .feature:hover { transform: none; } }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(115deg, rgba(66, 211, 146, 0.1), transparent 28%),
+        linear-gradient(245deg, rgba(255, 190, 77, 0.09), transparent 32%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(120deg, transparent 0 18%, rgba(112, 214, 255, 0.08) 18% 18.5%, transparent 18.5% 42%),
+        linear-gradient(120deg, transparent 0 48%, rgba(66, 211, 146, 0.07) 48% 48.5%, transparent 48.5% 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 72px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 72px);
+      animation: fieldMove 18s linear infinite;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(to bottom, rgba(9, 11, 13, 0.12), rgba(9, 11, 13, 0.76)),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 38px);
+      opacity: 0.68;
+      pointer-events: none;
+      animation: roadMove 14s linear infinite;
+    }
+
+    @keyframes fieldMove {
+      to { background-position: 260px 0, -220px 0, 72px 0, 0 72px; }
+    }
+
+    @keyframes roadMove {
+      to { background-position: 0 0, 380px 380px; }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9, 11, 13, 0.78);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 850;
+      font-size: 18px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(66, 211, 146, 0.95), rgba(255, 190, 77, 0.95));
+      color: var(--ink);
+      box-shadow: 0 10px 28px rgba(66, 211, 146, 0.2);
+    }
+
+    .brand-mark svg { width: 23px; height: 23px; display: block; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-cta {
+      color: var(--ink) !important;
+      background: var(--green) !important;
+    }
+
+    main { overflow: hidden; }
+
+    .hero {
+      width: min(1160px, calc(100% - 32px));
+      min-height: calc(100vh - 148px);
+      margin: 0 auto;
+      padding: 38px 0 14px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(66, 211, 146, 0.34);
+      border-radius: 8px;
+      color: var(--green);
+      background: rgba(66, 211, 146, 0.08);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1, h2, h3, p { margin: 0; letter-spacing: 0; }
+
+    h1 {
+      margin-top: 20px;
+      max-width: 720px;
+      font-size: 62px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .hero-copy {
+      margin-top: 18px;
+      max-width: 610px;
+      color: var(--soft);
+      font-size: 19px;
+      line-height: 1.55;
+    }
+
+    .hero-actions, .section-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      font-weight: 850;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(112, 214, 255, 0.58);
+      background: rgba(112, 214, 255, 0.12);
+    }
+
+    .button.primary {
+      color: var(--ink);
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 16px 36px rgba(66, 211, 146, 0.22);
+    }
+
+    .button svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+      max-width: 620px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255,255,255,0.045);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .product-visual {
+      position: relative;
+      min-height: 470px;
+    }
+
+    .app-window {
+      position: relative;
+      border: 1px solid rgba(223,232,226,0.18);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(10, 14, 16, 0.86);
+      box-shadow: var(--shadow);
+      transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+    }
+
+    .app-bar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(24, 30, 34, 0.94);
+    }
+
+    .traffic {
+      display: flex;
+      gap: 7px;
+    }
+
+    .traffic span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .traffic span:nth-child(2) { background: var(--amber); }
+    .traffic span:nth-child(3) { background: var(--green); }
+
+    .app-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .app-body {
+      display: grid;
+      grid-template-columns: 1fr 0.78fr;
+      min-height: 380px;
+    }
+
+    .client-list {
+      border-right: 1px solid var(--line);
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .list-head, .max-head {
+      display: grid;
+      grid-template-columns: 0.5fr 1.5fr 1fr;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 0 8px 8px;
+    }
+
+    .client-row {
+      display: grid;
+      grid-template-columns: 0.5fr 1.5fr 1fr;
+      gap: 8px;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 8px;
+      border: 1px solid rgba(223,232,226,0.08);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      color: var(--soft);
+      font-size: 13px;
+    }
+
+    .client-row:nth-child(4n) { border-color: rgba(66,211,146,0.22); }
+
+    .status-ok {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .side-panel {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-width: 0;
+    }
+
+    .control-panel {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .control-panel span {
+      min-height: 42px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 900;
+      background: var(--green);
+    }
+
+    .control-panel span:nth-child(2) { background: var(--amber); }
+    .control-panel span:nth-child(3) { background: rgba(255,255,255,0.78); }
+
+    .max-list {
+      padding: 14px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .max-head { grid-template-columns: 1fr 0.7fr 1fr; }
+
+    .max-row {
+      min-height: 42px;
+      display: grid;
+      grid-template-columns: 1fr 0.7fr 1fr;
+      align-items: center;
+      gap: 8px;
+      padding: 0 9px;
+      border-radius: 8px;
+      color: var(--soft);
+      background: rgba(255,255,255,0.045);
+      font-size: 13px;
+    }
+
+    .live-line {
+      margin: 0 14px 14px;
+      border: 1px solid rgba(66, 211, 146, 0.24);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--soft);
+      background: rgba(66, 211, 146, 0.07);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .goose-card {
+      position: absolute;
+      right: 0;
+      bottom: 10px;
+      width: 198px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(245, 247, 242, 0.94);
+      color: var(--ink);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.32);
+      animation: floatPanel 4s ease-in-out infinite;
+    }
+
+    @keyframes floatPanel {
+      50% { transform: translateY(-8px); }
+    }
+
+    .goose-icon {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #ffd55d;
+    }
+
+    .goose-icon svg { width: 40px; height: 40px; }
+
+    .goose-card strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .goose-card span {
+      color: #52605b;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .section {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 72px 0;
+      border-top: 1px solid rgba(223,232,226,0.12);
+    }
+
+    .section-title {
+      max-width: 780px;
+      margin-bottom: 26px;
+    }
+
+    .section-title span {
+      color: var(--green);
+      font-weight: 850;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-top: 8px;
+      font-size: 42px;
+      line-height: 1.08;
+      font-weight: 900;
+    }
+
+    .section-title p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .install-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .download-panel, .register-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: var(--panel);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.22);
+    }
+
+    .download-panel h3, .register-panel h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .download-panel p, .register-panel p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: rgba(255,255,255,0.045);
+      min-height: 140px;
+    }
+
+    .step b {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      color: var(--ink);
+      background: var(--amber);
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .step span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .feature {
+      min-height: 166px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: rgba(255,255,255,0.045);
+      transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      will-change: transform;
+    }
+
+    .feature:hover {
+      transform: translateY(-6px) scale(1.025);
+      background: rgba(255,255,255,0.075);
+      border-color: rgba(112,214,255,0.48);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.24);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      color: var(--ink);
+      background: var(--cyan);
+    }
+
+    .feature:nth-child(2n) .feature-icon { background: var(--green); }
+    .feature:nth-child(3n) .feature-icon { background: var(--amber); }
+
+    .feature svg { width: 20px; height: 20px; }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .register-layout {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .access-note {
+      border-left: 3px solid var(--green);
+      padding: 16px 18px;
+      background: rgba(66, 211, 146, 0.07);
+      border-radius: 0 8px 8px 0;
+      color: var(--soft);
+      line-height: 1.55;
+    }
+
+    .register-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .register-form input, .register-form textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(6, 8, 10, 0.74);
+      color: var(--text);
+      font: inherit;
+      padding: 0 14px;
+      outline: none;
+    }
+
+    .register-form textarea {
+      min-height: 108px;
+      padding: 13px 14px;
+      resize: vertical;
+    }
+
+    .register-form input:focus, .register-form textarea:focus {
+      border-color: rgba(112,214,255,0.58);
+      box-shadow: 0 0 0 3px rgba(112,214,255,0.12);
+    }
+
+    .register-form button {
+      min-height: 50px;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      background: var(--green);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .register-status {
+      min-height: 24px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .register-status.ok { color: var(--green); }
+    .register-status.bad { color: var(--coral); }
+
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .version-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: rgba(255,255,255,0.045);
+    }
+
+    .version-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .version-card strong {
+      font-size: 21px;
+      color: var(--amber);
+    }
+
+    .version-card span {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .version-card p {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+      min-height: 42px;
+    }
+
+    .version-card .button {
+      margin-top: 16px;
+      min-height: 42px;
+      padding: 0 14px;
+    }
+
+    .site-footer {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 42px;
+      color: var(--muted);
+      border-top: 1px solid rgba(223,232,226,0.12);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 13px;
+    }
+
+    .empty-state {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.045);
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: 54px;
+      }
+
+      .product-visual { min-height: auto; }
+      .app-window { transform: none; }
+      .goose-card { position: relative; width: auto; margin-top: 12px; bottom: auto; }
+      .install-grid, .register-layout { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .nav { width: min(100% - 24px, 1160px); }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero, .section, .site-footer { width: min(100% - 24px, 1160px); }
+      h1 { font-size: 44px; }
+      h2 { font-size: 31px; }
+      .hero-copy { font-size: 16px; }
+      .hero-stats, .steps, .features-grid, .versions-grid, .form-row { grid-template-columns: 1fr; }
+      .app-body { grid-template-columns: 1fr; }
+      .client-list { border-right: 0; border-bottom: 1px solid var(--line); }
+      .site-footer { flex-direction: column; }
+      .button { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <h1>Гусь</h1>
-      <p>Установщик программы. Текущая версия: <span class="version">v1.13.17</span>.</p>
-    </header>
-
-    <input id="tab-install" name="tab" type="radio" checked>
-    <input id="tab-register" name="tab" type="radio">
-    <input id="tab-features" name="tab" type="radio">
-    <input id="tab-versions" name="tab" type="radio">
-    <nav class="tabs" aria-label="Разделы">
-      <label for="tab-install">Установка</label>
-      <label for="tab-register">Регистрация</label>
-      <label for="tab-features">Что умеет программа</label>
-      <label for="tab-versions">Старые версии</label>
+  <header class="site-header">
+    <nav class="nav" aria-label="Навигация">
+      <a class="brand" href="#top" aria-label="Гусь">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path fill="currentColor" d="M25 51c-9 0-16-6-16-14 0-7 5-12 12-14 2-9 9-15 18-15 5 0 10 2 14 6l-6 5c-2-2-5-3-8-3-6 0-10 4-11 10l-1 5-5 1c-4 1-6 3-6 6 0 4 4 7 9 7h24v6H25z"/>
+            <path fill="#090b0d" d="M44 22h13l-7 7c-3 0-5-2-6-7z"/>
+          </svg>
+        </span>
+        <span>Гусь</span>
+      </a>
+      <div class="nav-links">
+        <a href="#install">Установка</a>
+        <a href="#features">Возможности</a>
+        <a href="#register">Регистрация</a>
+        <a href="#versions">Версии</a>
+        <a class="nav-cta" href="Gus-Web-Setup.bat" download>Скачать</a>
+      </div>
     </nav>
+  </header>
 
-    <section class="panels">
-      <article class="tab-panel" id="panel-install">
-        <h2>Установка</h2>
-        <p>Скачай маленький установщик. Он сам подтянет актуальную версию Гуся с сайта и создаст ярлык на рабочем столе.</p>
-        <div class="actions">
-          <a class="primary" href="https://danzedark.github.io/gus-updates/Gus-Web-Setup.bat" download>Скачать установщик</a>
-          <a href="https://danzedark.github.io/gus-updates/VERSION.txt">Проверить версию</a>
+  <main id="top">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Текущая версия: <span id="currentVersion">v1.13.17</span></span>
+        <h1>Рабочая программа для MAX без лишней возни</h1>
+        <p class="hero-copy">Установщик ставит актуальную версию, программа проверяет доступ по аккаунту, работает с выбранными профилями MAX и помогает вести очередь клиентов.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="Gus-Web-Setup.bat" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 4h2v9l3.5-3.5 1.4 1.4-5.9 5.9-5.9-5.9 1.4-1.4L11 13V4zm-5 15h12v2H6v-2z"/></svg>
+            Скачать установщик
+          </a>
+          <a class="button" href="#register">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
+            Получить доступ
+          </a>
         </div>
-        <div class="steps">
-          <div class="step"><strong>1.</strong>Скачай установщик на рабочий ПК.</div>
-          <div class="step"><strong>2.</strong>Запусти файл и выбери папку установки.</div>
-          <div class="step"><strong>3.</strong>После установки открывай программу через ярлык на рабочем столе.</div>
+        <div class="hero-stats" aria-label="Коротко">
+          <div class="stat"><strong>1 файл</strong><span>для установки на новый ПК</span></div>
+          <div class="stat"><strong>MAX</strong><span>группы и личные сообщения</span></div>
+          <div class="stat"><strong>Web</strong><span>обновления через сайт</span></div>
         </div>
-      </article>
+      </div>
 
-      <article class="tab-panel" id="panel-register">
-        <h2>Регистрация</h2>
-        <p>Оставь заявку на доступ. После подтверждения владельцем аккаунт появится в программе, и можно будет войти по этому логину и паролю.</p>
-        <form class="register-form" id="registerForm">
-          <input id="registerLogin" autocomplete="username" placeholder="Логин латиницей, например egorka">
-          <input id="registerName" autocomplete="name" placeholder="Имя">
-          <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Пароль для входа в программу">
-          <textarea id="registerNote" placeholder="Комментарий, кто ты и на какой ПК нужен доступ"></textarea>
-          <button type="submit">Отправить заявку</button>
-          <div class="register-status" id="registerStatus"></div>
-        </form>
-      </article>
-
-      <article class="tab-panel" id="panel-features">
-        <h2>Что умеет программа</h2>
-        <div class="features">
-          <div class="feature"><strong>Работает с MAX</strong>Находит открытые окна MAX и распределяет работу между выбранными профилями.</div>
-          <div class="feature"><strong>Клиенты из TXT</strong>Берёт базу клиентов из текстового файла и ведёт очередь обработки.</div>
-          <div class="feature"><strong>Группы и личные сообщения</strong>Может писать через группы или через ЛС на выбранных MAX.</div>
-          <div class="feature"><strong>Несколько профилей</strong>Показывает, сколько людей прописал каждый MAX, и работает параллельно по выбранным профилям.</div>
-          <div class="feature"><strong>Автообновление</strong>Рабочие ПК могут обновляться через кнопку в настройках программы.</div>
-          <div class="feature"><strong>Доступы</strong>Есть авторизация аккаунтов, чтобы посторонние не пользовались программой без разрешения.</div>
+      <div class="product-visual" aria-label="Макет программы Гусь">
+        <div class="app-window">
+          <div class="app-bar">
+            <div class="traffic" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="app-title">Гусь - рабочее окно</div>
+          </div>
+          <div class="app-body">
+            <div class="client-list">
+              <div class="list-head"><span>Строка</span><span>ФИО</span><span>Статус</span></div>
+              <div class="client-row"><span>3</span><span>Казаринова Елена</span><span class="status-ok">OK</span></div>
+              <div class="client-row"><span>7</span><span>Миронова Галина</span><span class="status-ok">OK</span></div>
+              <div class="client-row"><span>11</span><span>Халиков Фанис</span><span>в работе</span></div>
+              <div class="client-row"><span>15</span><span>Титова Татьяна</span><span>очередь</span></div>
+              <div class="client-row"><span>19</span><span>Шапошников Александр</span><span>очередь</span></div>
+            </div>
+            <div class="side-panel">
+              <div class="control-panel"><span>СТАРТ</span><span>ПАУЗА</span><span>СТОП</span></div>
+              <div class="max-list">
+                <div class="max-head"><span>Профиль</span><span>Порт</span><span>Прописано</span></div>
+                <div class="max-row"><span>7909...</span><span>19223</span><span>12</span></div>
+                <div class="max-row"><span>7927...</span><span>19224</span><span>8</span></div>
+                <div class="max-row"><span>7953...</span><span>19225</span><span>5</span></div>
+              </div>
+              <p class="live-line">Новые сообщения MAX появляются сверху, выбранные профили работают параллельно.</p>
+            </div>
+          </div>
         </div>
-      </article>
-
-      <article class="tab-panel" id="panel-versions">
-        <h2>Старые версии</h2>
-        <p>С этого момента каждая сборка сохраняется отдельно. Можно скачать старый zip и откатиться, если новая версия ведёт себя плохо.</p>
-        <div class="versions">
-          <article class="version-card">
-            <div><strong>v1.13.17</strong><span>2026-07-10</span></div>
-            <p>Текущая версия, добавлена в архив как первая сохранённая сборка.</p>
-            <a href="https://danzedark.github.io/gus-updates/versions/v1.13.17/Gus-MaxContactTool-update.zip" download>Скачать zip 0.53 МБ</a>
-          </article>
+        <div class="goose-card">
+          <div class="goose-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path fill="#0b0d0f" d="M19 45c-5-2-8-6-8-11 0-8 7-14 16-14h4c2-8 8-13 16-13 3 0 6 1 8 3l-4 5c-1-1-3-2-5-2-5 0-9 4-9 9v8H26c-5 0-9 3-9 6s3 6 7 7l18 5v6l-23-10z"/>
+              <path fill="#ff8a3d" d="M50 18h10l-7 6c-2 0-3-2-3-6z"/>
+            </svg>
+          </div>
+          <strong>Автообновление</strong>
+          <span>Рабочие ПК получают свежую сборку с сайта без ручного переноса файлов.</span>
         </div>
-      </article>
+      </div>
     </section>
-    <footer>Собрано: 2026-07-10 15:20:00</footer>
+
+    <section class="section" id="install">
+      <div class="section-title">
+        <span>Установка</span>
+        <h2>Скачал, выбрал папку, запустил</h2>
+        <p>Установщик маленький: он сам скачивает полную программу, создает папку установки и добавляет ярлык на рабочий стол.</p>
+      </div>
+      <div class="install-grid">
+        <article class="download-panel">
+          <h3>Последняя сборка</h3>
+          <p id="releaseNote">Загружаю описание версии...</p>
+          <div class="section-actions">
+            <a class="button primary" href="Gus-Web-Setup.bat" download>Скачать установщик</a>
+            <a class="button" href="VERSION.txt">Проверить версию</a>
+          </div>
+        </article>
+        <div class="steps">
+          <div class="step"><b>1</b><strong>Скачай установщик</strong><span>Файл можно перекинуть на другой ПК любым удобным способом.</span></div>
+          <div class="step"><b>2</b><strong>Выбери папку</strong><span>Программа установится туда, куда нужно, а на рабочем столе будет только ярлык.</span></div>
+          <div class="step"><b>3</b><strong>Войди в аккаунт</strong><span>Логин и пароль выдаются после подтверждения доступа владельцем.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-title">
+        <span>Возможности</span>
+        <h2>Что умеет программа</h2>
+        <p>Страница сделана для обычных пользователей: коротко видно, зачем программа нужна и как начать работу.</p>
+      </div>
+      <div class="features-grid">
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 5h16v10H4V5zm2 2v6h12V7H6zm-2 10h16v2H4v-2z"/></svg></div>
+          <strong>Работа с MAX</strong>
+          <p>Находит открытые окна MAX и распределяет работу между выбранными профилями.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM8 12h10v2H8v-2zm0 4h10v2H8v-2z"/></svg></div>
+          <strong>Клиенты из TXT</strong>
+          <p>Берет базу клиентов из текстового файла и ведет очередь обработки.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v12H7l-3 3V4zm3 4v2h10V8H7zm0 4v2h7v-2H7z"/></svg></div>
+          <strong>Группы и ЛС</strong>
+          <p>Может писать через группы или через личные сообщения на выбранных MAX.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 7a3 3 0 1 0 0.1 0H7zm10 0a3 3 0 1 0 .1 0H17zM7 14c-3 0-5 1.5-5 3.5V20h10v-2.5C12 15.5 10 14 7 14zm10 0c-1.4 0-2.7.3-3.6 1 .4.7.6 1.5.6 2.5V20h8v-2.5c0-2-2-3.5-5-3.5z"/></svg></div>
+          <strong>Несколько профилей</strong>
+          <p>Показывает, сколько людей прописал каждый MAX, и работает параллельно.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 6V3L8 7l4 4V8c2.8 0 5 2.2 5 5 0 .9-.2 1.7-.6 2.4l1.5 1.5c.7-1.1 1.1-2.5 1.1-3.9 0-3.9-3.1-7-7-7zm-5 5.6L5.5 10C4.6 11.2 4 12.5 4 14c0 3.9 3.1 7 7 7v3l4-4-4-4v3c-2.8 0-5-2.2-5-5 0-.9.4-1.7 1-2.4z"/></svg></div>
+          <strong>Автообновление</strong>
+          <p>Рабочие ПК могут обновляться через кнопку в настройках программы.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm0 4.2 4 1.5V11c0 3.5-1.8 6.6-4 7.8-2.2-1.2-4-4.3-4-7.8V7.7l4-1.5z"/></svg></div>
+          <strong>Доступы</strong>
+          <p>Есть авторизация аккаунтов, чтобы программой пользовались только подтвержденные люди.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="register">
+      <div class="section-title">
+        <span>Регистрация</span>
+        <h2>Оставь заявку на доступ</h2>
+        <p>После подтверждения аккаунт появится в программе, и можно будет войти по выбранному логину и паролю.</p>
+      </div>
+      <div class="register-layout">
+        <div class="access-note">
+          Заявка уходит владельцу. Если доступ подтвердят, этот логин появится в списке аккаунтов программы. Пароль не показывается на сайте после отправки, поэтому запиши его у себя.
+        </div>
+        <article class="register-panel">
+          <h3>Новый аккаунт</h3>
+          <form class="register-form" id="registerForm">
+            <div class="form-row">
+              <input id="registerLogin" autocomplete="username" placeholder="Логин латиницей">
+              <input id="registerName" autocomplete="name" placeholder="Имя">
+            </div>
+            <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Пароль для входа в программу">
+            <textarea id="registerNote" placeholder="Комментарий: кто ты и на какой ПК нужен доступ"></textarea>
+            <button type="submit">Отправить заявку</button>
+            <div class="register-status" id="registerStatus"></div>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="versions">
+      <div class="section-title">
+        <span>Архив</span>
+        <h2>Старые версии Гуся</h2>
+        <p>Сохраненные сборки можно скачать отдельно и вернуться к нужной версии, если свежая работает не так, как нужно.</p>
+      </div>
+      <div class="versions-grid" id="versionsList">
+        <div class="empty-state">Загружаю список версий...</div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <span>Гусь - канал установки и обновлений</span>
+    <span id="buildTime">Собрано: 2026-07-10 15:20:00</span>
+  </footer>
+
   <script>
     const configUrl = 'payments_config.json';
     const statusNode = document.getElementById('registerStatus');
     const formNode = document.getElementById('registerForm');
+    const currentVersionNode = document.getElementById('currentVersion');
+    const releaseNoteNode = document.getElementById('releaseNote');
+    const versionsListNode = document.getElementById('versionsList');
 
     function setRegisterStatus(text, kind) {
       statusNode.textContent = text;
       statusNode.className = 'register-status ' + (kind || '');
+    }
+
+    function fileSize(value) {
+      const size = Number(value || 0);
+      if (!size) return '';
+      return (size / 1024 / 1024).toFixed(2) + ' МБ';
+    }
+
+    function formatDate(value) {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+      return date.toLocaleDateString('ru-RU');
+    }
+
+    async function loadJson(url, fallback) {
+      try {
+        const response = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    async function hydrateRelease() {
+      const manifest = await loadJson('gus_update.json', null);
+      if (manifest && manifest.version) {
+        currentVersionNode.textContent = 'v' + manifest.version;
+        releaseNoteNode.textContent = manifest.notes || 'Актуальная версия готова к установке.';
+      } else {
+        releaseNoteNode.textContent = 'Актуальная версия готова к установке.';
+      }
+
+      const versions = await loadJson('versions.json', { versions: [] });
+      const list = Array.isArray(versions.versions) ? versions.versions : [];
+      versionsListNode.textContent = '';
+      if (!list.length) {
+        versionsListNode.innerHTML = '<div class="empty-state">Архив версий пока пуст.</div>';
+        return;
+      }
+      list.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'version-card';
+        const version = item.version ? 'v' + item.version : 'Версия';
+        const size = fileSize(item.size);
+        card.innerHTML = `
+          <div class="version-top">
+            <strong>${version}</strong>
+            <span>${formatDate(item.createdAt)}</span>
+          </div>
+          <p>${item.notes || 'Сохраненная сборка программы.'}</p>
+          <a class="button" href="${item.package || '#'}" download>Скачать zip${size ? ' ' + size : ''}</a>
+        `;
+        versionsListNode.append(card);
+      });
     }
 
     async function loadRegisterConfig() {
@@ -173,6 +1067,8 @@
         }
       }
     });
+
+    hydrateRelease();
   </script>
 </body>
 </html>
