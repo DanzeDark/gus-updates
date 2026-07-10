@@ -1,6 +1,17 @@
 {
-  "updatedAt": "2026-07-10T14:49:50.409Z",
+  "updatedAt": "2026-07-10T14:59:59.614Z",
   "requests": [
+    {
+      "id": "aaf57867-736e-4e2d-b3e3-850668f00382",
+      "login": "kuzyazya",
+      "name": "Кузя",
+      "keyHash": "5aaca332eae85d835275d51f78e4709724f37852c039d4926f2baf302b5ae7fc",
+      "note": "ЭТО КУЗЯЯЯЯ)",
+      "status": "pending",
+      "createdAt": "2026-07-10T14:59:59.614Z",
+      "decidedAt": "",
+      "decisionNote": ""
+    },
     {
       "id": "9e2b7472-1e4f-407f-8f82-818c20d48614",
       "login": "egorrr",
