@@ -165,7 +165,12 @@
         formNode.reset();
         setRegisterStatus(data.message || 'Заявка отправлена. Жди подтверждения владельца.', 'ok');
       } catch (error) {
-        setRegisterStatus(error.message || String(error), 'bad');
+        const message = error && error.message ? error.message : String(error);
+        if (message === 'Failed to fetch') {
+          setRegisterStatus('Регистрация пока не подключена: владелец должен запустить Worker/API для приёма заявок.', 'bad');
+        } else {
+          setRegisterStatus(message, 'bad');
+        }
       }
     });
   </script>
