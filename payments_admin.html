@@ -313,7 +313,7 @@
       <h2>Действия</h2>
       <div class="actions">
         <button id="addRow" type="button">Добавить строку</button>
-        <button id="publish" type="button">Опубликовать оплату</button>
+        <button id="publish" type="button">Опубликовать оплату и доступ</button>
         <button class="secondary" id="download" type="button">Скачать JSON</button>
         <button class="secondary" id="reload" type="button">Перезагрузить</button>
       </div>
@@ -326,6 +326,7 @@
           <tr>
             <th>Логин</th>
             <th>Имя</th>
+            <th>Пароль входа</th>
             <th>Вкл.</th>
             <th>Начал</th>
             <th>Оплатил</th>
@@ -456,6 +457,7 @@
       return {
         login: '',
         name: '',
+        accountPassword: '',
         active: true,
         startedAt: '',
         paidAt: '',
@@ -510,6 +512,7 @@
         [
           input(row.login, 'login', index),
           input(row.name, 'name', index),
+          input(row.accountPassword, 'accountPassword', index, 'password'),
           (() => {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -560,6 +563,111 @@
       return {
         updatedAt: new Date().toISOString(),
         accounts: rows.map(normalizeRow).filter((row) => row.login || row.name)
+      };
+    }
+
+    function collectPaymentsData() {
+      return {
+        updatedAt: new Date().toISOString(),
+        accounts: rows.map((row) => {
+          const normalized = normalizeRow(row);
+          delete normalized.accountPassword;
+          return normalized;
+        }).filter((row) => row.login || row.name)
+      };
+    }
+
+    function sanitizeAccountLogin(value) {
+      return String(value || '').replace(/\s+/g, '').trim().toLowerCase();
+    }
+
+    async function accountKeyHash(login, password) {
+      return sha256('GUS-ACCOUNT-V1|' + sanitizeAccountLogin(login) + '|' + String(password || ''));
+    }
+
+    function fromBase64(text) {
+      const binary = atob(String(text || '').replace(/\s/g, ''));
+      const bytes = new Uint8Array(binary.length);
+      for (let index = 0; index < binary.length; index += 1) {
+        bytes[index] = binary.charCodeAt(index);
+      }
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function loadAccountsDocument(accountsPath) {
+      const branch = $('branch').value.trim() || 'main';
+      const token = $('githubToken').value.trim();
+      if (token) {
+        try {
+          const current = await githubRequest(`contents/${encodeURIComponent(accountsPath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
+          if (current && current.content) {
+            return JSON.parse(fromBase64(current.content));
+          }
+        } catch (error) {
+          if (!String(error.message || '').includes('Not Found')) throw error;
+        }
+      }
+
+      try {
+        const response = await fetch(accountsPath + '?t=' + Date.now(), { cache: 'no-store' });
+        if (response.ok) return response.json();
+      } catch (_) {}
+
+      return { enabled: true, updatedAt: '', accounts: [] };
+    }
+
+    async function buildAccountsData() {
+      const accountsPath = config.accountsPath || 'gus_accounts.json';
+      const doc = await loadAccountsDocument(accountsPath);
+      const accounts = Array.isArray(doc.accounts) ? doc.accounts.slice() : [];
+      const byLogin = new Map(accounts.map((account) => [sanitizeAccountLogin(account.login), account]));
+      const missingPassword = [];
+      let created = 0;
+      let updated = 0;
+
+      for (const paymentRow of rows) {
+        const row = normalizeRow(paymentRow);
+        const login = sanitizeAccountLogin(row.login);
+        if (!login || !/^[a-z0-9._-]{2,64}$/.test(login)) continue;
+        const existing = byLogin.get(login);
+        if (existing) {
+          existing.name = row.name || existing.name || login;
+          existing.active = row.active !== false;
+          updated += 1;
+          continue;
+        }
+
+        const password = String(paymentRow.accountPassword || '').trim();
+        if (!password) {
+          missingPassword.push(login);
+          continue;
+        }
+
+        const account = {
+          login,
+          name: row.name || login,
+          keyHash: await accountKeyHash(login, password),
+          active: row.active !== false,
+          createdAt: new Date().toISOString(),
+          note: row.note || ''
+        };
+        accounts.push(account);
+        byLogin.set(login, account);
+        paymentRow.accountPassword = '';
+        created += 1;
+      }
+
+      return {
+        path: accountsPath,
+        data: {
+          ...doc,
+          enabled: doc.enabled !== false,
+          updatedAt: new Date().toISOString(),
+          accounts
+        },
+        created,
+        updated,
+        missingPassword
       };
     }
 
@@ -649,13 +757,18 @@
 
     async function publishPayments() {
       try {
-        setStatus('Публикую таблицу на GitHub...');
-        const data = collectData();
+        setStatus('Публикую таблицу и аккаунты на GitHub...');
+        const accountsSync = await buildAccountsData();
+        const data = collectPaymentsData();
         const filePath = config.paymentsPath || 'gus_payments.json';
         await publishFile(filePath, JSON.stringify(data, null, 2), 'Update Gus payments table');
+        await publishFile(accountsSync.path, JSON.stringify(accountsSync.data, null, 2), 'Sync Gus app accounts from payments table');
         rows = data.accounts;
         renderRows();
-        setStatus('Опубликовано. Таблица на сайте обновится через минуту.', 'ok');
+        const warning = accountsSync.missingPassword.length
+          ? ' Не добавлены в программу без пароля: ' + accountsSync.missingPassword.join(', ') + '.'
+          : '';
+        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + '.' + warning, warning ? '' : 'ok');
       } catch (error) {
         setStatus('Ошибка публикации: ' + error.message, 'bad');
       }
