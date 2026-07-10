@@ -312,13 +312,13 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname === '/health') return jsonResponse({ ok: true, name: 'gus-registration-worker' });
-      if (url.pathname === '/request' && request.method === 'POST') return createRequest(request, env);
-      if (url.pathname === '/requests' && request.method === 'GET') return listRequests(request, env);
+      if (url.pathname === '/request' && request.method === 'POST') return await createRequest(request, env);
+      if (url.pathname === '/requests' && request.method === 'GET') return await listRequests(request, env);
       const approveMatch = url.pathname.match(/^\/requests\/([^/]+)\/approve$/);
-      if (approveMatch && request.method === 'POST') return approveRequest(request, env, approveMatch[1]);
+      if (approveMatch && request.method === 'POST') return await approveRequest(request, env, approveMatch[1]);
       const denyMatch = url.pathname.match(/^\/requests\/([^/]+)\/deny$/);
-      if (denyMatch && request.method === 'POST') return denyRequest(request, env, denyMatch[1]);
-      if (url.pathname === '/admin/file' && request.method === 'PUT') return writeAdminFile(request, env);
+      if (denyMatch && request.method === 'POST') return await denyRequest(request, env, denyMatch[1]);
+      if (url.pathname === '/admin/file' && request.method === 'PUT') return await writeAdminFile(request, env);
       return textResponse('Not found', 404);
     } catch (error) {
       return jsonResponse({ ok: false, error: error.message || String(error) }, error.status || 500);
