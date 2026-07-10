@@ -612,8 +612,12 @@
 
     async function loadAccountsDocument(accountsPath) {
       if (getApiUrl() && getAdminKey()) {
-        const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
-        if (current && current.json) return current.json;
+        try {
+          const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
+          if (current && current.json) return current.json;
+        } catch (error) {
+          if (!String(error.message || '').includes('Not found') && !String(error.message || '').includes('404')) throw error;
+        }
       }
 
       const branch = $('branch').value.trim() || 'main';
@@ -639,8 +643,12 @@
 
     async function loadPaymentsDocument(paymentsPath) {
       if (getApiUrl() && getAdminKey()) {
-        const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
-        if (current && current.json) return current.json;
+        try {
+          const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
+          if (current && current.json) return current.json;
+        } catch (error) {
+          if (!String(error.message || '').includes('Not found') && !String(error.message || '').includes('404')) throw error;
+        }
       }
 
       const branch = $('branch').value.trim() || 'main';
