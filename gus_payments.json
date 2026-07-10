@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-10T14:49:50.409Z",
+  "updatedAt": "2026-07-10T15:00:16.591Z",
   "accounts": [
     {
       "login": "ave",
@@ -204,6 +204,18 @@
       "debt": "",
       "status": "Не задано",
       "note": "Гузини"
+    },
+    {
+      "login": "kuzyazya",
+      "name": "Кузя",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": "ЭТО КУЗЯЯЯЯ)"
     }
   ]
 }
