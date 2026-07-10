@@ -382,6 +382,7 @@
     let rows = [];
     let loadedPaymentLogins = new Set();
     let rowsLoading = false;
+    let githubTokenInvalid = false;
 
     const $ = (id) => document.getElementById(id);
 
@@ -401,6 +402,10 @@
       if (!error) return 'Неизвестная ошибка.';
       if (error.name === 'AbortError') return 'сервер долго не отвечает';
       return error.message || String(error);
+    }
+
+    function isGitHubAuthError(error) {
+      return /Bad credentials|GitHub token/i.test(getErrorMessage(error));
     }
 
     function isSoftReadError(error) {
@@ -535,7 +540,11 @@
         rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
         loadedPaymentLogins = paymentLoginSet(rows);
         renderRows();
-        setStatus('Загружено строк: ' + rows.length, 'ok');
+        if (githubTokenInvalid) {
+          setStatus('Таблица загружена, но GitHub token не подходит. Вставь новый token перед публикацией.', 'bad');
+        } else {
+          setStatus('Загружено строк: ' + rows.length, 'ok');
+        }
       } catch (error) {
         setStatus('Ошибка загрузки таблицы: ' + getErrorMessage(error), 'bad');
       } finally {
@@ -673,7 +682,7 @@
             return JSON.parse(fromBase64(current.content));
           }
         } catch (error) {
-          if (!String(error.message || '').includes('Not Found')) throw error;
+          if (!isGitHubAuthError(error) && !isSoftReadError(error)) throw error;
         }
       }
 
@@ -704,7 +713,7 @@
             return JSON.parse(fromBase64(current.content));
           }
         } catch (error) {
-          if (!String(error.message || '').includes('Not Found')) throw error;
+          if (!isGitHubAuthError(error) && !isSoftReadError(error)) throw error;
         }
       }
 
@@ -842,8 +851,15 @@
       try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
       if (!response.ok) {
         const message = data && data.message ? data.message : text;
+        if (response.status === 401 || /Bad credentials/i.test(message)) {
+          githubTokenInvalid = true;
+          sessionStorage.removeItem(TOKEN_KEY);
+          $('githubToken').value = '';
+          throw new Error('GitHub token не подходит или истек. Вставь новый token с доступом Contents: Read and write.');
+        }
         throw new Error(message || ('GitHub HTTP ' + response.status));
       }
+      githubTokenInvalid = false;
       return data;
     }
 
@@ -883,7 +899,7 @@
         const current = await githubRequest(`contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
         sha = current.sha || null;
       } catch (error) {
-        if (!String(error.message || '').includes('Not Found')) throw error;
+        if (!/Not Found|404/i.test(getErrorMessage(error))) throw error;
       }
 
       const body = {
