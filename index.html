@@ -29,9 +29,11 @@
       min-height: 100vh;
       font-family: "Segoe UI", Arial, sans-serif;
       color: var(--text);
+      position: relative;
+      isolation: isolate;
       background:
-        radial-gradient(circle at 12% 10%, rgba(45, 134, 255, .24), transparent 28%),
-        radial-gradient(circle at 88% 18%, rgba(66, 211, 146, .13), transparent 26%),
+        linear-gradient(125deg, rgba(45, 134, 255, .20), transparent 34%),
+        linear-gradient(245deg, rgba(66, 211, 146, .13), transparent 32%),
         linear-gradient(180deg, #0b0f17 0%, var(--bg) 72%);
       overflow-x: hidden;
     }
@@ -39,13 +41,46 @@
     body::before {
       content: "";
       position: fixed;
+      inset: -20%;
+      z-index: -2;
+      background:
+        linear-gradient(118deg, transparent 0 16%, rgba(45, 134, 255, .13) 16% 16.45%, transparent 16.45% 42%, rgba(66, 211, 146, .10) 42% 42.35%, transparent 42.35% 100%),
+        linear-gradient(62deg, transparent 0 32%, rgba(255, 255, 255, .045) 32% 32.24%, transparent 32.24% 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.024) 0 1px, transparent 1px 88px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 88px);
+      opacity: .78;
+      animation: bgDrift 26s linear infinite;
+      will-change: transform, background-position;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
       inset: 0;
       z-index: -1;
+      pointer-events: none;
       background:
-        linear-gradient(120deg, transparent 0 26%, rgba(255,255,255,.045) 26% 26.3%, transparent 26.3% 100%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 88px),
-        repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 88px);
-      opacity: .65;
+        linear-gradient(90deg, transparent 0%, rgba(45, 134, 255, .10) 46%, rgba(66, 211, 146, .09) 50%, transparent 58%),
+        repeating-linear-gradient(135deg, transparent 0 72px, rgba(255,255,255,.035) 72px 73px, transparent 73px 146px),
+        linear-gradient(to bottom, rgba(9, 11, 16, .10), rgba(9, 11, 16, .80));
+      background-size: 340px 100%, 220px 220px, 100% 100%;
+      opacity: .62;
+      animation: lightSweep 9s ease-in-out infinite alternate, railsMove 18s linear infinite;
+    }
+
+    @keyframes bgDrift {
+      0% { transform: translate3d(0, 0, 0); background-position: 0 0, 0 0, 0 0, 0 0; }
+      50% { transform: translate3d(-28px, 18px, 0); background-position: 160px 0, -120px 0, 88px 0, 0 88px; }
+      100% { transform: translate3d(0, 0, 0); background-position: 320px 0, -240px 0, 176px 0, 0 176px; }
+    }
+
+    @keyframes lightSweep {
+      from { background-position: -380px 0, 0 0, 0 0; }
+      to { background-position: calc(100vw + 380px) 0, 0 0, 0 0; }
+    }
+
+    @keyframes railsMove {
+      to { background-position: -380px 0, 220px 220px, 0 0; }
     }
 
     a { color: inherit; text-decoration: none; }
@@ -596,6 +631,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
+      body::before, body::after { animation: none; }
       .button, .card { transition: none; }
       .button:hover, .card:hover { transform: none; }
     }
