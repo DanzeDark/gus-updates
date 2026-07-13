@@ -60,14 +60,6 @@ function nowStamp() {
   return new Date().toISOString();
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function isRetryableGitHubStatus(status) {
-  return status === 408 || status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
-}
-
 function bytesToHex(bytes) {
   return Array.from(bytes).map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
@@ -111,54 +103,27 @@ function githubConfig(env) {
 }
 
 async function githubRequest(env, path, options = {}) {
-  const { retryAttempts = 4, retryDelayMs = 500, ...requestOptions } = options;
   const cfg = githubConfig(env);
   const url = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/${path}`;
-
-  for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
-    let response;
-    let text = '';
-    let data = null;
-    try {
-      response = await fetch(url, {
-        ...requestOptions,
-        headers: {
-          Accept: 'application/vnd.github+json',
-          Authorization: `Bearer ${cfg.token}`,
-          'X-GitHub-Api-Version': '2022-11-28',
-          'User-Agent': 'gus-registration-worker',
-          ...(requestOptions.headers || {})
-        }
-      });
-      text = await response.text();
-      try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
-      if (response.ok) return data;
-
-      const retryable = isRetryableGitHubStatus(response.status);
-      if (retryable && attempt < retryAttempts) {
-        await sleep(retryDelayMs * attempt);
-        continue;
-      }
-
-      const message = data && data.message ? data.message : `GitHub HTTP ${response.status}`;
-      const error = new Error(retryable ? `GitHub временно не ответил (HTTP ${response.status}). Попробуй ещё раз через минуту.` : message);
-      error.status = response.status;
-      throw error;
-    } catch (error) {
-      if (error.status) throw error;
-      if (attempt < retryAttempts) {
-        await sleep(retryDelayMs * attempt);
-        continue;
-      }
-      const wrapped = new Error('GitHub временно недоступен. Попробуй ещё раз через минуту.');
-      wrapped.status = 502;
-      throw wrapped;
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${cfg.token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'gus-registration-worker',
+      ...(options.headers || {})
     }
+  });
+  const text = await response.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+  if (!response.ok) {
+    const error = new Error(data && data.message ? data.message : `GitHub HTTP ${response.status}`);
+    error.status = response.status;
+    throw error;
   }
-
-  const error = new Error('GitHub временно недоступен. Попробуй ещё раз через минуту.');
-  error.status = 502;
-  throw error;
+  return data;
 }
 
 async function readGitFile(env, filePath, fallback) {
@@ -341,30 +306,19 @@ async function writeAdminFile(request, env) {
   return jsonResponse({ ok: true, path: filePath });
 }
 
-async function readAdminFile(request, env) {
-  requireAdmin(request, env);
-  const url = new URL(request.url);
-  const allowed = new Set([PAYMENTS_PATH, 'payments_config.json', ACCOUNTS_PATH]);
-  const filePath = String(url.searchParams.get('path') || '');
-  if (!allowed.has(filePath)) return jsonResponse({ ok: false, error: 'Path is not allowed.' }, 403);
-  const current = await readGitFile(env, filePath, {});
-  return jsonResponse({ ok: true, path: filePath, json: current.json, sha: current.sha || null });
-}
-
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders });
     const url = new URL(request.url);
     try {
       if (url.pathname === '/health') return jsonResponse({ ok: true, name: 'gus-registration-worker' });
-      if (url.pathname === '/request' && request.method === 'POST') return await createRequest(request, env);
-      if (url.pathname === '/requests' && request.method === 'GET') return await listRequests(request, env);
+      if (url.pathname === '/request' && request.method === 'POST') return createRequest(request, env);
+      if (url.pathname === '/requests' && request.method === 'GET') return listRequests(request, env);
       const approveMatch = url.pathname.match(/^\/requests\/([^/]+)\/approve$/);
-      if (approveMatch && request.method === 'POST') return await approveRequest(request, env, approveMatch[1]);
+      if (approveMatch && request.method === 'POST') return approveRequest(request, env, approveMatch[1]);
       const denyMatch = url.pathname.match(/^\/requests\/([^/]+)\/deny$/);
-      if (denyMatch && request.method === 'POST') return await denyRequest(request, env, denyMatch[1]);
-      if (url.pathname === '/admin/file' && request.method === 'GET') return await readAdminFile(request, env);
-      if (url.pathname === '/admin/file' && request.method === 'PUT') return await writeAdminFile(request, env);
+      if (denyMatch && request.method === 'POST') return denyRequest(request, env, denyMatch[1]);
+      if (url.pathname === '/admin/file' && request.method === 'PUT') return writeAdminFile(request, env);
       return textResponse('Not found', 404);
     } catch (error) {
       return jsonResponse({ ok: false, error: error.message || String(error) }, error.status || 500);

@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.20",
+    "version":  "1.13.21",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-13T10:04:30+03:00",
-    "notes":  "MAX notifications: fixed stacking, newest on top, click-to-open chat, muted chats ignored, and Maxitochka notification patch persistence."
+    "createdAt":  "2026-07-13T13:13:20+03:00",
+    "notes":  "Version 1.13.21: removed AI start from release and sped up MAX switching with cached window detection."
 }

@@ -121,11 +121,6 @@
       white-space: nowrap;
     }
 
-    button:disabled {
-      cursor: wait;
-      opacity: 0.58;
-    }
-
     button.secondary {
       background: rgba(8, 11, 17, 0.62);
       border-color: var(--line);
@@ -318,7 +313,7 @@
       <h2>Действия</h2>
       <div class="actions">
         <button id="addRow" type="button">Добавить строку</button>
-        <button id="publish" type="button">Опубликовать оплату и доступ</button>
+        <button id="publish" type="button">Опубликовать оплату</button>
         <button class="secondary" id="download" type="button">Скачать JSON</button>
         <button class="secondary" id="reload" type="button">Перезагрузить</button>
       </div>
@@ -331,7 +326,6 @@
           <tr>
             <th>Логин</th>
             <th>Имя</th>
-            <th>Пароль входа</th>
             <th>Вкл.</th>
             <th>Начал</th>
             <th>Оплатил</th>
@@ -377,13 +371,8 @@
     const TOKEN_KEY = 'gus_github_token_session';
     const API_URL_KEY = 'gus_registration_api_url';
     const ADMIN_KEY_KEY = 'gus_registration_admin_key_session';
-    const REQUEST_TIMEOUT_MS = 12000;
     let config = { authEnabled: true, passwordHash: '' };
     let rows = [];
-    let loadedPaymentLogins = new Set();
-    let rowsLoading = false;
-    let githubTokenInvalid = false;
-    let registrationRequests = [];
 
     const $ = (id) => document.getElementById(id);
 
@@ -397,48 +386,6 @@
       const node = $('status');
       node.textContent = text;
       node.className = 'status ' + kind;
-    }
-
-    function getErrorMessage(error) {
-      if (!error) return 'Неизвестная ошибка.';
-      if (error.name === 'AbortError') return 'сервер долго не отвечает';
-      return error.message || String(error);
-    }
-
-    function isGitHubAuthError(error) {
-      return /Bad credentials|GitHub token/i.test(getErrorMessage(error));
-    }
-
-    function isSoftReadError(error) {
-      const message = getErrorMessage(error);
-      return /Not found|Not Found|404|Failed to fetch|NetworkError|server.*not.*answer|сервер долго не отвечает/i.test(message);
-    }
-
-    function shouldFallbackFromWorker(error) {
-      const message = getErrorMessage(error);
-      return isSoftReadError(error)
-        || isGitHubAuthError(error)
-        || shouldUseDirectRequestFallback(error)
-        || /GITHUB_TOKEN|Resource not accessible|API HTTP 50[234]|HTTP 50[234]/i.test(message);
-    }
-
-    async function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-      try {
-        return await fetch(url, { ...options, signal: controller.signal });
-      } catch (error) {
-        if (error && error.name === 'AbortError') {
-          throw new Error('сервер долго не отвечает');
-        }
-        throw error;
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     function setRequestStatus(text, kind = '') {
@@ -456,7 +403,7 @@
     }
 
     async function loadConfig() {
-      const response = await fetchWithTimeout(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      const response = await fetch(CONFIG_URL + '?t=' + Date.now(), { cache: 'no-store' });
       if (!response.ok) throw new Error('Не удалось загрузить payments_config.json');
       config = await response.json();
       $('repoOwner').value = config.repoOwner || 'DanzeDark';
@@ -509,7 +456,6 @@
       return {
         login: '',
         name: '',
-        accountPassword: '',
         active: true,
         startedAt: '',
         paidAt: '',
@@ -536,34 +482,14 @@
       };
     }
 
-    function normalizeRowWithPassword(row) {
-      const normalized = normalizeRow(row || {});
-      normalized.accountPassword = String((row && row.accountPassword) || '').trim();
-      return normalized;
-    }
-
     async function loadRows() {
-      if (rowsLoading) return;
-      rowsLoading = true;
-      const reloadButton = $('reload');
-      if (reloadButton) reloadButton.disabled = true;
-      try {
-        setStatus('Загрузка таблицы...');
-        const data = await loadPaymentsDocument(config.paymentsPath || DATA_URL);
-        rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
-        loadedPaymentLogins = paymentLoginSet(rows);
-        renderRows();
-        if (githubTokenInvalid) {
-          setStatus('Таблица загружена, но GitHub token не подходит. Вставь новый token перед публикацией.', 'bad');
-        } else {
-          setStatus('Загружено строк: ' + rows.length, 'ok');
-        }
-      } catch (error) {
-        setStatus('Ошибка загрузки таблицы: ' + getErrorMessage(error), 'bad');
-      } finally {
-        rowsLoading = false;
-        if (reloadButton) reloadButton.disabled = false;
-      }
+      setStatus('Загрузка таблицы...');
+      const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Не удалось загрузить gus_payments.json');
+      const data = await response.json();
+      rows = Array.isArray(data.accounts) ? data.accounts.map(normalizeRow) : [];
+      renderRows();
+      setStatus('Загружено строк: ' + rows.length, 'ok');
     }
 
     function input(value, field, index, type = 'text') {
@@ -584,7 +510,6 @@
         [
           input(row.login, 'login', index),
           input(row.name, 'name', index),
-          input(row.accountPassword, 'accountPassword', index, 'password'),
           (() => {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -638,205 +563,6 @@
       };
     }
 
-    function collectPaymentsData() {
-      return {
-        updatedAt: new Date().toISOString(),
-        accounts: rows.map((row) => {
-          const normalized = normalizeRow(row);
-          delete normalized.accountPassword;
-          return normalized;
-        }).filter((row) => row.login || row.name)
-      };
-    }
-
-    function sanitizeAccountLogin(value) {
-      return String(value || '').replace(/\s+/g, '').trim().toLowerCase();
-    }
-
-    function isValidAccountLogin(login) {
-      return /^[a-z0-9._-]{2,64}$/.test(String(login || ''));
-    }
-
-    function paymentLoginSet(sourceRows) {
-      return new Set((sourceRows || [])
-        .map((row) => sanitizeAccountLogin(row && row.login))
-        .filter(isValidAccountLogin));
-    }
-
-    async function accountKeyHash(login, password) {
-      return sha256('GUS-ACCOUNT-V1|' + sanitizeAccountLogin(login) + '|' + String(password || ''));
-    }
-
-    function fromBase64(text) {
-      const binary = atob(String(text || '').replace(/\s/g, ''));
-      const bytes = new Uint8Array(binary.length);
-      for (let index = 0; index < binary.length; index += 1) {
-        bytes[index] = binary.charCodeAt(index);
-      }
-      return new TextDecoder().decode(bytes);
-    }
-
-    async function loadAccountsDocument(accountsPath) {
-      if (getApiUrl() && getAdminKey()) {
-        try {
-          const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
-          if (current && current.json) return current.json;
-        } catch (error) {
-          if (!shouldFallbackFromWorker(error)) throw error;
-        }
-      }
-
-      const branch = $('branch').value.trim() || 'main';
-      const token = $('githubToken').value.trim();
-      if (token) {
-        try {
-          const current = await githubRequest(`contents/${encodeURIComponent(accountsPath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
-          if (current && current.content) {
-            return JSON.parse(fromBase64(current.content));
-          }
-        } catch (error) {
-          if (!isGitHubAuthError(error) && !isSoftReadError(error)) throw error;
-        }
-      }
-
-      try {
-        const response = await fetchWithTimeout(accountsPath + '?t=' + Date.now(), { cache: 'no-store' });
-        if (response.ok) return response.json();
-      } catch (_) {}
-
-      return { enabled: true, updatedAt: '', accounts: [] };
-    }
-
-    async function loadPaymentsDocument(paymentsPath) {
-      if (getApiUrl() && getAdminKey()) {
-        try {
-          const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
-          if (current && current.json) return current.json;
-        } catch (error) {
-          if (!shouldFallbackFromWorker(error)) throw error;
-        }
-      }
-
-      const branch = $('branch').value.trim() || 'main';
-      const token = $('githubToken').value.trim();
-      if (token) {
-        try {
-          const current = await githubRequest(`contents/${encodeURIComponent(paymentsPath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
-          if (current && current.content) {
-            return JSON.parse(fromBase64(current.content));
-          }
-        } catch (error) {
-          if (!isGitHubAuthError(error) && !isSoftReadError(error)) throw error;
-        }
-      }
-
-      try {
-        const response = await fetchWithTimeout(paymentsPath + '?t=' + Date.now(), { cache: 'no-store' });
-        if (response.ok) return response.json();
-      } catch (_) {}
-
-      return { updatedAt: '', accounts: [] };
-    }
-
-    function mergePaymentsData(latestDoc, currentRowsSource) {
-      const latestRows = Array.isArray(latestDoc && latestDoc.accounts) ? latestDoc.accounts.map(normalizeRow) : [];
-      const currentRows = Array.isArray(currentRowsSource) ? currentRowsSource.map(normalizeRowWithPassword) : [];
-      const currentLogins = paymentLoginSet(currentRows);
-      const removedLogins = new Set([...loadedPaymentLogins].filter((login) => !currentLogins.has(login)));
-      const mergedRows = [];
-      const accountRows = [];
-      const mergedLogins = new Set();
-      let preserved = 0;
-
-      for (const row of latestRows) {
-        const login = sanitizeAccountLogin(row.login);
-        if (isValidAccountLogin(login) && removedLogins.has(login)) continue;
-        if (isValidAccountLogin(login) && currentLogins.has(login)) continue;
-        mergedRows.push(row);
-        accountRows.push(row);
-        if (isValidAccountLogin(login)) mergedLogins.add(login);
-        preserved += 1;
-      }
-
-      for (const row of currentRows) {
-        mergedRows.push(normalizeRow(row));
-        accountRows.push(row);
-        const login = sanitizeAccountLogin(row.login);
-        if (isValidAccountLogin(login)) mergedLogins.add(login);
-      }
-
-      return {
-        data: {
-          ...(latestDoc || {}),
-          updatedAt: new Date().toISOString(),
-          accounts: mergedRows
-        },
-        accountRows,
-        removedLogins,
-        preserved
-      };
-    }
-
-    async function buildAccountsData(paymentRows, removedLogins) {
-      const accountsPath = config.accountsPath || 'gus_accounts.json';
-      const doc = await loadAccountsDocument(accountsPath);
-      const sourceRows = Array.isArray(paymentRows) ? paymentRows : rows;
-      const removeSet = removedLogins || new Set();
-      const originalAccounts = Array.isArray(doc.accounts) ? doc.accounts.slice() : [];
-      const accounts = originalAccounts.filter((account) => !removeSet.has(sanitizeAccountLogin(account.login)));
-      const byLogin = new Map(accounts.map((account) => [sanitizeAccountLogin(account.login), account]));
-      const missingPassword = [];
-      let created = 0;
-      let updated = 0;
-      const removed = originalAccounts.length - accounts.length;
-
-      for (const paymentRow of sourceRows) {
-        const row = normalizeRow(paymentRow);
-        const login = sanitizeAccountLogin(row.login);
-        if (!login || !isValidAccountLogin(login)) continue;
-        const existing = byLogin.get(login);
-        if (existing) {
-          existing.name = row.name || existing.name || login;
-          existing.active = row.active !== false;
-          updated += 1;
-          continue;
-        }
-
-        const password = String(paymentRow.accountPassword || '').trim();
-        if (!password) {
-          if (row.active !== false) missingPassword.push(login);
-          continue;
-        }
-
-        const account = {
-          login,
-          name: row.name || login,
-          keyHash: await accountKeyHash(login, password),
-          active: row.active !== false,
-          createdAt: new Date().toISOString(),
-          note: row.note || ''
-        };
-        accounts.push(account);
-        byLogin.set(login, account);
-        paymentRow.accountPassword = '';
-        created += 1;
-      }
-
-      return {
-        path: accountsPath,
-        data: {
-          ...doc,
-          enabled: doc.enabled !== false,
-          updatedAt: new Date().toISOString(),
-          accounts
-        },
-        created,
-        updated,
-        removed,
-        missingPassword
-      };
-    }
-
     function toBase64(text) {
       const bytes = new TextEncoder().encode(text);
       let binary = '';
@@ -858,34 +584,15 @@
         'X-GitHub-Api-Version': '2022-11-28'
       };
       if (options.body) headers['Content-Type'] = 'application/json';
-
-      for (let attempt = 1; attempt <= 3; attempt += 1) {
-        const response = await fetchWithTimeout(url, { ...options, headers });
-        const text = await response.text();
-        let data = null;
-        try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
-        if (response.ok) {
-          githubTokenInvalid = false;
-          return data;
-        }
-
+      const response = await fetch(url, { ...options, headers });
+      const text = await response.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+      if (!response.ok) {
         const message = data && data.message ? data.message : text;
-        const retryable = [408, 429, 500, 502, 503, 504].includes(response.status);
-        if (retryable && attempt < 3) {
-          await sleep(450 * attempt);
-          continue;
-        }
-
-        if (response.status === 401 || /Bad credentials/i.test(message)) {
-          githubTokenInvalid = true;
-          sessionStorage.removeItem(TOKEN_KEY);
-          $('githubToken').value = '';
-          throw new Error('GitHub token не подходит или истек. Вставь новый token с доступом Contents: Read and write.');
-        }
-        throw new Error(retryable ? 'GitHub временно не ответил (HTTP ' + response.status + '). Попробуй ещё раз через минуту.' : (message || ('GitHub HTTP ' + response.status)));
+        throw new Error(message || ('GitHub HTTP ' + response.status));
       }
-
-      throw new Error('GitHub временно недоступен. Попробуй ещё раз через минуту.');
+      return data;
     }
 
     async function adminApiRequest(path, options = {}) {
@@ -899,7 +606,7 @@
         ...(options.headers || {})
       };
       if (options.body) headers['Content-Type'] = 'application/json';
-      const response = await fetchWithTimeout(apiUrl + path, { ...options, headers });
+      const response = await fetch(apiUrl + path, { ...options, headers });
       const text = await response.text();
       let data = null;
       try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
@@ -912,19 +619,10 @@
 
     async function publishFile(filePath, content, message) {
       if (getApiUrl() && getAdminKey()) {
-        try {
-          return await adminApiRequest('/admin/file', {
-            method: 'PUT',
-            body: JSON.stringify({ path: filePath, content, message })
-          });
-        } catch (error) {
-          const canUseGitHubFallback = shouldFallbackFromWorker(error);
-          if (!canUseGitHubFallback) throw error;
-          if (!$('githubToken').value.trim()) {
-            throw new Error('Worker не смог сохранить файл: ' + getErrorMessage(error) + '. Вставь GitHub Token с доступом Contents: Read and write и нажми публикацию ещё раз.');
-          }
-          setStatus('Worker не смог сохранить файл. Сохраняю напрямую через GitHub...', '');
-        }
+        return adminApiRequest('/admin/file', {
+          method: 'PUT',
+          body: JSON.stringify({ path: filePath, content, message })
+        });
       }
 
       const branch = $('branch').value.trim() || 'main';
@@ -933,7 +631,7 @@
         const current = await githubRequest(`contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
         sha = current.sha || null;
       } catch (error) {
-        if (!/Not Found|404/i.test(getErrorMessage(error))) throw error;
+        if (!String(error.message || '').includes('Not Found')) throw error;
       }
 
       const body = {
@@ -949,124 +647,15 @@
       });
     }
 
-    async function readGitJsonFile(filePath, fallback) {
-      const branch = $('branch').value.trim() || 'main';
-      try {
-        const current = await githubRequest(`contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(branch)}`, { method: 'GET' });
-        const content = current && current.content ? fromBase64(current.content) : '';
-        return { json: content ? JSON.parse(content) : fallback, sha: current.sha || null };
-      } catch (error) {
-        if (/Not Found|404/i.test(getErrorMessage(error))) return { json: fallback, sha: null };
-        throw error;
-      }
-    }
-
-    async function publishFileViaGitHub(filePath, json, sha, message) {
-      const branch = $('branch').value.trim() || 'main';
-      const body = {
-        message,
-        content: toBase64(JSON.stringify(json, null, 2)),
-        branch
-      };
-      if (sha) body.sha = sha;
-      return githubRequest(`contents/${encodeURIComponent(filePath)}`, {
-        method: 'PUT',
-        body: JSON.stringify(body)
-      });
-    }
-
-    function hasLogin(items, login) {
-      const normalized = sanitizeAccountLogin(login);
-      return (items || []).some((item) => sanitizeAccountLogin(item && item.login) === normalized);
-    }
-
-    function shouldUseDirectRequestFallback(error) {
-      return /GitHub HTTP 50[234]|HTTP 50[234]|GitHub временно|temporarily|недоступен/i.test(getErrorMessage(error));
-    }
-
-    async function decideRequestViaGitHub(id, action) {
-      if (!$('githubToken').value.trim()) {
-        throw new Error('Worker не смог записать в GitHub. Вставь GitHub Token с доступом Contents: Read and write и нажми кнопку ещё раз.');
-      }
-
-      const requestsPath = config.registrationRequestsPath || 'gus_registration_requests.json';
-      const accountsPath = config.accountsPath || 'gus_accounts.json';
-      const paymentsPath = config.paymentsPath || 'gus_payments.json';
-      const requestsFile = await readGitJsonFile(requestsPath, { updatedAt: '', requests: registrationRequests });
-      const requests = Array.isArray(requestsFile.json.requests) ? requestsFile.json.requests : [];
-      const item = requests.find((entry) => String(entry.id) === String(id));
-      if (!item) throw new Error('Заявка не найдена.');
-      if (item.status !== 'pending') throw new Error('Заявка уже обработана.');
-
-      item.status = action === 'approve' ? 'approved' : 'denied';
-      item.decidedAt = new Date().toISOString();
-      item.decisionNote = action === 'approve' ? 'approved' : 'denied';
-      requestsFile.json.updatedAt = item.decidedAt;
-      requestsFile.json.requests = requests;
-
-      if (action !== 'approve') {
-        await publishFileViaGitHub(requestsPath, requestsFile.json, requestsFile.sha, 'Deny Gus registration request ' + (item.login || ''));
-        return { approved: false };
-      }
-
-      if (!item.keyHash) throw new Error('В заявке нет пароля. Попроси пользователя отправить заявку заново.');
-
-      const accountsFile = await readGitJsonFile(accountsPath, { enabled: true, updatedAt: '', accounts: [] });
-      accountsFile.json.enabled = true;
-      accountsFile.json.updatedAt = item.decidedAt;
-      accountsFile.json.accounts = Array.isArray(accountsFile.json.accounts) ? accountsFile.json.accounts : [];
-      if (!hasLogin(accountsFile.json.accounts, item.login)) {
-        accountsFile.json.accounts.push({
-          login: sanitizeAccountLogin(item.login),
-          name: item.name || item.login,
-          keyHash: item.keyHash,
-          active: true,
-          createdAt: item.createdAt || item.decidedAt,
-          note: item.note ? 'Регистрация с сайта. ' + item.note : 'Регистрация с сайта'
-        });
-      }
-
-      const paymentsFile = await readGitJsonFile(paymentsPath, { updatedAt: '', accounts: [] });
-      paymentsFile.json.updatedAt = item.decidedAt;
-      paymentsFile.json.accounts = Array.isArray(paymentsFile.json.accounts) ? paymentsFile.json.accounts : [];
-      if (!hasLogin(paymentsFile.json.accounts, item.login)) {
-        paymentsFile.json.accounts.push({
-          login: sanitizeAccountLogin(item.login),
-          name: item.name || item.login,
-          active: true,
-          startedAt: '',
-          paidAt: '',
-          dueAt: '',
-          amount: '',
-          debt: '',
-          status: 'Не задано',
-          note: item.note || ''
-        });
-      }
-
-      await publishFileViaGitHub(accountsPath, accountsFile.json, accountsFile.sha, 'Approve Gus account ' + item.login);
-      await publishFileViaGitHub(paymentsPath, paymentsFile.json, paymentsFile.sha, 'Add Gus payment row ' + item.login);
-      await publishFileViaGitHub(requestsPath, requestsFile.json, requestsFile.sha, 'Approve Gus registration request ' + item.login);
-      return { approved: true };
-    }
-
     async function publishPayments() {
       try {
-        setStatus('Публикую таблицу и аккаунты на GitHub...');
+        setStatus('Публикую таблицу на GitHub...');
+        const data = collectData();
         const filePath = config.paymentsPath || 'gus_payments.json';
-        const latestPayments = await loadPaymentsDocument(filePath);
-        const merged = mergePaymentsData(latestPayments, rows);
-        const accountsSync = await buildAccountsData(merged.accountRows, merged.removedLogins);
-        if (accountsSync.missingPassword.length) {
-          throw new Error('Для новых активных аккаунтов нужен пароль входа: ' + accountsSync.missingPassword.join(', '));
-        }
-        await publishFile(filePath, JSON.stringify(merged.data, null, 2), 'Update Gus payments table');
-        await publishFile(accountsSync.path, JSON.stringify(accountsSync.data, null, 2), 'Sync Gus app accounts from payments table');
-        rows = merged.data.accounts.map(normalizeRow);
-        loadedPaymentLogins = paymentLoginSet(rows);
+        await publishFile(filePath, JSON.stringify(data, null, 2), 'Update Gus payments table');
+        rows = data.accounts;
         renderRows();
-        const preserved = merged.preserved ? ' Сохранено свежих строк: ' + merged.preserved + '.' : '';
-        setStatus('Опубликовано. В программу добавлено: ' + accountsSync.created + ', обновлено: ' + accountsSync.updated + ', удалено: ' + accountsSync.removed + '.' + preserved, 'ok');
+        setStatus('Опубликовано. Таблица на сайте обновится через минуту.', 'ok');
       } catch (error) {
         setStatus('Ошибка публикации: ' + error.message, 'bad');
       }
@@ -1118,7 +707,6 @@
       const list = $('requestRows');
       list.textContent = '';
       const requests = Array.isArray(items) ? items : [];
-      registrationRequests = requests;
       const pending = requests.filter((item) => item.status === 'pending');
       const visible = pending.length ? pending : requests.slice(0, 8);
       if (!visible.length) {
@@ -1182,22 +770,7 @@
         const pending = requests.filter((item) => item.status === 'pending').length;
         setRequestStatus('Заявок всего: ' + requests.length + ' | ожидают: ' + pending, 'ok');
       } catch (error) {
-        if (shouldFallbackFromWorker(error) && $('githubToken').value.trim()) {
-          try {
-            setRequestStatus('Worker не смог загрузить заявки. Читаю напрямую через GitHub...');
-            const requestsPath = config.registrationRequestsPath || 'gus_registration_requests.json';
-            const requestsFile = await readGitJsonFile(requestsPath, { updatedAt: '', requests: [] });
-            const requests = Array.isArray(requestsFile.json.requests) ? requestsFile.json.requests : [];
-            renderRequests(requests);
-            const pending = requests.filter((item) => item.status === 'pending').length;
-            setRequestStatus('Заявки загружены напрямую через GitHub. Всего: ' + requests.length + ' | ожидают: ' + pending, 'ok');
-            return;
-          } catch (fallbackError) {
-            setRequestStatus('Ошибка прямой загрузки заявок: ' + getErrorMessage(fallbackError), 'bad');
-            return;
-          }
-        }
-        setRequestStatus('Ошибка заявок: ' + getErrorMessage(error), 'bad');
+        setRequestStatus('Ошибка заявок: ' + error.message, 'bad');
       }
     }
 
@@ -1212,20 +785,7 @@
         await loadRows();
         setRequestStatus(action === 'approve' ? 'Заявка подтверждена. Аккаунт добавлен в программу.' : 'Заявка отклонена.', 'ok');
       } catch (error) {
-        if (shouldFallbackFromWorker(error)) {
-          try {
-            setRequestStatus('Worker не ответил. Пробую подтвердить напрямую через GitHub...');
-            await decideRequestViaGitHub(id, action);
-            try { await loadRequests(); } catch (_) {}
-            try { await loadRows(); } catch (_) {}
-            setRequestStatus(action === 'approve' ? 'Заявка подтверждена напрямую через GitHub.' : 'Заявка отклонена напрямую через GitHub.', 'ok');
-            return;
-          } catch (fallbackError) {
-            setRequestStatus('Ошибка прямого подтверждения: ' + getErrorMessage(fallbackError), 'bad');
-            return;
-          }
-        }
-        setRequestStatus('Ошибка обработки заявки: ' + getErrorMessage(error), 'bad');
+        setRequestStatus('Ошибка обработки заявки: ' + error.message, 'bad');
       }
     }
 

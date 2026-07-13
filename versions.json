@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-13T10:04:30+03:00",
+    "updatedAt":  "2026-07-13T13:14:29+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.21",
+                         "createdAt":  "2026-07-13T13:13:20+03:00",
+                         "notes":  "Version 1.13.21: removed AI start from release and sped up MAX switching with cached window detection.",
+                         "package":  "versions/v1.13.21/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.21/gus_update.json",
+                         "versionFile":  "versions/v1.13.21/VERSION.txt",
+                         "size":  589741
+                     },
                      {
                          "version":  "1.13.20",
                          "createdAt":  "2026-07-13T10:04:30+03:00",
