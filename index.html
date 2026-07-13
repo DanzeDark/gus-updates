@@ -743,26 +743,44 @@
 
     ::view-transition-old(root),
     ::view-transition-new(root) {
-      animation-duration: .62s;
-      animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+      animation-duration: .72s;
+      animation-timing-function: cubic-bezier(.22, .78, .22, 1);
+      mix-blend-mode: normal;
     }
 
     ::view-transition-old(root) {
-      animation-name: themeFadeOut;
+      animation: none;
     }
 
     ::view-transition-new(root) {
-      animation-name: themeFadeIn;
+      animation-name: themeSweepFromLeft;
     }
 
-    @keyframes themeFadeOut {
-      from { opacity: 1; filter: blur(0); }
-      to { opacity: 0; filter: blur(8px); }
+    html[data-theme-sweep="to-light"]::view-transition-new(root) {
+      animation-name: themeSweepFromRight;
     }
 
-    @keyframes themeFadeIn {
-      from { opacity: 0; filter: blur(8px); }
-      to { opacity: 1; filter: blur(0); }
+    @keyframes themeSweepFromLeft {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    @keyframes themeSweepFromRight {
+      from {
+        clip-path: inset(0 0 0 100%);
+      }
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    html[data-theme-sweep="to-dark"]::view-transition-new(root),
+    html[data-theme-sweep="to-light"]::view-transition-new(root) {
+      box-shadow: 0 0 70px rgba(0,0,0,.18);
     }
 
     body,
@@ -1572,23 +1590,35 @@
       if (document.startViewTransition && !reduceMotion) {
         let applied = false;
         try {
+          document.documentElement.dataset.themeSweep = nextTheme === 'dark' ? 'to-dark' : 'to-light';
+          const clearThemeSweep = () => {
+            delete document.documentElement.dataset.themeSweep;
+          };
           const transition = document.startViewTransition(() => {
             applied = true;
             applyTheme(nextTheme);
           });
+          const cleanupTimer = window.setTimeout(clearThemeSweep, 950);
           window.setTimeout(() => {
             if (!applied && document.documentElement.dataset.theme !== nextTheme) {
               applyTheme(nextTheme);
             }
           }, 120);
-          transition.finished.catch(() => {});
+          transition.finished
+            .catch(() => {})
+            .finally(() => {
+              window.clearTimeout(cleanupTimer);
+              clearThemeSweep();
+            });
           return;
         } catch (error) {
+          delete document.documentElement.dataset.themeSweep;
           applyTheme(nextTheme);
           return;
         }
       }
 
+      delete document.documentElement.dataset.themeSweep;
       applyTheme(nextTheme);
     }
 
