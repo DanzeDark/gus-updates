@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-10T15:01:25+03:00",
+    "updatedAt":  "2026-07-13T10:04:30+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.20",
+                         "createdAt":  "2026-07-13T10:04:30+03:00",
+                         "notes":  "MAX notifications: fixed stacking, newest on top, click-to-open chat, muted chats ignored, and Maxitochka notification patch persistence.",
+                         "package":  "versions/v1.13.20/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.20/gus_update.json",
+                         "versionFile":  "versions/v1.13.20/VERSION.txt",
+                         "size":  583967
+                     },
                      {
                          "version":  "1.13.17",
                          "createdAt":  "2026-07-08T14:27:17+03:00",

@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.17",
+    "version":  "1.13.20",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-08T14:27:17+03:00",
-    "notes":  "Optimized Start button: selected open MAX sessions are used immediately, while responsiveness checks and recovery happen during actual processing."
+    "createdAt":  "2026-07-13T10:04:30+03:00",
+    "notes":  "MAX notifications: fixed stacking, newest on top, click-to-open chat, muted chats ignored, and Maxitochka notification patch persistence."
 }
