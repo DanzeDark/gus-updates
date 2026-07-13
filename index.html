@@ -3,195 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Гусь - установка</title>
+  <title>Гусь - обновления</title>
   <style>
-    :root { color-scheme: dark; --bg: #0b0f18; --panel: rgba(18, 23, 35, .88); --panel2: rgba(27, 34, 50, .88); --text: #f4f7fb; --muted: #a8b0bf; --line: rgba(143, 160, 196, .24); --accent: #31a5ff; --ok: #47d18c; --warn: #ffd166; }
+    :root {
+      color-scheme: dark;
+      --bg: #101217;
+      --panel: #191d26;
+      --text: #f4f7fb;
+      --muted: #a8b0bf;
+      --line: #303644;
+      --accent: #31a5ff;
+    }
+
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; font-family: "Segoe UI", Arial, sans-serif; color: var(--text); overflow-x: hidden; background: var(--bg); padding: 28px 16px; }
-    body::before, body::after { content: ""; position: fixed; inset: -20%; z-index: -2; background: conic-gradient(from 120deg at 45% 50%, rgba(49,165,255,.18), rgba(71,209,140,.14), rgba(255,209,102,.12), rgba(255,91,142,.14), rgba(49,165,255,.18)); animation: spin-bg 18s linear infinite; }
-    body::after { z-index: -1; background: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 42px); opacity: .24; animation: road 10s linear infinite; }
-    @keyframes spin-bg { to { transform: rotate(360deg); } }
-    @keyframes road { to { background-position: 420px 420px; } }
-    main { width: min(980px, 100%); margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 26px; box-shadow: 0 22px 70px rgba(0,0,0,.38); backdrop-filter: blur(10px); }
-    header { display: grid; gap: 10px; margin-bottom: 20px; }
-    h1 { margin: 0; font-size: clamp(42px, 8vw, 82px); line-height: .9; font-weight: 850; }
-    h2 { margin: 0 0 12px; font-size: 24px; }
-    p { margin: 0 0 16px; color: var(--muted); line-height: 1.55; }
-    .version { color: var(--text); font-weight: 700; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
-    .tabs label { cursor: pointer; border: 1px solid var(--line); border-radius: 6px; padding: 11px 14px; background: rgba(10,14,22,.66); color: var(--muted); font-weight: 700; }
-    input[name="tab"] { position: absolute; opacity: 0; pointer-events: none; }
-    #tab-install:checked ~ .tabs label[for="tab-install"], #tab-register:checked ~ .tabs label[for="tab-register"], #tab-features:checked ~ .tabs label[for="tab-features"], #tab-versions:checked ~ .tabs label[for="tab-versions"] { background: #176cc1; border-color: #2689eb; color: white; }
-    .tab-panel { display: none; border: 1px solid var(--line); background: rgba(9,13,22,.46); border-radius: 8px; padding: 18px; }
-    #tab-install:checked ~ .panels #panel-install, #tab-register:checked ~ .panels #panel-register, #tab-features:checked ~ .panels #panel-features, #tab-versions:checked ~ .panels #panel-versions { display: block; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
-    a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 13px 16px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-width: 180px; font-weight: 700; }
-    a.primary { background: #176cc1; border-color: #2689eb; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 32px 16px;
+    }
+
+    main {
+      width: min(720px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .version {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .files {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+    }
+
     a:hover { border-color: var(--accent); }
-    .steps { display: grid; gap: 10px; margin-top: 18px; }
-    .step, .feature, .version-card { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; background: rgba(18,24,36,.66); color: var(--muted); }
-    .step strong { color: var(--ok); margin-right: 8px; }
-    .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .feature { transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease; transform-origin: center; will-change: transform; }
-    .feature:hover { transform: translateY(-4px) scale(1.025); border-color: rgba(49,165,255,.72); background: rgba(24,33,52,.86); box-shadow: 0 16px 36px rgba(0,0,0,.28), 0 0 0 1px rgba(49,165,255,.12); }
-    .feature strong { display: block; color: var(--text); margin-bottom: 6px; }
-    .versions { display: grid; gap: 10px; }
-    .version-card { display: grid; gap: 8px; }
-    .version-card div { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-    .version-card strong { color: var(--warn); font-size: 18px; }
-    .version-card span { color: var(--muted); font-size: 13px; }
-    .version-card p { margin: 0; }
-    .version-card a { width: fit-content; min-width: 160px; padding: 10px 12px; }
-    .register-form { display: grid; gap: 10px; max-width: 560px; }
-    .register-form input, .register-form textarea { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: rgba(8,11,17,.72); color: var(--text); font: inherit; padding: 0 12px; outline: none; }
-    .register-form textarea { min-height: 86px; padding: 10px 12px; resize: vertical; }
-    .register-form button { min-height: 42px; border: 1px solid #2689eb; border-radius: 6px; background: #176cc1; color: white; font: inherit; font-weight: 800; cursor: pointer; }
-    .register-status { min-height: 22px; color: var(--muted); }
-    .register-status.ok { color: var(--ok); }
-    .register-status.bad { color: #ff7a7a; }
-    footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
-    @media (max-width: 720px) { main { padding: 18px; } .features { grid-template-columns: 1fr; } a { width: 100%; } }
-    @media (prefers-reduced-motion: reduce) { .feature { transition: none; } .feature:hover { transform: none; } }
+
+    span {
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
   <main>
-    <header>
-      <h1>Гусь</h1>
-      <p>Установщик программы. Текущая версия: <span class="version">v1.13.21</span>.</p>
-    </header>
-
-    <input id="tab-install" name="tab" type="radio" checked>
-    <input id="tab-register" name="tab" type="radio">
-    <input id="tab-features" name="tab" type="radio">
-    <input id="tab-versions" name="tab" type="radio">
-    <nav class="tabs" aria-label="Разделы">
-      <label for="tab-install">Установка</label>
-      <label for="tab-register">Регистрация</label>
-      <label for="tab-features">Что умеет программа</label>
-      <label for="tab-versions">Старые версии</label>
-    </nav>
-
-    <section class="panels">
-      <article class="tab-panel" id="panel-install">
-        <h2>Установка</h2>
-        <p>Скачай маленький установщик. Он сам подтянет актуальную версию Гуся с сайта и создаст ярлык на рабочем столе.</p>
-        <div class="actions">
-          <a class="primary" href="https://danzedark.github.io/gus-updates/Gus-Web-Setup.vbs" download>Скачать установщик</a>
-          <a href="https://danzedark.github.io/gus-updates/VERSION.txt">Проверить версию</a>
-        </div>
-        <div class="steps">
-          <div class="step"><strong>1.</strong>Скачай установщик на рабочий ПК.</div>
-          <div class="step"><strong>2.</strong>Запусти файл и выбери папку установки.</div>
-          <div class="step"><strong>3.</strong>После установки открывай программу через ярлык на рабочем столе.</div>
-        </div>
-      </article>
-
-      <article class="tab-panel" id="panel-register">
-        <h2>Регистрация</h2>
-        <p>Оставь заявку на доступ. После подтверждения владельцем аккаунт появится в программе, и можно будет войти по этому логину и паролю.</p>
-        <form class="register-form" id="registerForm">
-          <input id="registerLogin" autocomplete="username" placeholder="Логин латиницей, например egorka">
-          <input id="registerName" autocomplete="name" placeholder="Имя">
-          <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Пароль для входа в программу">
-          <textarea id="registerNote" placeholder="Комментарий, кто ты и на какой ПК нужен доступ"></textarea>
-          <button type="submit">Отправить заявку</button>
-          <div class="register-status" id="registerStatus"></div>
-        </form>
-      </article>
-
-      <article class="tab-panel" id="panel-features">
-        <h2>Что умеет программа</h2>
-        <div class="features">
-          <div class="feature"><strong>Работает с MAX</strong>Находит открытые окна MAX и распределяет работу между выбранными профилями.</div>
-          <div class="feature"><strong>Клиенты из TXT</strong>Берёт базу клиентов из текстового файла и ведёт очередь обработки.</div>
-          <div class="feature"><strong>Группы и личные сообщения</strong>Может писать через группы или через ЛС на выбранных MAX.</div>
-          <div class="feature"><strong>Несколько профилей</strong>Показывает, сколько людей прописал каждый MAX, и работает параллельно по выбранным профилям.</div>
-          <div class="feature"><strong>Автообновление</strong>Рабочие ПК могут обновляться через кнопку в настройках программы.</div>
-          <div class="feature"><strong>Доступы</strong>Есть авторизация аккаунтов, чтобы посторонние не пользовались программой без разрешения.</div>
-        </div>
-      </article>
-
-      <article class="tab-panel" id="panel-versions">
-        <h2>Старые версии</h2>
-        <p>С этого момента каждая сборка сохраняется отдельно. Можно скачать старый zip и откатиться, если новая версия ведёт себя плохо.</p>
-        <div class="versions">
-      <article class="version-card">
-        <div>
-          <strong>v1.13.21</strong>
-          <span>2026-07-13T13:13:20+03:00</span>
-        </div>
-        <p>Version 1.13.21: removed AI start from release and sped up MAX switching with cached window detection.</p>
-        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.21/Gus-MaxContactTool-update.zip" download>Скачать zip 0.56 МБ</a>
-      </article>
-      <article class="version-card">
-        <div>
-          <strong>v1.13.20</strong>
-          <span>2026-07-13T10:04:30+03:00</span>
-        </div>
-        <p>MAX notifications: fixed stacking, newest on top, click-to-open chat, muted chats ignored, and Maxitochka notification patch persistence.</p>
-        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.20/Gus-MaxContactTool-update.zip" download>Скачать zip 0.56 МБ</a>
-      </article>
-      <article class="version-card">
-        <div>
-          <strong>v1.13.17</strong>
-          <span>2026-07-08T14:27:17+03:00</span>
-        </div>
-        <p>Optimized Start button: selected open MAX sessions are used immediately, while responsiveness checks and recovery happen during actual processing.</p>
-        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.17/Gus-MaxContactTool-update.zip" download>Скачать zip 0.53 МБ</a>
-      </article>
-        </div>
-      </article>
-    </section>
+    <h1>Гусь - обновления</h1>
+    <p>Канал обновлений работает. Текущая версия: <span class="version">v1.13.21</span>.</p>
+    <p>Рабочие ПК читают файл manifest и скачивают zip-пакет по кнопке "Обновить".</p>
+    <div class="files">
+      <a href="https://danzedark.github.io/gus-updates/Gus-Web-Setup.vbs" download><strong>Установщик</strong><span>Gus-Web-Setup.vbs</span></a>
+      <a href="https://danzedark.github.io/gus-updates/gus_update.json"><strong>Manifest</strong><span>gus_update.json</span></a>
+      <a href="https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip"><strong>Пакет</strong><span>Gus-MaxContactTool-update.zip</span></a>
+      <a href="https://danzedark.github.io/gus-updates/VERSION.txt"><strong>Версия</strong><span>VERSION.txt</span></a>
+      <a href="https://danzedark.github.io/gus-updates/versions.json"><strong>Старые версии</strong><span>versions.json</span></a>
+    </div>
     <footer>Собрано: 2026-07-13 13:14:29</footer>
   </main>
-  <script>
-    const configUrl = 'payments_config.json';
-    const statusNode = document.getElementById('registerStatus');
-    const formNode = document.getElementById('registerForm');
-
-    function setRegisterStatus(text, kind) {
-      statusNode.textContent = text;
-      statusNode.className = 'register-status ' + (kind || '');
-    }
-
-    async function loadRegisterConfig() {
-      const response = await fetch(configUrl + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!response.ok) throw new Error('Не удалось загрузить настройки регистрации.');
-      return response.json();
-    }
-
-    formNode.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      try {
-        setRegisterStatus('Отправляю заявку...', '');
-        const cfg = await loadRegisterConfig();
-        const apiUrl = String(cfg.registrationApiUrl || '').replace(/\/+$/, '');
-        if (!apiUrl) throw new Error('Регистрация ещё не подключена владельцем.');
-        const body = {
-          login: document.getElementById('registerLogin').value,
-          name: document.getElementById('registerName').value,
-          password: document.getElementById('registerPassword').value,
-          note: document.getElementById('registerNote').value
-        };
-        const response = await fetch(apiUrl + '/request', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok || data.ok === false) throw new Error(data.error || 'Не удалось отправить заявку.');
-        formNode.reset();
-        setRegisterStatus(data.message || 'Заявка отправлена. Жди подтверждения владельца.', 'ok');
-      } catch (error) {
-        const message = error && error.message ? error.message : String(error);
-        if (message === 'Failed to fetch') {
-          setRegisterStatus('Регистрация пока не подключена: владелец должен запустить Worker/API для приёма заявок.', 'bad');
-        } else {
-          setRegisterStatus(message, 'bad');
-        }
-      }
-    });
-  </script>
 </body>
 </html>
