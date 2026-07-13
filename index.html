@@ -3,101 +3,671 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Гусь - обновления</title>
+  <title>Гусь - установка и обновления</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #101217;
-      --panel: #191d26;
-      --text: #f4f7fb;
-      --muted: #a8b0bf;
-      --line: #303644;
-      --accent: #31a5ff;
+      --bg: #080a0e;
+      --surface: #10151e;
+      --surface-2: #151c28;
+      --surface-3: #1c2635;
+      --text: #f5f7fb;
+      --muted: #aab4c4;
+      --line: rgba(158, 178, 212, .22);
+      --blue: #2f8cff;
+      --green: #48d597;
+      --amber: #ffcc66;
+      --coral: #ff6b7a;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .38);
     }
 
     * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
       color: var(--text);
-      display: grid;
-      place-items: center;
-      padding: 32px 16px;
+      background:
+        linear-gradient(120deg, rgba(47, 140, 255, .14), transparent 28%),
+        linear-gradient(250deg, rgba(72, 213, 151, .10), transparent 30%),
+        linear-gradient(180deg, #0b0f16 0%, #080a0e 72%);
+      overflow-x: hidden;
     }
 
-    main {
-      width: min(720px, 100%);
-      background: var(--panel);
-      border: 1px solid var(--line);
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(120deg, transparent 0 18%, rgba(47, 140, 255, .10) 18% 18.5%, transparent 18.5% 45%),
+        linear-gradient(120deg, transparent 0 58%, rgba(255, 204, 102, .08) 58% 58.5%, transparent 58.5% 100%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 80px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .018) 0 1px, transparent 1px 80px);
+      animation: gridMove 18s linear infinite;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(8, 10, 14, .18), rgba(8, 10, 14, .78));
+    }
+
+    @keyframes gridMove {
+      to { background-position: 240px 0, -220px 0, 80px 0, 0 80px; }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(8, 10, 14, .78);
+      border-bottom: 1px solid rgba(158, 178, 212, .14);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
-      padding: 24px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #071018;
+      box-shadow: 0 12px 34px rgba(47, 140, 255, .28);
+    }
+
+    .brand-mark svg {
+      width: 25px;
+      height: 25px;
+      fill: currentColor;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, .06); }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 18px;
+      font-weight: 800;
+      color: var(--text);
+      background: rgba(255, 255, 255, .04);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 140, 255, .78);
+      background: rgba(47, 140, 255, .10);
+    }
+
+    .button.primary {
+      border-color: #338eff;
+      background: linear-gradient(135deg, #1e76db, #2f8cff);
+      box-shadow: 0 14px 34px rgba(47, 140, 255, .26);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
+      align-items: center;
+      gap: 44px;
+      padding: 72px 0 64px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(72, 213, 151, .12);
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      font-weight: 700;
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(52px, 9vw, 112px);
+      line-height: .9;
+      letter-spacing: 0;
     }
 
-    p {
-      margin: 0 0 18px;
+    .hero-copy {
+      max-width: 660px;
+      margin: 24px 0 0;
       color: var(--muted);
-      line-height: 1.5;
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.55;
     }
 
-    .version {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .files {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    a {
-      color: var(--text);
-      text-decoration: none;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 12px 14px;
+    .hero-actions {
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 12px;
-      min-width: 0;
+      margin-top: 30px;
     }
 
-    a:hover { border-color: var(--accent); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 36px;
+      max-width: 620px;
+    }
 
-    span {
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(16, 21, 30, .74);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .product-shot {
+      position: relative;
+      border: 1px solid rgba(158, 178, 212, .24);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(21, 28, 40, .94), rgba(10, 14, 21, .94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .shot-top {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(158, 178, 212, .16);
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
+    .dot:nth-child(2) { background: var(--amber); }
+    .dot:nth-child(3) { background: var(--green); }
+
+    .shot-body { padding: 20px; }
+
+    .release-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(158, 178, 212, .14);
+    }
+
+    .release-line:last-child { border-bottom: 0; }
+
+    .release-line span {
       color: var(--muted);
       overflow-wrap: anywhere;
     }
 
-    footer {
-      margin-top: 18px;
+    .release-line strong { text-align: right; }
+
+    .terminal {
+      margin-top: 20px;
+      border: 1px solid rgba(72, 213, 151, .24);
+      border-radius: 8px;
+      background: rgba(3, 8, 12, .72);
+      padding: 16px;
+      font-family: Consolas, "Courier New", monospace;
+      color: #d8fbe9;
+      min-height: 138px;
+    }
+
+    .terminal-row {
+      display: flex;
+      gap: 10px;
+      margin: 0 0 10px;
+    }
+
+    .terminal-row span:first-child { color: var(--green); }
+    .terminal-row span:last-child { color: #d8fbe9; }
+
+    .scan {
+      height: 4px;
+      margin-top: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), var(--blue), var(--amber), var(--green));
+      background-size: 220% 100%;
+      animation: scanMove 2.7s linear infinite;
+    }
+
+    @keyframes scanMove {
+      to { background-position: 220% 0; }
+    }
+
+    .section {
+      padding: 72px 0;
+      border-top: 1px solid rgba(158, 178, 212, .12);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1;
+    }
+
+    .section-head p {
+      margin: 0;
+      max-width: 520px;
       color: var(--muted);
-      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: rgba(16, 21, 30, .78);
+      min-height: 150px;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(47, 140, 255, .72);
+      background: rgba(21, 28, 40, .92);
+    }
+
+    .card b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .install-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 22px;
+      align-items: center;
+      border: 1px solid rgba(72, 213, 151, .26);
+      border-radius: 8px;
+      padding: 26px;
+      background:
+        linear-gradient(135deg, rgba(72, 213, 151, .12), rgba(47, 140, 255, .08)),
+        rgba(16, 21, 30, .78);
+    }
+
+    .install-band p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .versions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .version-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: rgba(16, 21, 30, .78);
+    }
+
+    .version-row strong { color: var(--amber); }
+    .version-row p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .version-row a { color: var(--text); font-weight: 800; }
+
+    .footer {
+      padding: 26px 0 36px;
+      color: var(--muted);
+      border-top: 1px solid rgba(158, 178, 212, .12);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .footer a { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 46px; }
+      .product-shot { max-width: 620px; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section-head { display: grid; }
+      .install-band { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 24px, 1180px); }
+      .nav { height: auto; padding: 14px 0; align-items: flex-start; }
+      .nav-links { display: none; }
+      h1 { font-size: clamp(48px, 17vw, 72px); }
+      .stats { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .version-row { grid-template-columns: 1fr; }
+      .button { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      body::before, .scan { animation: none; }
+      .button, .card { transition: none; }
+      .button:hover, .card:hover { transform: none; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Гусь - обновления</h1>
-    <p>Канал обновлений работает. Текущая версия: <span class="version">v1.13.21</span>.</p>
-    <p>Рабочие ПК читают файл manifest и скачивают zip-пакет по кнопке "Обновить".</p>
-    <div class="files">
-      <a href="https://danzedark.github.io/gus-updates/Gus-Web-Setup.vbs" download><strong>Установщик</strong><span>Gus-Web-Setup.vbs</span></a>
-      <a href="https://danzedark.github.io/gus-updates/gus_update.json"><strong>Manifest</strong><span>gus_update.json</span></a>
-      <a href="https://danzedark.github.io/gus-updates/Gus-MaxContactTool-update.zip"><strong>Пакет</strong><span>Gus-MaxContactTool-update.zip</span></a>
-      <a href="https://danzedark.github.io/gus-updates/VERSION.txt"><strong>Версия</strong><span>VERSION.txt</span></a>
-      <a href="https://danzedark.github.io/gus-updates/versions.json"><strong>Старые версии</strong><span>versions.json</span></a>
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="#top" aria-label="Гусь">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path d="M19 49c-7-4-9-12-6-19 3-8 12-12 22-10l3-8c2-6 9-8 14-4 5 3 6 9 3 14-3 4-8 5-12 3l-3 8c6 4 8 10 6 16-4 10-18 12-27 0Zm25-32c2 1 5 1 6-1 1-3-2-6-5-5-2 0-3 2-4 5l-1 3 4-2ZM22 42c5 5 15 6 19 1 3-4 1-9-5-12-7-3-15-2-18 4-1 3 0 5 4 7Z"/>
+          </svg>
+        </span>
+        <span>Гусь</span>
+      </a>
+      <nav class="nav-links" aria-label="Навигация">
+        <a href="#install">Установка</a>
+        <a href="#features">Возможности</a>
+        <a href="#access">Доступ</a>
+        <a href="#versions">Версии</a>
+        <a href="payments_admin.html">Админ</a>
+      </nav>
+      <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать</a>
     </div>
-    <footer>Собрано: 2026-07-13 13:14:29</footer>
+  </header>
+
+  <main id="top">
+    <section class="shell hero">
+      <div>
+        <div class="eyebrow">Канал обновлений активен</div>
+        <h1>Гусь для работы с MAX</h1>
+        <p class="hero-copy">Установщик, обновления и архив версий в одном месте. Рабочий ПК скачивает актуальный пакет сам, а ты просто открываешь программу через ярлык.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать установщик</a>
+          <a class="button" href="gus_update.json">Проверить manifest</a>
+          <a class="button" href="#versions">Старые версии</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong id="statVersion">v1.13.21</strong><span>текущая версия</span></div>
+          <div class="stat"><strong>1 клик</strong><span>обновление на ПК</span></div>
+          <div class="stat"><strong id="statArchive">3</strong><span>версии в архиве</span></div>
+        </div>
+      </div>
+
+      <aside class="product-shot" aria-label="Текущий релиз">
+        <div class="shot-top">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="shot-body">
+          <div class="release-line">
+            <span>Статус</span>
+            <strong>готов к обновлению</strong>
+          </div>
+          <div class="release-line">
+            <span>Версия</span>
+            <strong id="releaseVersion">v1.13.21</strong>
+          </div>
+          <div class="release-line">
+            <span>Пакет</span>
+            <strong>Gus-MaxContactTool-update.zip</strong>
+          </div>
+          <div class="terminal" aria-hidden="true">
+            <div class="terminal-row"><span>&gt;</span><span>checking update channel</span></div>
+            <div class="terminal-row"><span>&gt;</span><span>manifest found</span></div>
+            <div class="terminal-row"><span>&gt;</span><span>installer ready</span></div>
+            <div class="scan"></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="shell section" id="install">
+      <div class="install-band">
+        <div>
+          <h2>Установка без лишних действий</h2>
+          <p>Скачай маленький установщик. Он подтянет актуальную версию Гуся с сайта, предложит выбрать папку установки и создаст ярлык на рабочем столе.</p>
+        </div>
+        <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать установщик</a>
+      </div>
+    </section>
+
+    <section class="shell section" id="features">
+      <div class="section-head">
+        <h2>Что умеет программа</h2>
+        <p>Основные функции собраны коротко, чтобы новый человек быстро понял, зачем нужен Гусь и как он работает с открытыми MAX.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <b>Работа с MAX</b>
+          <p>Находит открытые окна MAX, показывает выбранные профили и распределяет обработку между ними.</p>
+        </article>
+        <article class="card">
+          <b>Клиенты из TXT</b>
+          <p>Берёт базу из текстового файла, ведёт очередь и отмечает результат обработки строк.</p>
+        </article>
+        <article class="card">
+          <b>Группы и ЛС</b>
+          <p>Может работать через группы или писать в личные сообщения на выбранных MAX.</p>
+        </article>
+        <article class="card">
+          <b>Несколько профилей</b>
+          <p>Показывает, сколько клиентов обработал каждый профиль, и помогает работать параллельно.</p>
+        </article>
+        <article class="card">
+          <b>Автообновление</b>
+          <p>Рабочие ПК читают этот канал обновлений и скачивают новый zip-пакет по кнопке в программе.</p>
+        </article>
+        <article class="card">
+          <b>Доступы</b>
+          <p>Вход по аккаунтам помогает не давать пользоваться программой без разрешения владельца.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section" id="access">
+      <div class="section-head">
+        <h2>Доступ к программе</h2>
+        <p>Обычным пользователям достаточно скачать установщик. Аккаунты и оплату владелец ведёт отдельно через админ-панель.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <b>Для рабочего ПК</b>
+          <p>Скачай установщик, выбери папку, затем запускай Гусь с рабочего стола.</p>
+        </article>
+        <article class="card">
+          <b>Для владельца</b>
+          <p>Админ-панель открывается отдельно и не мешает обычному сайту установки.</p>
+        </article>
+        <article class="card">
+          <b>Для отката</b>
+          <p>Архив версий ниже хранит старые сборки, чтобы можно было быстро вернуться назад.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section" id="versions">
+      <div class="section-head">
+        <h2>Архив версий</h2>
+        <p>Новые сборки сохраняются отдельно. Если обновление ведёт себя плохо, можно скачать прошлый пакет.</p>
+      </div>
+      <div class="versions" id="versionsList">
+        <article class="version-row">
+          <strong>v1.13.21</strong>
+          <p>Текущая версия обновления.</p>
+          <a href="versions/v1.13.21/Gus-MaxContactTool-update.zip" download>Скачать</a>
+        </article>
+      </div>
+    </section>
   </main>
+
+  <footer class="shell footer">
+    <span id="builtAt">Собрано: 2026-07-13 13:14:29</span>
+    <span><a href="VERSION.txt">VERSION.txt</a> · <a href="gus_update.json">gus_update.json</a> · <a href="payments_admin.html">Админ</a></span>
+  </footer>
+
+  <script>
+    const versionNode = document.getElementById('statVersion');
+    const releaseNode = document.getElementById('releaseVersion');
+    const archiveNode = document.getElementById('statArchive');
+    const versionsList = document.getElementById('versionsList');
+    const builtAtNode = document.getElementById('builtAt');
+
+    function formatSize(bytes) {
+      if (!bytes) return '';
+      return (bytes / 1024 / 1024).toFixed(2) + ' МБ';
+    }
+
+    function formatDate(value) {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    async function loadRelease() {
+      try {
+        const response = await fetch('gus_update.json?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data.version) {
+          versionNode.textContent = 'v' + data.version;
+          releaseNode.textContent = 'v' + data.version;
+        }
+        if (data.createdAt) {
+          builtAtNode.textContent = 'Собрано: ' + formatDate(data.createdAt);
+        }
+      } catch (error) {
+        console.warn('Manifest loading failed', error);
+      }
+    }
+
+    async function loadVersions() {
+      try {
+        const response = await fetch('versions.json?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        const versions = Array.isArray(data.versions) ? data.versions : [];
+        if (!versions.length) return;
+        archiveNode.textContent = String(versions.length);
+        versionsList.innerHTML = versions.map(item => {
+          const href = item.package || 'Gus-MaxContactTool-update.zip';
+          const size = formatSize(item.size);
+          const date = formatDate(item.createdAt);
+          const meta = [date, size].filter(Boolean).join(' · ');
+          return `
+            <article class="version-row">
+              <strong>v${item.version}</strong>
+              <p>${item.notes || 'Сохранённая версия.'}${meta ? '<br><span>' + meta + '</span>' : ''}</p>
+              <a href="${href}" download>Скачать</a>
+            </article>
+          `;
+        }).join('');
+      } catch (error) {
+        console.warn('Versions loading failed', error);
+      }
+    }
+
+    loadRelease();
+    loadVersions();
+  </script>
 </body>
 </html>
