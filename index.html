@@ -623,26 +623,34 @@
 
     body {
       background:
+        radial-gradient(circle at 7% 18%, rgba(10, 10, 10, .10), transparent 19rem),
+        radial-gradient(circle at 88% 12%, rgba(10, 10, 10, .09), transparent 18rem),
+        radial-gradient(circle at 52% 82%, rgba(10, 10, 10, .06), transparent 24rem),
         linear-gradient(180deg, #fbfaf6 0%, #f4f3ef 54%, #ecebe6 100%);
     }
 
     body::before {
       inset: -24%;
       background:
-        linear-gradient(120deg, transparent 0 14%, rgba(0, 0, 0, .055) 14% 14.35%, transparent 14.35% 40%, rgba(0, 0, 0, .035) 40% 40.28%, transparent 40.28% 100%),
-        repeating-linear-gradient(90deg, rgba(0,0,0,.030) 0 1px, transparent 1px 96px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,.024) 0 1px, transparent 1px 96px);
-      opacity: .9;
-      animation: bgDrift 34s linear infinite;
+        conic-gradient(from 120deg at 20% 25%, transparent 0 23%, rgba(0,0,0,.08) 23.2% 23.7%, transparent 24% 100%),
+        conic-gradient(from -20deg at 82% 18%, transparent 0 34%, rgba(0,0,0,.07) 34.2% 34.7%, transparent 35% 100%),
+        linear-gradient(120deg, transparent 0 13%, rgba(0, 0, 0, .070) 13% 13.35%, transparent 13.35% 40%, rgba(0, 0, 0, .045) 40% 40.28%, transparent 40.28% 100%),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.033) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.026) 0 1px, transparent 1px 96px);
+      opacity: .82;
+      animation: bgDrift 30s linear infinite;
+      mix-blend-mode: multiply;
     }
 
     body::after {
       background:
-        linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, .055) 47%, transparent 58%),
-        linear-gradient(180deg, rgba(255,255,255,.18), rgba(244,243,239,.72));
-      background-size: 420px 100%, 100% 100%;
-      opacity: .72;
-      animation: lightSweep 12s ease-in-out infinite alternate;
+        repeating-radial-gradient(circle at 78% 26%, transparent 0 58px, rgba(0,0,0,.070) 59px 60px, transparent 61px 122px),
+        repeating-radial-gradient(circle at 8% 78%, transparent 0 72px, rgba(0,0,0,.050) 73px 74px, transparent 75px 150px),
+        linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, .080) 46%, transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.16), rgba(244,243,239,.76));
+      background-size: 100% 100%, 100% 100%, 480px 100%, 100% 100%;
+      opacity: .76;
+      animation: lightSweep 12s ease-in-out infinite alternate, railsMove 24s linear infinite;
     }
 
     .topbar {
@@ -662,6 +670,49 @@
 
     .nav-links a { color: #55585e; }
     .nav-links a:hover { color: #0a0a0a; background: rgba(10, 10, 10, .06); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .theme-toggle {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(10, 10, 10, .16);
+      border-radius: 999px;
+      padding: 0 14px 0 8px;
+      color: #0a0a0a;
+      background: rgba(255, 255, 255, .84);
+      box-shadow: 0 10px 24px rgba(10, 10, 10, .06);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .theme-toggle::before {
+      content: "";
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, #ffffff 0 18%, transparent 19%),
+        #0a0a0a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: rgba(10, 10, 10, .38);
+      background: #ffffff;
+      box-shadow: 0 16px 36px rgba(10, 10, 10, .10);
+    }
 
     .button {
       border-color: rgba(10, 10, 10, .16);
@@ -708,6 +759,23 @@
         repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0 1px, transparent 1px 34px);
       box-shadow: 0 28px 80px rgba(10, 10, 10, .18);
       transform: rotate(-2deg);
+      z-index: -1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -118px;
+      top: 116px;
+      width: 310px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(10, 10, 10, .10);
+      background:
+        repeating-radial-gradient(circle, transparent 0 28px, rgba(10,10,10,.10) 29px 30px, transparent 31px 58px),
+        radial-gradient(circle, rgba(255,255,255,.64), transparent 64%);
+      opacity: .72;
+      animation: heroOrbit 18s ease-in-out infinite alternate;
       z-index: -1;
     }
 
@@ -902,6 +970,215 @@
       color: #6a6f76;
     }
 
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #050505;
+      --panel: rgba(18, 18, 18, .88);
+      --panel-solid: #111111;
+      --text: #f5f5f5;
+      --muted: #a6a6a6;
+      --line: rgba(255,255,255,.13);
+      --blue: #ffffff;
+      --blue-2: #d7d7d7;
+      --green: #ffffff;
+      --red: #ff7a7a;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .42);
+    }
+
+    html[data-theme="dark"] body {
+      color: var(--text);
+      background:
+        radial-gradient(circle at 9% 15%, rgba(255, 255, 255, .12), transparent 18rem),
+        radial-gradient(circle at 88% 12%, rgba(255, 255, 255, .10), transparent 18rem),
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, .06), transparent 24rem),
+        linear-gradient(180deg, #050505 0%, #0d0d0f 58%, #050505 100%);
+    }
+
+    html[data-theme="dark"] body::before {
+      background:
+        conic-gradient(from 120deg at 20% 25%, transparent 0 23%, rgba(255,255,255,.12) 23.2% 23.7%, transparent 24% 100%),
+        conic-gradient(from -20deg at 82% 18%, transparent 0 34%, rgba(255,255,255,.09) 34.2% 34.7%, transparent 35% 100%),
+        linear-gradient(120deg, transparent 0 13%, rgba(255,255,255,.080) 13% 13.35%, transparent 13.35% 40%, rgba(255,255,255,.055) 40% 40.28%, transparent 40.28% 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.044) 0 1px, transparent 1px 96px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.034) 0 1px, transparent 1px 96px);
+      opacity: .78;
+      mix-blend-mode: screen;
+    }
+
+    html[data-theme="dark"] body::after {
+      background:
+        repeating-radial-gradient(circle at 78% 26%, transparent 0 58px, rgba(255,255,255,.08) 59px 60px, transparent 61px 122px),
+        repeating-radial-gradient(circle at 8% 78%, transparent 0 72px, rgba(255,255,255,.06) 73px 74px, transparent 75px 150px),
+        linear-gradient(100deg, transparent 0%, rgba(255,255,255,.10) 46%, transparent 58%),
+        linear-gradient(180deg, rgba(5,5,5,.10), rgba(5,5,5,.82));
+      opacity: .72;
+    }
+
+    html[data-theme="dark"] .topbar {
+      border-bottom-color: rgba(255,255,255,.10);
+      background: rgba(5, 5, 5, .78);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .30);
+    }
+
+    html[data-theme="dark"] .brand,
+    html[data-theme="dark"] .nav-links a:hover,
+    html[data-theme="dark"] h1,
+    html[data-theme="dark"] .form-card h2,
+    html[data-theme="dark"] .section h2,
+    html[data-theme="dark"] .card b,
+    html[data-theme="dark"] .step-card b,
+    html[data-theme="dark"] .faq-item b {
+      color: #f5f5f5;
+    }
+
+    html[data-theme="dark"] .mark {
+      color: #0a0a0a;
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(255,255,255,.13);
+    }
+
+    html[data-theme="dark"] .nav-links a,
+    html[data-theme="dark"] .lead,
+    html[data-theme="dark"] .version-note,
+    html[data-theme="dark"] .mini-stat,
+    html[data-theme="dark"] .section-head p,
+    html[data-theme="dark"] .form-card p,
+    html[data-theme="dark"] .card p,
+    html[data-theme="dark"] .step-card p,
+    html[data-theme="dark"] .faq-item p,
+    html[data-theme="dark"] .check-row p {
+      color: #a6a6a6;
+    }
+
+    html[data-theme="dark"] .nav-links a:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    html[data-theme="dark"] .button,
+    html[data-theme="dark"] .theme-toggle {
+      border-color: rgba(255,255,255,.16);
+      color: #f5f5f5;
+      background: rgba(18,18,18,.84);
+      box-shadow: 0 10px 24px rgba(0,0,0,.28);
+    }
+
+    html[data-theme="dark"] .button:hover,
+    html[data-theme="dark"] .theme-toggle:hover {
+      border-color: rgba(255,255,255,.38);
+      background: rgba(28,28,28,.96);
+      box-shadow: 0 16px 36px rgba(0,0,0,.36);
+    }
+
+    html[data-theme="dark"] .button.primary {
+      border-color: #ffffff;
+      color: #0a0a0a;
+      background: #ffffff;
+      box-shadow: 0 18px 42px rgba(255,255,255,.12);
+    }
+
+    html[data-theme="dark"] .theme-toggle::before {
+      background:
+        radial-gradient(circle at 68% 35%, #111111 0 18%, transparent 19%),
+        #ffffff;
+    }
+
+    html[data-theme="dark"] .pill,
+    html[data-theme="dark"] .mini-stat,
+    html[data-theme="dark"] .form-card,
+    html[data-theme="dark"] .card,
+    html[data-theme="dark"] .step-card,
+    html[data-theme="dark"] .faq-item,
+    html[data-theme="dark"] .showcase-side {
+      border-color: rgba(255,255,255,.13);
+      background: rgba(18,18,18,.86);
+      box-shadow: 0 18px 48px rgba(0,0,0,.32);
+    }
+
+    html[data-theme="dark"] .pill {
+      color: #f5f5f5;
+    }
+
+    html[data-theme="dark"] .pill::before,
+    html[data-theme="dark"] .step-num,
+    html[data-theme="dark"] .check {
+      color: #0a0a0a;
+      background: #ffffff;
+      box-shadow: 0 0 0 5px rgba(255,255,255,.08);
+    }
+
+    html[data-theme="dark"] input,
+    html[data-theme="dark"] textarea {
+      border-color: rgba(255,255,255,.15);
+      color: #f5f5f5;
+      background: rgba(5,5,5,.76);
+    }
+
+    html[data-theme="dark"] input:focus,
+    html[data-theme="dark"] textarea:focus {
+      border-color: rgba(255,255,255,.72);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.08);
+    }
+
+    html[data-theme="dark"] .section,
+    html[data-theme="dark"] footer {
+      border-top-color: rgba(255,255,255,.10);
+    }
+
+    html[data-theme="dark"] .download-band,
+    html[data-theme="dark"] .showcase-main {
+      border-color: rgba(255,255,255,.82);
+      color: #0a0a0a;
+      background:
+        linear-gradient(135deg, rgba(0,0,0,.08), transparent 42%),
+        #ffffff;
+      box-shadow: 0 28px 80px rgba(0,0,0,.44);
+    }
+
+    html[data-theme="dark"] .download-band h2,
+    html[data-theme="dark"] .download-band strong,
+    html[data-theme="dark"] .showcase-main h3 {
+      color: #0a0a0a;
+    }
+
+    html[data-theme="dark"] .download-band p,
+    html[data-theme="dark"] .download-detail,
+    html[data-theme="dark"] .showcase-main p,
+    html[data-theme="dark"] .metric span {
+      color: rgba(10,10,10,.68);
+    }
+
+    html[data-theme="dark"] .download-band .button {
+      border-color: #0a0a0a;
+      color: #ffffff;
+      background: #0a0a0a;
+    }
+
+    html[data-theme="dark"] .download-detail,
+    html[data-theme="dark"] .metric {
+      border-color: rgba(10,10,10,.16);
+      background: rgba(10,10,10,.06);
+    }
+
+    html[data-theme="dark"] .hero::before {
+      border-color: rgba(255,255,255,.13);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.94), rgba(255,255,255,.72)),
+        repeating-linear-gradient(135deg, rgba(0,0,0,.08) 0 1px, transparent 1px 34px);
+      box-shadow: 0 28px 80px rgba(0,0,0,.42);
+    }
+
+    html[data-theme="dark"] .hero::after {
+      border-color: rgba(255,255,255,.10);
+      background:
+        repeating-radial-gradient(circle, transparent 0 28px, rgba(255,255,255,.12) 29px 30px, transparent 31px 58px),
+        radial-gradient(circle, rgba(255,255,255,.08), transparent 64%);
+    }
+
+    @keyframes heroOrbit {
+      from { transform: translate3d(0, 0, 0) rotate(0deg); }
+      to { transform: translate3d(34px, -18px, 0) rotate(10deg); }
+    }
+
     @media (max-width: 900px) {
       .hero::before { display: none; }
     }
@@ -920,22 +1197,30 @@
 
     @media (max-width: 640px) {
       .shell { width: auto; max-width: none; margin-left: 12px; margin-right: 12px; }
-      body { overflow-x: hidden; }
-      .nav { padding: 14px 0; align-items: center; justify-content: flex-start; }
+      html, body { max-width: 100%; overflow-x: hidden; }
+      .topbar { overflow: hidden; }
+      .nav { width: calc(100vw - 24px); max-width: calc(100vw - 24px); padding: 14px 0; align-items: center; justify-content: space-between; }
+      .brand { min-width: 0; flex: 0 1 auto; }
       .nav-links { display: none; }
       .topbar .button { display: none; }
+      .nav-actions { flex: 0 0 auto; margin-left: auto; }
+      .theme-toggle { width: 42px; min-width: 42px; min-height: 42px; justify-content: center; padding: 0; }
+      .theme-toggle::before { width: 26px; height: 26px; }
+      .theme-toggle span { display: none; }
       h1 { max-width: 320px; font-size: clamp(34px, 10vw, 40px); line-height: .96; overflow-wrap: anywhere; }
       .lead { max-width: 330px; font-size: 16px; overflow-wrap: anywhere; }
       .hero { gap: 32px; padding-bottom: 56px; }
-      .hero-actions .button, .download-band .button { width: 100%; }
+      .hero-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+      .hero-actions .button, .download-band .button { width: 100%; min-width: 0; max-width: 100%; }
+      .mini-stats, .form-card { max-width: 100%; }
       .cards { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      body::before, body::after { animation: none; }
-      .button, .card { transition: none; }
+      body::before, body::after, .hero::after { animation: none; }
+      .button, .card, .theme-toggle { transition: none; }
       .button:hover, .card:hover { transform: none; }
     }
   </style>
@@ -958,7 +1243,12 @@
         <a href="#features">Возможности</a>
         <a href="#why">Почему Гусь</a>
       </nav>
-      <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать</a>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Включить тёмную тему" aria-pressed="false">
+          <span id="themeToggleText">Тёмная</span>
+        </button>
+        <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать</a>
+      </div>
     </div>
   </header>
 
@@ -1151,7 +1441,28 @@
     const statusNode = document.getElementById('status');
     const formNode = document.getElementById('registerForm');
     const versionNode = document.getElementById('currentVersion');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const themeStorageKey = 'gus-site-theme';
     let registrationApiUrl = 'https://guzzini.peresehan145.workers.dev';
+
+    function applyTheme(theme) {
+      const nextTheme = theme === 'dark' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = nextTheme;
+      localStorage.setItem(themeStorageKey, nextTheme);
+      const isDark = nextTheme === 'dark';
+      themeToggle.setAttribute('aria-pressed', String(isDark));
+      themeToggle.setAttribute('aria-label', isDark ? 'Включить светлую тему' : 'Включить тёмную тему');
+      themeToggleText.textContent = isDark ? 'Светлая' : 'Тёмная';
+    }
+
+    const savedTheme = localStorage.getItem(themeStorageKey);
+    applyTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
 
     function setStatus(text, kind) {
       statusNode.textContent = text;
