@@ -414,6 +414,14 @@
       return /Not found|Not Found|404|Failed to fetch|NetworkError|server.*not.*answer|сервер долго не отвечает/i.test(message);
     }
 
+    function shouldFallbackFromWorker(error) {
+      const message = getErrorMessage(error);
+      return isSoftReadError(error)
+        || isGitHubAuthError(error)
+        || shouldUseDirectRequestFallback(error)
+        || /GITHUB_TOKEN|Resource not accessible|API HTTP 50[234]|HTTP 50[234]/i.test(message);
+    }
+
     async function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -674,7 +682,7 @@
           const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(accountsPath));
           if (current && current.json) return current.json;
         } catch (error) {
-          if (!isSoftReadError(error)) throw error;
+          if (!shouldFallbackFromWorker(error)) throw error;
         }
       }
 
@@ -705,7 +713,7 @@
           const current = await adminApiRequest('/admin/file?path=' + encodeURIComponent(paymentsPath));
           if (current && current.json) return current.json;
         } catch (error) {
-          if (!isSoftReadError(error)) throw error;
+          if (!shouldFallbackFromWorker(error)) throw error;
         }
       }
 
@@ -904,10 +912,19 @@
 
     async function publishFile(filePath, content, message) {
       if (getApiUrl() && getAdminKey()) {
-        return adminApiRequest('/admin/file', {
-          method: 'PUT',
-          body: JSON.stringify({ path: filePath, content, message })
-        });
+        try {
+          return await adminApiRequest('/admin/file', {
+            method: 'PUT',
+            body: JSON.stringify({ path: filePath, content, message })
+          });
+        } catch (error) {
+          const canUseGitHubFallback = shouldFallbackFromWorker(error);
+          if (!canUseGitHubFallback) throw error;
+          if (!$('githubToken').value.trim()) {
+            throw new Error('Worker не смог сохранить файл: ' + getErrorMessage(error) + '. Вставь GitHub Token с доступом Contents: Read and write и нажми публикацию ещё раз.');
+          }
+          setStatus('Worker не смог сохранить файл. Сохраняю напрямую через GitHub...', '');
+        }
       }
 
       const branch = $('branch').value.trim() || 'main';
@@ -1165,7 +1182,22 @@
         const pending = requests.filter((item) => item.status === 'pending').length;
         setRequestStatus('Заявок всего: ' + requests.length + ' | ожидают: ' + pending, 'ok');
       } catch (error) {
-        setRequestStatus('Ошибка заявок: ' + error.message, 'bad');
+        if (shouldFallbackFromWorker(error) && $('githubToken').value.trim()) {
+          try {
+            setRequestStatus('Worker не смог загрузить заявки. Читаю напрямую через GitHub...');
+            const requestsPath = config.registrationRequestsPath || 'gus_registration_requests.json';
+            const requestsFile = await readGitJsonFile(requestsPath, { updatedAt: '', requests: [] });
+            const requests = Array.isArray(requestsFile.json.requests) ? requestsFile.json.requests : [];
+            renderRequests(requests);
+            const pending = requests.filter((item) => item.status === 'pending').length;
+            setRequestStatus('Заявки загружены напрямую через GitHub. Всего: ' + requests.length + ' | ожидают: ' + pending, 'ok');
+            return;
+          } catch (fallbackError) {
+            setRequestStatus('Ошибка прямой загрузки заявок: ' + getErrorMessage(fallbackError), 'bad');
+            return;
+          }
+        }
+        setRequestStatus('Ошибка заявок: ' + getErrorMessage(error), 'bad');
       }
     }
 
@@ -1180,7 +1212,7 @@
         await loadRows();
         setRequestStatus(action === 'approve' ? 'Заявка подтверждена. Аккаунт добавлен в программу.' : 'Заявка отклонена.', 'ok');
       } catch (error) {
-        if (shouldUseDirectRequestFallback(error)) {
+        if (shouldFallbackFromWorker(error)) {
           try {
             setRequestStatus('Worker не ответил. Пробую подтвердить напрямую через GitHub...');
             await decideRequestViaGitHub(id, action);
