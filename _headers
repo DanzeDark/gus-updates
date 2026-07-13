@@ -10,6 +10,9 @@
 /Gus-Web-Setup.bat
   Content-Type: application/octet-stream
 
+/Gus-Web-Setup.vbs
+  Content-Type: application/octet-stream
+
 /Install-Gus-Web.ps1
   Content-Type: text/plain; charset=utf-8
 
