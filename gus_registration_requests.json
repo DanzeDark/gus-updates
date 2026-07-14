@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-14T15:02:58.032Z",
+  "updatedAt": "2026-07-14T15:03:03.023Z",
   "requests": [
     {
       "id": "9acd921c-4463-48c7-b4c5-8cbf6d1b0923",
@@ -7,10 +7,10 @@
       "name": "NIKITA",
       "keyHash": "16ceea5494d37416d109dd6849abab787851dc39bba34e739c169a2a7d063ad2",
       "note": "123",
-      "status": "pending",
+      "status": "denied",
       "createdAt": "2026-07-14T15:02:58.032Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-14T15:03:03.023Z",
+      "decisionNote": "denied"
     },
     {
       "id": "ba989c63-af88-4a8c-aa96-06d9b02c632f",
