@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-13T12:08:36.009Z",
+  "updatedAt": "2026-07-14T08:37:21.437Z",
   "accounts": [
     {
       "login": "ave",
@@ -180,6 +180,18 @@
       "debt": "",
       "status": "",
       "note": ""
+    },
+    {
+      "login": "hi",
+      "name": "Hi",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": "Я"
     }
   ]
 }
