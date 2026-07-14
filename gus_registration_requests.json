@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-14T08:37:13.553Z",
+  "updatedAt": "2026-07-14T08:37:21.437Z",
   "requests": [
     {
       "id": "ba989c63-af88-4a8c-aa96-06d9b02c632f",
@@ -7,10 +7,10 @@
       "name": "Hi",
       "keyHash": "9013c8fb6e9e019fa9240ffc274f816cffd3c7dced61d94b9b069bcc6d24361f",
       "note": "Я",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-14T08:37:13.553Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-14T08:37:21.437Z",
+      "decisionNote": "approved"
     },
     {
       "id": "13f9c08a-9e95-4b8c-bd44-e92450f7e588",
