@@ -59,7 +59,7 @@
       color: var(--text);
       background: var(--bg);
       overflow-x: hidden;
-      transition: color .55s ease, background-color .55s ease;
+      transition: color .35s ease, background-color .35s ease;
     }
 
     body::before,
@@ -114,13 +114,13 @@
     .orbit-bg span:nth-child(4) { left: 12vw; bottom: -18vh; --r: 72deg; animation-duration: 36s; }
 
     .theme-sweep {
+      display: none;
       position: fixed;
-      inset: 0;
-      z-index: 50;
+      inset: auto;
+      z-index: -1;
       pointer-events: none;
-      background: var(--bg);
-      transform: scaleX(0);
-      transform-origin: left center;
+      background: transparent;
+      transform: none;
       opacity: 0;
     }
 
