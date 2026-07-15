@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.21",
+    "version":  "1.13.22",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-13T13:13:20+03:00",
-    "notes":  "Version 1.13.21: removed AI start from release and sped up MAX switching with cached window detection."
+    "createdAt":  "2026-07-15T14:25:49+03:00",
+    "notes":  "Version 1.13.22: fixed GitHub accounts publishing sync, publish accounts-only JSON, and retry after remote updates."
 }
