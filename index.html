@@ -192,6 +192,15 @@
       box-shadow: 0 12px 30px var(--shadow);
     }
 
+    .goose-mark {
+      width: 29px;
+      height: 29px;
+      display: block;
+    }
+
+    .goose-eye { fill: var(--button); }
+    .goose-beak { fill: #f4a62a; }
+
     .brand strong {
       font-size: 17px;
       letter-spacing: 0;
@@ -268,6 +277,20 @@
       transition: transform .45s cubic-bezier(.2, .9, .2, 1);
     }
 
+    .theme-glyph {
+      width: 18px;
+      height: 18px;
+      display: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .theme-glyph.theme-moon { fill: currentColor; stroke: none; }
+    html:not([data-theme="light"]) .theme-sun { display: block; }
+    html[data-theme="light"] .theme-moon { display: block; }
     html[data-theme="light"] .toggle-dot { transform: translateX(2px) rotate(180deg); }
 
     .hero {
@@ -661,7 +684,13 @@
   <header class="topbar">
     <div class="wrap nav">
       <a class="brand" href="#top" aria-label="Гусь">
-        <span class="logo">◔</span>
+        <span class="logo" aria-hidden="true">
+          <svg class="goose-mark" viewBox="0 0 64 64" role="img">
+            <path d="M13 40c2.2-10.6 11.2-16.2 24-14.9 2.6-7.4 7.2-12.4 13.6-14.6 3.5-1.2 7 .2 9.1 2.6-5.8 1.1-8.8 4.1-8.8 8.4 0 3.7 2.4 6.2 7.2 7.5-3.4 4.1-8.1 5.4-13.4 3.9-3.5-1-6.3-2.4-10.7-2.1-7.7.6-12.7 4.5-14.8 10.6h28.6c-4.1 6.5-11.5 10.4-21.4 9.4C19.2 50 14 46.2 13 40z" fill="currentColor"/>
+            <path class="goose-beak" d="M53.6 18.7 62 21.5l-8.4 3.1c.4-2 .4-3.9 0-5.9z"/>
+            <circle class="goose-eye" cx="47.2" cy="16.9" r="1.7"/>
+          </svg>
+        </span>
         <strong>Гусь</strong>
       </a>
       <nav class="nav-links" aria-label="Разделы">
@@ -673,7 +702,15 @@
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
-          <span class="toggle-dot" id="themeIcon">●</span>
+          <span class="toggle-dot" id="themeIcon" aria-hidden="true">
+            <svg class="theme-glyph theme-sun" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <path d="M12 2.5v2.2M12 19.3v2.2M4.7 4.7l1.6 1.6M17.7 17.7l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.7 19.3l1.6-1.6M17.7 6.3l1.6-1.6"></path>
+            </svg>
+            <svg class="theme-glyph theme-moon" viewBox="0 0 24 24">
+              <path d="M18.8 14.3A7.3 7.3 0 0 1 9.7 5.2 8 8 0 1 0 18.8 14.3z"></path>
+            </svg>
+          </span>
           <span id="themeLabel">Светлая</span>
         </button>
         <a href="Gus-Web-Setup.vbs" download>Скачать</a>
@@ -996,7 +1033,7 @@
       document.documentElement.dataset.theme = theme;
       localStorage.setItem('gus-site-theme', theme);
       themeLabel.textContent = theme === 'dark' ? 'Светлая' : 'Тёмная';
-      themeIcon.textContent = theme === 'dark' ? '●' : '◐';
+      themeIcon.dataset.icon = theme === 'dark' ? 'sun' : 'moon';
     }
 
     themeToggle.addEventListener('click', () => {
