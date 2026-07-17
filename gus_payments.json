@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T08:25:38.929Z",
+  "updatedAt": "2026-07-17T08:25:44.623Z",
   "accounts": [
     {
       "login": "ave",
@@ -240,18 +240,6 @@
       "debt": "",
       "status": "Не задано",
       "note": ""
-    },
-    {
-      "login": "wasabi",
-      "name": "Васаби",
-      "active": true,
-      "startedAt": "",
-      "paidAt": "",
-      "dueAt": "",
-      "amount": "",
-      "debt": "",
-      "status": "Не задано",
-      "note": "говновпариже"
     }
   ]
 }
