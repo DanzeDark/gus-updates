@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T13:38:46.104Z",
+  "updatedAt": "2026-07-17T13:58:55.085Z",
   "accounts": [
     {
       "login": "ave",
@@ -252,6 +252,18 @@
       "debt": "",
       "status": "Не задано",
       "note": "123"
+    },
+    {
+      "login": "kazahka",
+      "name": "kazahka",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": "Я лохушкв"
     }
   ]
 }
