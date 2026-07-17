@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T13:56:05.308Z",
+  "updatedAt": "2026-07-17T13:58:55.085Z",
   "requests": [
     {
       "id": "ae589c89-ccf7-415a-ace0-f03f9c0b4848",
@@ -7,10 +7,10 @@
       "name": "kazahka",
       "keyHash": "f707ac6588ee6dc2dee11817c39baa0d50a9a1e6c6e92c05dd37d5f7a7249a3f",
       "note": "Я лохушкв",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-17T13:56:05.308Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-17T13:58:55.085Z",
+      "decisionNote": "approved"
     },
     {
       "id": "6193201a-fc74-4553-9084-bacefcbe7678",
