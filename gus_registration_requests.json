@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T13:38:21.624Z",
+  "updatedAt": "2026-07-17T13:38:46.104Z",
   "requests": [
     {
       "id": "6193201a-fc74-4553-9084-bacefcbe7678",
@@ -7,10 +7,10 @@
       "name": "соня",
       "keyHash": "203bd3e318fa0289246f4e1fdac5c58d1c552cfaba3d90b8893f2acb8cc7ee29",
       "note": "123",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-17T13:38:21.624Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-17T13:38:46.104Z",
+      "decisionNote": "approved"
     },
     {
       "id": "4ee7aad7-e822-40ab-a154-1e6bf7cc019b",
