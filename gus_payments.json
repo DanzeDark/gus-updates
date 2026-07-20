@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20T07:38:18.472Z",
+  "updatedAt": "2026-07-20T08:43:38.139Z",
   "accounts": [
     {
       "login": "ave",
@@ -288,6 +288,18 @@
       "debt": "",
       "status": "Не задано",
       "note": ""
+    },
+    {
+      "login": "holod1",
+      "name": "Holod1",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": "Холодный ноут hp"
     }
   ]
 }
