@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-07-20T10:38:31+03:00",
+    "updatedAt":  "2026-07-20T11:40:13+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -166,7 +166,7 @@
                          "login":  "akkord",
                          "name":  "akkord",
                          "keyHash":  "f7c5e6a1c6b7d453778df206e62cfc16e8b9dc9d5d1455ceeafd18d1405e54f3",
-                         "active":  true,
+                         "active":  false,
                          "createdAt":  "2026-07-20 08:58:47",
                          "note":  ""
                      },
