@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T13:58:55.085Z",
+  "updatedAt": "2026-07-20T05:58:44.215Z",
   "accounts": [
     {
       "login": "ave",
@@ -264,6 +264,18 @@
       "debt": "",
       "status": "Не задано",
       "note": "Я лохушкв"
+    },
+    {
+      "login": "akkord",
+      "name": "Akord",
+      "active": true,
+      "startedAt": "",
+      "paidAt": "",
+      "dueAt": "",
+      "amount": "",
+      "debt": "",
+      "status": "Не задано",
+      "note": ""
     }
   ]
 }
