@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20T07:37:48.381Z",
+  "updatedAt": "2026-07-20T07:38:18.472Z",
   "requests": [
     {
       "id": "91aea7b9-a85d-4c5c-915e-295d7ba11576",
@@ -7,10 +7,10 @@
       "name": "Крама",
       "keyHash": "df4cd9f1abeaf1b9a88d666005810801f75eee77569ffa5ceb5c77490dd75b5d",
       "note": "",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-20T07:37:48.381Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-20T07:38:18.472Z",
+      "decisionNote": "approved"
     },
     {
       "id": "b775fb2e-0d45-4b5e-8c7a-96038d5b15c5",
