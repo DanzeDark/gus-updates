@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20T05:58:38.427Z",
+  "updatedAt": "2026-07-20T05:58:44.215Z",
   "requests": [
     {
       "id": "b775fb2e-0d45-4b5e-8c7a-96038d5b15c5",
@@ -7,10 +7,10 @@
       "name": "Akord",
       "keyHash": "cbc61d0805281c855e07cb62cf2ad4333b40ac400397fcd34ff5349e78d737e3",
       "note": "",
-      "status": "pending",
+      "status": "approved",
       "createdAt": "2026-07-20T05:58:38.427Z",
-      "decidedAt": "",
-      "decisionNote": ""
+      "decidedAt": "2026-07-20T05:58:44.215Z",
+      "decisionNote": "approved"
     },
     {
       "id": "83b5674f-7f09-44b2-9489-5a2001d24df9",
