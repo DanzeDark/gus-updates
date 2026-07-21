@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.40",
+    "version":  "1.13.41",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T14:26:05+03:00",
-    "notes":  "Version 1.13.40: adds a Find MAX button directly above the MAX list in Family Access and reuses the same scan action as the top button."
+    "createdAt":  "2026-07-21T14:36:43+03:00",
+    "notes":  "Version 1.13.41: adds a per-row Find MAX button inside the Family Access MAX list that brings that specific MAX window to the front."
 }

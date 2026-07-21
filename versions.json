@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T14:27:02+03:00",
+    "updatedAt":  "2026-07-21T14:37:48+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.41",
+                         "createdAt":  "2026-07-21T14:36:43+03:00",
+                         "notes":  "Version 1.13.41: adds a per-row Find MAX button inside the Family Access MAX list that brings that specific MAX window to the front.",
+                         "package":  "versions/v1.13.41/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.41/gus_update.json",
+                         "versionFile":  "versions/v1.13.41/VERSION.txt",
+                         "size":  2890513
+                     },
                      {
                          "version":  "1.13.40",
                          "createdAt":  "2026-07-21T14:26:05+03:00",
