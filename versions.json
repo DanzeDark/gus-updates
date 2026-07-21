@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T08:45:17+03:00",
+    "updatedAt":  "2026-07-21T08:55:27+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.26",
+                         "createdAt":  "2026-07-21T08:54:17+03:00",
+                         "notes":  "Version 1.13.26: forwarding from text channels avoids channel header/info clicks and targets real post bubbles.",
+                         "package":  "versions/v1.13.26/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.26/gus_update.json",
+                         "versionFile":  "versions/v1.13.26/VERSION.txt",
+                         "size":  2884258
+                     },
                      {
                          "version":  "1.13.25",
                          "createdAt":  "2026-07-21T08:44:08+03:00",
