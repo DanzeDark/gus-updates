@@ -1,0 +1,6 @@
+{
+    "version":  "1.13.30",
+    "package":  "Gus-MaxContactTool-update.zip",
+    "createdAt":  "2026-07-21T09:55:20+03:00",
+    "notes":  "Version 1.13.30: fixes MAX discovery Count crash when only one Maxitochka profile is open by always storing scan results as an array."
+}
