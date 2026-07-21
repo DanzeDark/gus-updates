@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T08:00:01+03:00",
+    "updatedAt":  "2026-07-21T08:33:45+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.24",
+                         "createdAt":  "2026-07-21T08:32:39+03:00",
+                         "notes":  "Version 1.13.24: Family Access switches from Contacts to Channels before searching the text channel.",
+                         "package":  "versions/v1.13.24/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.24/gus_update.json",
+                         "versionFile":  "versions/v1.13.24/VERSION.txt",
+                         "size":  2882918
+                     },
                      {
                          "version":  "1.13.23",
                          "createdAt":  "2026-07-21T07:59:11+03:00",
