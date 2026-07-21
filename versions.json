@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T09:29:35+03:00",
+    "updatedAt":  "2026-07-21T09:36:20+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.29",
+                         "createdAt":  "2026-07-21T09:35:15+03:00",
+                         "notes":  "Version 1.13.29: fixes Maxitochka discovery so DevTools targets are flattened and MAX pages are not merged with service workers.",
+                         "package":  "versions/v1.13.29/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.29/gus_update.json",
+                         "versionFile":  "versions/v1.13.29/VERSION.txt",
+                         "size":  2885350
+                     },
                      {
                          "version":  "1.13.28",
                          "createdAt":  "2026-07-21T09:28:37+03:00",
