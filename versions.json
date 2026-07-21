@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T09:07:42+03:00",
+    "updatedAt":  "2026-07-21T09:29:35+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.28",
+                         "createdAt":  "2026-07-21T09:28:37+03:00",
+                         "notes":  "Version 1.13.28: fixes Maxitochka scan Count errors and restores real text-channel post forwarding without text fallback.",
+                         "package":  "versions/v1.13.28/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.28/gus_update.json",
+                         "versionFile":  "versions/v1.13.28/VERSION.txt",
+                         "size":  2885094
+                     },
                      {
                          "version":  "1.13.27",
                          "createdAt":  "2026-07-21T09:06:50+03:00",
