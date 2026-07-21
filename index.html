@@ -3,953 +3,193 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Гусь - регистрация и установка</title>
-  <meta name="description" content="Регистрация, установка и обновления программы Гусь.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='black'/%3E%3Ccircle cx='32' cy='32' r='18' fill='white'/%3E%3Cpath d='M24 35c7 6 18 4 21-5-7 1-13-1-16-8-5 3-8 8-5 13z' fill='black'/%3E%3C/svg%3E">
+  <title>Гусь - установка</title>
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050505;
-      --bg-soft: #101010;
-      --text: #f8f8f8;
-      --muted: rgba(248, 248, 248, .66);
-      --faint: rgba(248, 248, 248, .12);
-      --line: rgba(248, 248, 248, .16);
-      --card: rgba(255, 255, 255, .08);
-      --card-strong: rgba(255, 255, 255, .13);
-      --field: rgba(0, 0, 0, .68);
-      --field-line: rgba(255, 255, 255, .12);
-      --button: #f7f7f7;
-      --button-text: #070707;
-      --shadow: rgba(0, 0, 0, .45);
-      --radius-xl: 42px;
-      --radius-lg: 28px;
-      --radius-md: 18px;
-      --accent: #ffffff;
-      --ok: #7affb2;
-      --bad: #ff7878;
-    }
-
-    html[data-theme="light"] {
-      color-scheme: light;
-      --bg: #f5f5f0;
-      --bg-soft: #ffffff;
-      --text: #080808;
-      --muted: rgba(8, 8, 8, .62);
-      --faint: rgba(8, 8, 8, .09);
-      --line: rgba(8, 8, 8, .14);
-      --card: rgba(255, 255, 255, .72);
-      --card-strong: rgba(255, 255, 255, .92);
-      --field: rgba(255, 255, 255, .78);
-      --field-line: rgba(8, 8, 8, .13);
-      --button: #090909;
-      --button-text: #ffffff;
-      --shadow: rgba(20, 20, 20, .16);
-      --accent: #050505;
-      --ok: #168851;
-      --bad: #b42323;
-    }
-
+    :root { color-scheme: dark; --bg: #0b0f18; --panel: rgba(18, 23, 35, .88); --panel2: rgba(27, 34, 50, .88); --text: #f4f7fb; --muted: #a8b0bf; --line: rgba(143, 160, 196, .24); --accent: #31a5ff; --ok: #47d18c; --warn: #ffd166; }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Segoe UI", Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      overflow-x: hidden;
-      transition: background-color .25s ease;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -3;
-    }
-
-    body::before {
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 24%),
-        radial-gradient(circle at 74% 48%, rgba(255,255,255,.08), transparent 28%),
-        linear-gradient(115deg, rgba(255,255,255,.04), transparent 52%);
-      opacity: .9;
-      animation: ambient 16s ease-in-out infinite alternate;
-    }
-
-    body::after {
-      z-index: -2;
-      background:
-        repeating-linear-gradient(90deg, transparent 0 68px, var(--faint) 69px 70px),
-        repeating-linear-gradient(0deg, transparent 0 68px, var(--faint) 69px 70px);
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.42), transparent 72%);
-      opacity: .52;
-    }
-
-    .orbit-bg {
-      position: fixed;
-      inset: -12vh -8vw;
-      z-index: -1;
-      pointer-events: none;
-      opacity: .74;
-      overflow: hidden;
-    }
-
-    .orbit-bg span {
-      position: absolute;
-      width: 42vw;
-      aspect-ratio: 1;
-      border: 2px solid var(--faint);
-      border-radius: 50%;
-      transform: rotate(var(--r));
-      animation: orbit 18s linear infinite;
-    }
-
-    .orbit-bg span:nth-child(1) { left: 5vw; top: 18vh; --r: 18deg; animation-duration: 24s; }
-    .orbit-bg span:nth-child(2) { left: 31vw; top: 8vh; --r: 112deg; animation-duration: 29s; }
-    .orbit-bg span:nth-child(3) { right: -10vw; top: 18vh; --r: -35deg; animation-duration: 31s; }
-    .orbit-bg span:nth-child(4) { left: 12vw; bottom: -18vh; --r: 72deg; animation-duration: 36s; }
-
-    .theme-sweep {
-      display: none;
-      position: fixed;
-      inset: auto;
-      z-index: -1;
-      pointer-events: none;
-      background: transparent;
-      transform: none;
-      opacity: 0;
-    }
-
-    .theme-sweep.run-dark {
-      transform-origin: left center;
-      animation: themeWipe .72s cubic-bezier(.72, 0, .2, 1);
-    }
-
-    .theme-sweep.run-light {
-      transform-origin: right center;
-      animation: themeWipe .72s cubic-bezier(.72, 0, .2, 1);
-    }
-
-    @keyframes themeWipe {
-      0% { transform: scaleX(0); opacity: 1; }
-      54% { transform: scaleX(1); opacity: 1; }
-      100% { transform: scaleX(1); opacity: 0; }
-    }
-
-    @keyframes ambient {
-      from { transform: translate3d(-1.8vw, -1vh, 0) scale(1); }
-      to { transform: translate3d(1.8vw, 1.2vh, 0) scale(1.04); }
-    }
-
-    @keyframes orbit {
-      to { transform: rotate(calc(var(--r) + 360deg)); }
-    }
-
-    .wrap {
-      width: min(1120px, calc(100% - 40px));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--line);
-      background: color-mix(in srgb, var(--bg) 78%, transparent);
-    }
-
-    .nav {
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 22px;
-    }
-
-    .brand,
-    .nav-links,
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand {
-      color: var(--text);
-      text-decoration: none;
-      width: fit-content;
-    }
-
-    .logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--button);
-      color: var(--button-text);
-      font-weight: 900;
-      font-size: 20px;
-      box-shadow: 0 12px 30px var(--shadow);
-    }
-
-    .goose-mark {
-      width: 34px;
-      height: 34px;
-      display: block;
-    }
-
-    .goose-eye { fill: var(--button); }
-    .goose-beak { fill: #f4a62a; }
-
-    .brand strong {
-      font-size: 17px;
-      letter-spacing: 0;
-    }
-
-    .nav-links a,
-    .nav-actions a,
-    .theme-toggle,
-    .pill,
-    .button {
-      min-height: 44px;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-decoration: none;
-      font-weight: 850;
-      letter-spacing: 0;
-      transition: transform .22s ease, background .22s ease, border-color .22s ease, opacity .22s ease;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      padding: 0 8px;
-      min-height: 36px;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-actions a,
-    .button.primary {
-      padding: 0 24px;
-      background: var(--button);
-      color: var(--button-text);
-      box-shadow: 0 16px 34px var(--shadow);
-    }
-
-    .button.secondary {
-      padding: 0 24px;
-      color: var(--text);
-      border-color: var(--line);
-      background: rgba(255,255,255,.03);
-    }
-
-    .button:hover,
-    .nav-actions a:hover,
-    .theme-toggle:hover,
-    .feature-card:hover,
-    .step-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .theme-toggle {
-      padding: 5px 15px 5px 6px;
-      color: var(--text);
-      background: rgba(255,255,255,.05);
-      border-color: var(--line);
-      font: inherit;
-      font-weight: 850;
-    }
-
-    .toggle-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--button);
-      color: var(--button-text);
-      transition: transform .45s cubic-bezier(.2, .9, .2, 1);
-    }
-
-    .theme-glyph {
-      width: 18px;
-      height: 18px;
-      display: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-    }
-
-    .theme-glyph.theme-moon { fill: currentColor; stroke: none; }
-    html:not([data-theme="light"]) .theme-sun { display: block; }
-    html[data-theme="light"] .theme-moon { display: block; }
-    html[data-theme="light"] .toggle-dot { transform: translateX(2px) rotate(180deg); }
-
-    .hero {
-      min-height: calc(100vh - 80px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(390px, .78fr);
-      align-items: center;
-      gap: 52px;
-      padding: 54px 0 74px;
-    }
-
-    .eyebrow {
-      width: fit-content;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 14px;
-      color: var(--text);
-      background: rgba(255,255,255,.04);
-      font-size: 14px;
-      font-weight: 850;
-      margin-bottom: 26px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      display: inline-block;
-      border-radius: 50%;
-      background: var(--accent);
-      margin-right: 8px;
-      vertical-align: 1px;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 620px;
-      font-size: clamp(54px, 7vw, 92px);
-      line-height: .95;
-      letter-spacing: 0;
-      font-weight: 950;
-    }
-
-    .lead {
-      max-width: 680px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: clamp(18px, 2.1vw, 24px);
-      line-height: 1.42;
-    }
-
-    .hero-actions,
-    .stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .button {
-      min-height: 48px;
-      font-size: 16px;
-    }
-
-    .stats {
-      margin-top: 28px;
-    }
-
-    .pill {
-      min-height: 40px;
-      padding: 0 16px;
-      color: var(--text);
-      border-color: var(--line);
-      background: rgba(255,255,255,.035);
-      font-size: 14px;
-    }
-
-    .hero-card-wrap {
-      position: relative;
-      min-height: 660px;
-      display: grid;
-      place-items: center;
-    }
-
-    .tilt-panel {
-      position: absolute;
-      width: min(430px, 92%);
-      height: 610px;
-      border-radius: var(--radius-xl);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,.88), rgba(255,255,255,.42)),
-        repeating-linear-gradient(55deg, transparent 0 40px, rgba(255,255,255,.26) 41px 42px);
-      transform: rotate(-3deg);
-      box-shadow: 0 34px 90px var(--shadow);
-      opacity: .88;
-    }
-
-    html[data-theme="light"] .tilt-panel {
-      background:
-        linear-gradient(145deg, rgba(10,10,10,.9), rgba(10,10,10,.54)),
-        repeating-linear-gradient(55deg, transparent 0 40px, rgba(255,255,255,.08) 41px 42px);
-    }
-
-    .register-card {
-      position: relative;
-      z-index: 2;
-      width: min(410px, 88%);
-      border-radius: var(--radius-lg);
-      padding: 34px 30px;
-      background: color-mix(in srgb, var(--bg-soft) 84%, transparent);
-      border: 1px solid var(--line);
-      box-shadow: 0 34px 90px var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .register-card h2,
-    .section h2 {
-      margin: 0;
-      font-size: clamp(28px, 3vw, 36px);
-      line-height: 1.05;
-      letter-spacing: 0;
-    }
-
-    .register-card p,
-    .section-copy {
-      color: var(--muted);
-      line-height: 1.6;
-      margin: 14px 0 24px;
-      font-size: 16px;
-    }
-
-    .field {
-      display: grid;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .field label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 850;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid var(--field-line);
-      border-radius: 8px;
-      background: var(--field);
-      color: var(--text);
-      font: inherit;
-      font-weight: 650;
-      outline: none;
-      padding: 0 14px;
-      min-height: 46px;
-      transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
-    }
-
-    textarea {
-      min-height: 96px;
-      resize: vertical;
-      padding: 13px 14px;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: color-mix(in srgb, var(--accent) 58%, transparent);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
-    }
-
-    .register-card button {
-      width: 100%;
-      min-height: 48px;
-      border: 0;
-      border-radius: 999px;
-      background: var(--button);
-      color: var(--button-text);
-      font: inherit;
-      font-weight: 950;
-      cursor: pointer;
-      transition: transform .22s ease, opacity .22s ease;
-      box-shadow: 0 16px 34px var(--shadow);
-    }
-
-    .register-card button:hover { transform: translateY(-2px); }
-    .register-card button:disabled { cursor: wait; opacity: .72; transform: none; }
-
-    .register-status {
-      min-height: 22px;
-      margin-top: 13px;
-      color: var(--muted);
-      font-weight: 750;
-      line-height: 1.45;
-    }
-
+    body { margin: 0; min-height: 100vh; font-family: "Segoe UI", Arial, sans-serif; color: var(--text); overflow-x: hidden; background: var(--bg); padding: 28px 16px; }
+    body::before, body::after { content: ""; position: fixed; inset: -20%; z-index: -2; background: conic-gradient(from 120deg at 45% 50%, rgba(49,165,255,.18), rgba(71,209,140,.14), rgba(255,209,102,.12), rgba(255,91,142,.14), rgba(49,165,255,.18)); animation: spin-bg 18s linear infinite; }
+    body::after { z-index: -1; background: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 42px); opacity: .24; animation: road 10s linear infinite; }
+    @keyframes spin-bg { to { transform: rotate(360deg); } }
+    @keyframes road { to { background-position: 420px 420px; } }
+    main { width: min(980px, 100%); margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 26px; box-shadow: 0 22px 70px rgba(0,0,0,.38); backdrop-filter: blur(10px); }
+    header { display: grid; gap: 10px; margin-bottom: 20px; }
+    h1 { margin: 0; font-size: clamp(42px, 8vw, 82px); line-height: .9; font-weight: 850; }
+    h2 { margin: 0 0 12px; font-size: 24px; }
+    p { margin: 0 0 16px; color: var(--muted); line-height: 1.55; }
+    .version { color: var(--text); font-weight: 700; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .tabs label { cursor: pointer; border: 1px solid var(--line); border-radius: 6px; padding: 11px 14px; background: rgba(10,14,22,.66); color: var(--muted); font-weight: 700; }
+    input[name="tab"] { position: absolute; opacity: 0; pointer-events: none; }
+    #tab-install:checked ~ .tabs label[for="tab-install"], #tab-register:checked ~ .tabs label[for="tab-register"], #tab-features:checked ~ .tabs label[for="tab-features"], #tab-versions:checked ~ .tabs label[for="tab-versions"] { background: #176cc1; border-color: #2689eb; color: white; }
+    .tab-panel { display: none; border: 1px solid var(--line); background: rgba(9,13,22,.46); border-radius: 8px; padding: 18px; }
+    #tab-install:checked ~ .panels #panel-install, #tab-register:checked ~ .panels #panel-register, #tab-features:checked ~ .panels #panel-features, #tab-versions:checked ~ .panels #panel-versions { display: block; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
+    a { color: var(--text); text-decoration: none; border: 1px solid var(--line); border-radius: 6px; padding: 13px 16px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-width: 180px; font-weight: 700; }
+    a.primary { background: #176cc1; border-color: #2689eb; }
+    a:hover { border-color: var(--accent); }
+    .steps { display: grid; gap: 10px; margin-top: 18px; }
+    .step, .feature, .version-card { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; background: rgba(18,24,36,.66); color: var(--muted); }
+    .step strong { color: var(--ok); margin-right: 8px; }
+    .features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .feature { transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease; transform-origin: center; will-change: transform; }
+    .feature:hover { transform: translateY(-4px) scale(1.025); border-color: rgba(49,165,255,.72); background: rgba(24,33,52,.86); box-shadow: 0 16px 36px rgba(0,0,0,.28), 0 0 0 1px rgba(49,165,255,.12); }
+    .feature strong { display: block; color: var(--text); margin-bottom: 6px; }
+    .versions { display: grid; gap: 10px; }
+    .version-card { display: grid; gap: 8px; }
+    .version-card div { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .version-card strong { color: var(--warn); font-size: 18px; }
+    .version-card span { color: var(--muted); font-size: 13px; }
+    .version-card p { margin: 0; }
+    .version-card a { width: fit-content; min-width: 160px; padding: 10px 12px; }
+    .register-form { display: grid; gap: 10px; max-width: 560px; }
+    .register-form input, .register-form textarea { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 6px; background: rgba(8,11,17,.72); color: var(--text); font: inherit; padding: 0 12px; outline: none; }
+    .register-form textarea { min-height: 86px; padding: 10px 12px; resize: vertical; }
+    .register-form button { min-height: 42px; border: 1px solid #2689eb; border-radius: 6px; background: #176cc1; color: white; font: inherit; font-weight: 800; cursor: pointer; }
+    .register-status { min-height: 22px; color: var(--muted); }
     .register-status.ok { color: var(--ok); }
-    .register-status.bad { color: var(--bad); }
-
-    .section {
-      padding: 92px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-      align-items: end;
-      margin-bottom: 28px;
-    }
-
-    .section-copy {
-      max-width: 620px;
-      margin: 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .grid.two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .feature-card,
-    .step-card,
-    .version-card {
-      min-height: 168px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 24px;
-      background: var(--card);
-      box-shadow: 0 16px 42px rgba(0,0,0,.08);
-      transition: transform .24s ease, border-color .24s ease, background .24s ease, box-shadow .24s ease;
-      backdrop-filter: blur(14px);
-    }
-
-    .feature-card:hover,
-    .step-card:hover {
-      border-color: color-mix(in srgb, var(--accent) 44%, transparent);
-      background: var(--card-strong);
-      box-shadow: 0 24px 60px var(--shadow);
-    }
-
-    .card-kicker {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 900;
-      margin-bottom: 30px;
-    }
-
-    .feature-card h3,
-    .step-card h3,
-    .version-card h3 {
-      margin: 0 0 12px;
-      font-size: 20px;
-      line-height: 1.16;
-    }
-
-    .feature-card p,
-    .step-card p,
-    .version-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .install-card {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--line);
-      background: var(--card);
-      padding: 28px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 24px;
-      align-items: center;
-      backdrop-filter: blur(16px);
-    }
-
-    .install-card h3 {
-      margin: 0 0 10px;
-      font-size: 26px;
-    }
-
-    .install-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .version-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .version-card {
-      min-height: 0;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
-      align-items: center;
-      padding: 20px 22px;
-    }
-
-    .version-card .meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 750;
-      margin-bottom: 8px;
-    }
-
-    .version-card a {
-      color: var(--button-text);
-      background: var(--button);
-      border-radius: 999px;
-      padding: 12px 18px;
-      text-decoration: none;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .version-loading {
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 18px;
-      background: var(--card);
-    }
-
-    .check-status {
-      margin-top: 14px;
-      color: var(--muted);
-      min-height: 24px;
-      font-weight: 750;
-    }
-
-    footer {
-      padding: 34px 0 46px;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      font-size: 14px;
-    }
-
-    @media (max-width: 980px) {
-      .nav-links { display: none; }
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-      .hero-card-wrap { min-height: 580px; }
-      .grid,
-      .grid.two { grid-template-columns: 1fr; }
-      .section-head,
-      .install-card,
-      .version-card {
-        grid-template-columns: 1fr;
-        align-items: start;
-      }
-    }
-
-    @media (max-width: 620px) {
-      .wrap { width: min(100% - 24px, 1120px); }
-      .nav { min-height: 72px; }
-      .nav-actions a { display: none; }
-      .hero { padding-top: 38px; }
-      h1 { font-size: clamp(48px, 18vw, 72px); }
-      .lead { font-size: 18px; }
-      .button { width: 100%; }
-      .hero-card-wrap { min-height: auto; padding: 28px 0 8px; }
-      .tilt-panel { display: none; }
-      .register-card { width: 100%; }
-      .section { padding: 64px 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
-    }
+    .register-status.bad { color: #ff7a7a; }
+    footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 720px) { main { padding: 18px; } .features { grid-template-columns: 1fr; } a { width: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .feature { transition: none; } .feature:hover { transform: none; } }
   </style>
 </head>
 <body>
-  <div class="theme-sweep" id="themeSweep"></div>
-  <div class="orbit-bg" aria-hidden="true">
-    <span></span><span></span><span></span><span></span>
-  </div>
+  <main>
+    <header>
+      <h1>Гусь</h1>
+      <p>Установщик программы. Текущая версия: <span class="version">v1.13.23</span>.</p>
+    </header>
 
-  <header class="topbar">
-    <div class="wrap nav">
-      <a class="brand" href="#top" aria-label="Гусь">
-        <span class="logo" aria-hidden="true">
-          <svg class="goose-mark" viewBox="0 0 64 64" role="img">
-            <path d="M11.5 42.2c2.4-8.6 10.6-13.4 22.4-13.4 9.7 0 17.3 3.8 21 10.4-3.1 8.3-12.1 13.4-24.1 13.4-10.6 0-18-3.8-19.3-10.4z" fill="currentColor"/>
-            <path d="M30.2 31.3c-2.1-8.9 1.6-18.7 10-24.6 5.6-3.9 13.7-2.2 16.7 3.3 2.3 4.3-.2 9.6-6.4 10.3-2.1.2-4.7-.3-6.4-1.2-2.4 2.5-2.4 6.8.2 9.9 2.5 3 6.1 4.4 10.5 4.5-4.8 5.9-14.5 6.2-24.6-2.2z" fill="currentColor"/>
-            <path class="goose-beak" d="M56.2 11.7 63 15l-7.1 2.7c.9-2.1 1-4.2.3-6z"/>
-            <path class="goose-eye" d="M48.6 11.9a1.9 1.9 0 1 1-3.8 0 1.9 1.9 0 0 1 3.8 0z"/>
-          </svg>
-        </span>
-        <strong>Гусь</strong>
-      </a>
-      <nav class="nav-links" aria-label="Разделы">
-        <a href="#register">Регистрация</a>
-        <a href="#start">Как начать</a>
-        <a href="#install">Установка</a>
-        <a href="#features">Возможности</a>
-        <a href="#why">Почему Гусь</a>
-      </nav>
-      <div class="nav-actions">
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
-          <span class="toggle-dot" id="themeIcon" aria-hidden="true">
-            <svg class="theme-glyph theme-sun" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="4.2"></circle>
-              <path d="M12 2.5v2.2M12 19.3v2.2M4.7 4.7l1.6 1.6M17.7 17.7l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.7 19.3l1.6-1.6M17.7 6.3l1.6-1.6"></path>
-            </svg>
-            <svg class="theme-glyph theme-moon" viewBox="0 0 24 24">
-              <path d="M18.8 14.3A7.3 7.3 0 0 1 9.7 5.2 8 8 0 1 0 18.8 14.3z"></path>
-            </svg>
-          </span>
-          <span id="themeLabel">Светлая</span>
-        </button>
-        <a href="Gus-Web-Setup.vbs" download>Скачать</a>
-      </div>
-    </div>
-  </header>
+    <input id="tab-install" name="tab" type="radio" checked>
+    <input id="tab-register" name="tab" type="radio">
+    <input id="tab-features" name="tab" type="radio">
+    <input id="tab-versions" name="tab" type="radio">
+    <nav class="tabs" aria-label="Разделы">
+      <label for="tab-install">Установка</label>
+      <label for="tab-register">Регистрация</label>
+      <label for="tab-features">Что умеет программа</label>
+      <label for="tab-versions">Старые версии</label>
+    </nav>
 
-  <main id="top">
-    <section class="wrap hero" id="register">
-      <div>
-        <div class="eyebrow">Доступ по заявке</div>
-        <h1>Регистрация в Гусь</h1>
-        <p class="lead">Отправь заявку, дождись подтверждения владельца и войди в программу по своему логину и паролю. Установщик можно скачать сразу.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#registerForm">Отправить заявку</a>
-          <a class="button secondary" href="Gus-Web-Setup.vbs" download>Скачать установщик</a>
+    <section class="panels">
+      <article class="tab-panel" id="panel-install">
+        <h2>Установка</h2>
+        <p>Скачай маленький установщик. Он сам подтянет актуальную версию Гуся с сайта и создаст ярлык на рабочем столе.</p>
+        <div class="actions">
+          <a class="primary" href="https://danzedark.github.io/gus-updates/Gus-Web-Setup.vbs" download>Скачать установщик</a>
+          <a href="https://danzedark.github.io/gus-updates/VERSION.txt">Проверить версию</a>
         </div>
-        <div class="stats" aria-label="Показатели">
-          <span class="pill">1М+ скачиваний</span>
-          <span class="pill">1 клик для установки</span>
-          <span class="pill">24/7 канал обновлений</span>
+        <div class="steps">
+          <div class="step"><strong>1.</strong>Скачай установщик на рабочий ПК.</div>
+          <div class="step"><strong>2.</strong>Запусти файл и выбери папку установки.</div>
+          <div class="step"><strong>3.</strong>После установки открывай программу через ярлык на рабочем столе.</div>
         </div>
-        <p class="check-status" id="versionStatus">Текущая версия: <strong id="currentVersion">v1.13.22</strong></p>
-      </div>
+      </article>
 
-      <div class="hero-card-wrap">
-        <div class="tilt-panel" aria-hidden="true"></div>
-        <form class="register-card" id="registerForm">
-          <h2>Заявка на доступ</h2>
-          <p>После подтверждения аккаунт появится в программе.</p>
-          <div class="field">
-            <label for="registerLogin">Логин</label>
-            <input id="registerLogin" autocomplete="username" placeholder="Например: egorka" required>
-          </div>
-          <div class="field">
-            <label for="registerName">Имя</label>
-            <input id="registerName" autocomplete="name" placeholder="Как тебя подписать" required>
-          </div>
-          <div class="field">
-            <label for="registerPassword">Пароль</label>
-            <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Минимум 4 символа" required minlength="4">
-          </div>
-          <div class="field">
-            <label for="registerNote">Комментарий</label>
-            <textarea id="registerNote" placeholder="Кто ты и на какой ПК нужен доступ"></textarea>
-          </div>
-          <button id="registerSubmit" type="submit">Отправить заявку</button>
+      <article class="tab-panel" id="panel-register">
+        <h2>Регистрация</h2>
+        <p>Оставь заявку на доступ. После подтверждения владельцем аккаунт появится в программе, и можно будет войти по этому логину и паролю.</p>
+        <form class="register-form" id="registerForm">
+          <input id="registerLogin" autocomplete="username" placeholder="Логин латиницей, например egorka">
+          <input id="registerName" autocomplete="name" placeholder="Имя">
+          <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Пароль для входа в программу">
+          <textarea id="registerNote" placeholder="Комментарий, кто ты и на какой ПК нужен доступ"></textarea>
+          <button type="submit">Отправить заявку</button>
           <div class="register-status" id="registerStatus"></div>
         </form>
-      </div>
-    </section>
+      </article>
 
-    <section class="wrap section" id="start">
-      <div class="section-head">
-        <h2>Как начать</h2>
-        <p class="section-copy">Сайт нужен только для установки и заявки. Дальше всё происходит в программе: вход, обновления и работа с выбранными MAX.</p>
-      </div>
-      <div class="grid">
-        <article class="step-card">
-          <div class="card-kicker">Шаг 01</div>
-          <h3>Скачай установщик</h3>
-          <p>Файл маленький, сам подтянет свежий пакет с сайта и создаст ярлык на рабочем столе.</p>
-        </article>
-        <article class="step-card">
-          <div class="card-kicker">Шаг 02</div>
-          <h3>Отправь заявку</h3>
-          <p>Введи логин, имя и пароль. После подтверждения можно входить в Гусь с любого рабочего ПК.</p>
-        </article>
-        <article class="step-card">
-          <div class="card-kicker">Шаг 03</div>
-          <h3>Обновляй в один клик</h3>
-          <p>Рабочие ПК получают актуальную версию через кнопку обновления в программе.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="wrap section" id="install">
-      <div class="install-card">
-        <div>
-          <h3>Установщик Гуся</h3>
-          <p>Скачивает актуальную версию, кладёт программу в выбранную папку и оставляет на рабочем столе только ярлык.</p>
-          <div class="check-status" id="updateCheckStatus"></div>
-        </div>
-        <div class="hero-actions" style="margin:0">
-          <a class="button primary" href="Gus-Web-Setup.vbs" download>Скачать установщик</a>
-          <button class="button secondary" id="checkVersionButton" type="button">Проверить версию</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="wrap section" id="features">
-      <div class="section-head">
+      <article class="tab-panel" id="panel-features">
         <h2>Что умеет программа</h2>
-        <p class="section-copy">Главные функции собраны вокруг MAX: поиск открытых профилей, обработка базы, группы, личные сообщения и обновления.</p>
-      </div>
-      <div class="grid two">
-        <article class="feature-card">
-          <div class="card-kicker">MAX</div>
-          <h3>Работает с несколькими профилями</h3>
-          <p>Находит открытые окна MAX и распределяет работу между выбранными аккаунтами.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">TXT</div>
-          <h3>Клиенты из текстового файла</h3>
-          <p>Загружает базу клиентов, ведёт очередь и показывает статус обработки.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Чаты</div>
-          <h3>Группы и личные сообщения</h3>
-          <p>Может писать через группы или в личные сообщения на выбранных MAX.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Контроль</div>
-          <h3>Счётчики и уведомления</h3>
-          <p>Показывает, сколько людей прописал каждый MAX, и выводит быстрые уведомления о новых сообщениях.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Доступ</div>
-          <h3>Аккаунты по разрешению</h3>
-          <p>Посторонние не смогут просто взять файлы и пользоваться программой без выданного доступа.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Update</div>
-          <h3>Автообновление</h3>
-          <p>На других ПК можно обновиться через кнопку в программе, без ручного скачивания архива.</p>
-        </article>
-      </div>
-    </section>
+        <div class="features">
+          <div class="feature"><strong>Работает с MAX</strong>Находит открытые окна MAX и распределяет работу между выбранными профилями.</div>
+          <div class="feature"><strong>Клиенты из TXT</strong>Берёт базу клиентов из текстового файла и ведёт очередь обработки.</div>
+          <div class="feature"><strong>Группы и личные сообщения</strong>Может писать через группы или через ЛС на выбранных MAX.</div>
+          <div class="feature"><strong>Несколько профилей</strong>Показывает, сколько людей прописал каждый MAX, и работает параллельно по выбранным профилям.</div>
+          <div class="feature"><strong>Автообновление</strong>Рабочие ПК могут обновляться через кнопку в настройках программы.</div>
+          <div class="feature"><strong>Доступы</strong>Есть авторизация аккаунтов, чтобы посторонние не пользовались программой без разрешения.</div>
+        </div>
+      </article>
 
-    <section class="wrap section" id="why">
-      <div class="section-head">
-        <h2>Почему Гусь</h2>
-        <p class="section-copy">Сделан под рабочий процесс: быстро запустить, выбрать MAX, загрузить базу и не думать о переносе обновлений между ПК.</p>
-      </div>
-      <div class="grid">
-        <article class="feature-card">
-          <div class="card-kicker">Быстро</div>
-          <h3>Минимум лишних действий</h3>
-          <p>Установка, запуск и обновление сведены к понятным кнопкам.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Стабильно</div>
-          <h3>Старые версии сохраняются</h3>
-          <p>Если новая сборка ведёт себя плохо, можно скачать предыдущий пакет.</p>
-        </article>
-        <article class="feature-card">
-          <div class="card-kicker">Удобно</div>
-          <h3>Один сайт для всего</h3>
-          <p>Здесь регистрация, установка, текущая версия и архив обновлений.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="wrap section" id="versions">
-      <div class="section-head">
+      <article class="tab-panel" id="panel-versions">
         <h2>Старые версии</h2>
-        <p class="section-copy">Каждая сборка хранится отдельно. Можно скачать zip нужной версии и вернуться назад, если что-то пошло не так.</p>
-      </div>
-      <div class="version-list" id="versionsList">
-        <div class="version-loading">Загружаю список версий...</div>
-      </div>
+        <p>С этого момента каждая сборка сохраняется отдельно. Можно скачать старый zip и откатиться, если новая версия ведёт себя плохо.</p>
+        <div class="versions">
+      <article class="version-card">
+        <div>
+          <strong>v1.13.23</strong>
+          <span>2026-07-21T07:55:41+03:00</span>
+        </div>
+        <p>Version 1.13.23: режим Семейный доступ сам нажимает кнопку отправки и быстрее проходит отправку через канал текстов.</p>
+        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.23/Gus-MaxContactTool-update.zip" download>Скачать zip 2.75 МБ</a>
+      </article>
+      <article class="version-card">
+        <div>
+          <strong>v1.13.22</strong>
+          <span>2026-07-15T14:25:49+03:00</span>
+        </div>
+        <p>Version 1.13.22: fixed GitHub accounts publishing sync, publish accounts-only JSON, and retry after remote updates.</p>
+        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.22/Gus-MaxContactTool-update.zip" download>Скачать zip 2.72 МБ</a>
+      </article>
+      <article class="version-card">
+        <div>
+          <strong>v1.13.21</strong>
+          <span>2026-07-13T13:13:20+03:00</span>
+        </div>
+        <p>Version 1.13.21: removed AI start from release and sped up MAX switching with cached window detection.</p>
+        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.21/Gus-MaxContactTool-update.zip" download>Скачать zip 0.56 МБ</a>
+      </article>
+      <article class="version-card">
+        <div>
+          <strong>v1.13.20</strong>
+          <span>2026-07-13T10:04:30+03:00</span>
+        </div>
+        <p>MAX notifications: fixed stacking, newest on top, click-to-open chat, muted chats ignored, and Maxitochka notification patch persistence.</p>
+        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.20/Gus-MaxContactTool-update.zip" download>Скачать zip 0.56 МБ</a>
+      </article>
+      <article class="version-card">
+        <div>
+          <strong>v1.13.17</strong>
+          <span>2026-07-08T14:27:17+03:00</span>
+        </div>
+        <p>Optimized Start button: selected open MAX sessions are used immediately, while responsiveness checks and recovery happen during actual processing.</p>
+        <a href="https://danzedark.github.io/gus-updates/versions/v1.13.17/Gus-MaxContactTool-update.zip" download>Скачать zip 0.53 МБ</a>
+      </article>
+        </div>
+      </article>
     </section>
+    <footer>Собрано: 2026-07-21 07:56:39</footer>
   </main>
-
-  <footer>
-    <div class="wrap">Собрано: <span id="buildTime">2026-07-15 14:26:55</span></div>
-  </footer>
-
   <script>
-    const SITE = 'https://danzedark.github.io/gus-updates/';
     const configUrl = 'payments_config.json';
-    const registerStatus = document.getElementById('registerStatus');
-    const registerForm = document.getElementById('registerForm');
-    const registerSubmit = document.getElementById('registerSubmit');
-    const versionStatus = document.getElementById('versionStatus');
-    const currentVersion = document.getElementById('currentVersion');
-    const updateCheckStatus = document.getElementById('updateCheckStatus');
-    const versionsList = document.getElementById('versionsList');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeLabel = document.getElementById('themeLabel');
-    const themeIcon = document.getElementById('themeIcon');
-    const themeSweep = document.getElementById('themeSweep');
+    const statusNode = document.getElementById('registerStatus');
+    const formNode = document.getElementById('registerForm');
 
     function setRegisterStatus(text, kind) {
-      registerStatus.textContent = text || '';
-      registerStatus.className = 'register-status ' + (kind || '');
-    }
-
-    function formatSize(bytes) {
-      const value = Number(bytes || 0);
-      if (!value) return '';
-      if (value > 1024 * 1024) return (value / 1024 / 1024).toFixed(2).replace('.', ',') + ' МБ';
-      if (value > 1024) return Math.round(value / 1024) + ' КБ';
-      return value + ' Б';
-    }
-
-    function normalizeVersion(version) {
-      const text = String(version || '').trim();
-      return text ? (text.startsWith('v') ? text : 'v' + text) : '';
-    }
-
-    async function loadJson(url) {
-      const response = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      return response.json();
+      statusNode.textContent = text;
+      statusNode.className = 'register-status ' + (kind || '');
     }
 
     async function loadRegisterConfig() {
-      return loadJson(configUrl);
+      const response = await fetch(configUrl + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Не удалось загрузить настройки регистрации.');
+      return response.json();
     }
 
-    registerForm.addEventListener('submit', async (event) => {
+    formNode.addEventListener('submit', async (event) => {
       event.preventDefault();
       try {
         setRegisterStatus('Отправляю заявку...', '');
-        registerSubmit.disabled = true;
-
         const cfg = await loadRegisterConfig();
         const apiUrl = String(cfg.registrationApiUrl || '').replace(/\/+$/, '');
         if (!apiUrl) throw new Error('Регистрация ещё не подключена владельцем.');
-
         const body = {
-          login: document.getElementById('registerLogin').value.trim(),
-          name: document.getElementById('registerName').value.trim(),
+          login: document.getElementById('registerLogin').value,
+          name: document.getElementById('registerName').value,
           password: document.getElementById('registerPassword').value,
-          note: document.getElementById('registerNote').value.trim()
+          note: document.getElementById('registerNote').value
         };
-
-        if (!body.login || !body.name || !body.password) {
-          throw new Error('Заполни логин, имя и пароль.');
-        }
-
         const response = await fetch(apiUrl + '/request', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -957,100 +197,17 @@
         });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || data.ok === false) throw new Error(data.error || 'Не удалось отправить заявку.');
-
-        registerForm.reset();
+        formNode.reset();
         setRegisterStatus(data.message || 'Заявка отправлена. Жди подтверждения владельца.', 'ok');
       } catch (error) {
         const message = error && error.message ? error.message : String(error);
         if (message === 'Failed to fetch') {
-          setRegisterStatus('Не удалось связаться с API регистрации. Проверь Worker/API и попробуй ещё раз.', 'bad');
+          setRegisterStatus('Регистрация пока не подключена: владелец должен запустить Worker/API для приёма заявок.', 'bad');
         } else {
           setRegisterStatus(message, 'bad');
         }
-      } finally {
-        registerSubmit.disabled = false;
       }
     });
-
-    async function checkVersion() {
-      try {
-        updateCheckStatus.textContent = 'Проверяю канал обновлений...';
-        const manifest = await loadJson('gus_update.json');
-        const version = normalizeVersion(manifest.version);
-        if (version) {
-          currentVersion.textContent = version;
-          versionStatus.innerHTML = 'Текущая версия: <strong id="currentVersion">' + version + '</strong>';
-          updateCheckStatus.textContent = 'Канал работает. Последняя версия: ' + version + '.';
-        } else {
-          updateCheckStatus.textContent = 'Канал доступен, но версия в manifest не указана.';
-        }
-      } catch (error) {
-        updateCheckStatus.textContent = 'Не удалось проверить версию: ' + (error.message || error);
-      }
-    }
-
-    document.getElementById('checkVersionButton').addEventListener('click', checkVersion);
-
-    function renderVersions(data) {
-      const versions = Array.isArray(data && data.versions) ? data.versions : [];
-      if (!versions.length) {
-        versionsList.innerHTML = '<div class="version-loading">Список версий пока пуст.</div>';
-        return;
-      }
-
-      versionsList.innerHTML = versions.map((item) => {
-        const version = normalizeVersion(item.version);
-        const href = item.package ? item.package : '';
-        const fullHref = href.startsWith('http') ? href : href;
-        const size = formatSize(item.size);
-        const date = item.createdAt ? new Date(item.createdAt).toLocaleString('ru-RU') : '';
-        return `
-          <article class="version-card">
-            <div>
-              <div class="meta"><span>${date}</span>${size ? `<span>${size}</span>` : ''}</div>
-              <h3>${version}</h3>
-              <p>${item.notes || 'Без описания изменений.'}</p>
-            </div>
-            <a href="${fullHref}" download>Скачать zip</a>
-          </article>
-        `;
-      }).join('');
-
-      if (data.updatedAt) {
-        document.getElementById('buildTime').textContent = new Date(data.updatedAt).toLocaleString('ru-RU');
-      }
-    }
-
-    async function loadVersions() {
-      try {
-        const data = await loadJson('versions.json');
-        renderVersions(data);
-      } catch (error) {
-        versionsList.innerHTML = '<div class="version-loading">Не удалось загрузить список версий.</div>';
-      }
-    }
-
-    function setTheme(nextTheme, animate) {
-      const theme = nextTheme === 'light' ? 'light' : 'dark';
-      const previous = document.documentElement.dataset.theme || 'dark';
-      if (animate && previous !== theme) {
-        themeSweep.className = 'theme-sweep ' + (theme === 'dark' ? 'run-dark' : 'run-light');
-        window.setTimeout(() => { themeSweep.className = 'theme-sweep'; }, 780);
-      }
-      document.documentElement.dataset.theme = theme;
-      localStorage.setItem('gus-site-theme', theme);
-      themeLabel.textContent = theme === 'dark' ? 'Светлая' : 'Тёмная';
-      themeIcon.dataset.icon = theme === 'dark' ? 'sun' : 'moon';
-    }
-
-    themeToggle.addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme || 'dark';
-      setTheme(current === 'dark' ? 'light' : 'dark', true);
-    });
-
-    setTheme(localStorage.getItem('gus-site-theme') || 'dark', false);
-    checkVersion();
-    loadVersions();
   </script>
 </body>
 </html>

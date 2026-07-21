@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-15T14:26:55+03:00",
+    "updatedAt":  "2026-07-21T07:56:39+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.23",
+                         "createdAt":  "2026-07-21T07:55:41+03:00",
+                         "notes":  "Version 1.13.23: режим Семейный доступ сам нажимает кнопку отправки и быстрее проходит отправку через канал текстов.",
+                         "package":  "versions/v1.13.23/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.23/gus_update.json",
+                         "versionFile":  "versions/v1.13.23/VERSION.txt",
+                         "size":  2881925
+                     },
                      {
                          "version":  "1.13.22",
                          "createdAt":  "2026-07-15T14:25:49+03:00",

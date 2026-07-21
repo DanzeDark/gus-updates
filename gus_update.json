@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.22",
+    "version":  "1.13.23",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-15T14:25:49+03:00",
-    "notes":  "Version 1.13.22: fixed GitHub accounts publishing sync, publish accounts-only JSON, and retry after remote updates."
+    "createdAt":  "2026-07-21T07:55:41+03:00",
+    "notes":  "Version 1.13.23: режим Семейный доступ сам нажимает кнопку отправки и быстрее проходит отправку через канал текстов."
 }
