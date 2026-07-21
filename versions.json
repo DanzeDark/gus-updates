@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T10:44:33+03:00",
+    "updatedAt":  "2026-07-21T10:55:37+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.35",
+                         "createdAt":  "2026-07-21T10:54:44+03:00",
+                         "notes":  "Version 1.13.35: channel text mode no longer creates groups; it sends channel texts directly to clients in private messages with stronger contact search.",
+                         "package":  "versions/v1.13.35/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.35/gus_update.json",
+                         "versionFile":  "versions/v1.13.35/VERSION.txt",
+                         "size":  2886789
+                     },
                      {
                          "version":  "1.13.34",
                          "createdAt":  "2026-07-21T10:43:43+03:00",
