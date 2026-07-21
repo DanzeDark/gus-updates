@@ -1,0 +1,6 @@
+{
+    "version":  "1.13.34",
+    "package":  "Gus-MaxContactTool-update.zip",
+    "createdAt":  "2026-07-21T10:43:43+03:00",
+    "notes":  "Version 1.13.34: skips contacts that cannot be added to a group in channel mode instead of stopping the queue."
+}
