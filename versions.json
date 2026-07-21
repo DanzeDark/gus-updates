@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T14:45:12+03:00",
+    "updatedAt":  "2026-07-21T14:55:26+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.43",
+                         "createdAt":  "2026-07-21T14:54:23+03:00",
+                         "notes":  "Version 1.13.43: parses vertical client cards strictly as full name, birth date, and phone, ignoring service metadata lines such as gender/source identifiers.",
+                         "package":  "versions/v1.13.43/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.43/gus_update.json",
+                         "versionFile":  "versions/v1.13.43/VERSION.txt",
+                         "size":  2892259
+                     },
                      {
                          "version":  "1.13.42",
                          "createdAt":  "2026-07-21T14:44:07+03:00",
