@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T08:36:24+03:00",
+    "updatedAt":  "2026-07-21T08:45:17+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.25",
+                         "createdAt":  "2026-07-21T08:44:08+03:00",
+                         "notes":  "Version 1.13.25: saved text channels are opened/read instead of being recreated when the channel already exists.",
+                         "package":  "versions/v1.13.25/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.25/gus_update.json",
+                         "versionFile":  "versions/v1.13.25/VERSION.txt",
+                         "size":  2883470
+                     },
                      {
                          "version":  "1.13.24",
                          "createdAt":  "2026-07-21T08:35:31+03:00",

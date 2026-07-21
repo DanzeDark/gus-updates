@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.24",
+    "version":  "1.13.25",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T08:35:31+03:00",
-    "notes":  "Version 1.13.24: Family Access switches from Contacts to Channels before searching the text channel."
+    "createdAt":  "2026-07-21T08:44:08+03:00",
+    "notes":  "Version 1.13.25: saved text channels are opened/read instead of being recreated when the channel already exists."
 }
