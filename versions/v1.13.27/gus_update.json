@@ -1,0 +1,6 @@
+{
+    "version":  "1.13.27",
+    "package":  "Gus-MaxContactTool-update.zip",
+    "createdAt":  "2026-07-21T09:06:50+03:00",
+    "notes":  "Version 1.13.27: text-channel forwarding skips service cards and no longer stops the queue when MAX does not open the forward menu."
+}
