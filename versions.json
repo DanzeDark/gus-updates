@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T09:56:12+03:00",
+    "updatedAt":  "2026-07-21T10:04:38+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.31",
+                         "createdAt":  "2026-07-21T10:03:46+03:00",
+                         "notes":  "Version 1.13.31: prevents duplicate channel forwards by selecting the recipient once and clicking the forward send button only once.",
+                         "package":  "versions/v1.13.31/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.31/gus_update.json",
+                         "versionFile":  "versions/v1.13.31/VERSION.txt",
+                         "size":  2885679
+                     },
                      {
                          "version":  "1.13.30",
                          "createdAt":  "2026-07-21T09:55:20+03:00",
