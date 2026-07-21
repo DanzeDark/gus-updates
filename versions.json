@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T11:18:12+03:00",
+    "updatedAt":  "2026-07-21T11:25:58+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.38",
+                         "createdAt":  "2026-07-21T11:25:05+03:00",
+                         "notes":  "Version 1.13.38: fixes the PowerShell runtime if error that stopped channel-to-DM forwarding before the first contact.",
+                         "package":  "versions/v1.13.38/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.38/gus_update.json",
+                         "versionFile":  "versions/v1.13.38/VERSION.txt",
+                         "size":  2889010
+                     },
                      {
                          "version":  "1.13.37",
                          "createdAt":  "2026-07-21T11:17:16+03:00",

@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.37",
+    "version":  "1.13.38",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T11:17:16+03:00",
-    "notes":  "Version 1.13.37: fixes channel mode starting and immediately finishing with 0 processed contacts by normalizing queue bounds and reporting startup failures."
+    "createdAt":  "2026-07-21T11:25:05+03:00",
+    "notes":  "Version 1.13.38: fixes the PowerShell runtime if error that stopped channel-to-DM forwarding before the first contact."
 }
