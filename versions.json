@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T14:37:48+03:00",
+    "updatedAt":  "2026-07-21T14:45:12+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.42",
+                         "createdAt":  "2026-07-21T14:44:07+03:00",
+                         "notes":  "Version 1.13.42: adds the per-row MAX show action to the main MAX list, makes the action visually quieter, and prevents manual show from resizing the MAX window.",
+                         "package":  "versions/v1.13.42/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.42/gus_update.json",
+                         "versionFile":  "versions/v1.13.42/VERSION.txt",
+                         "size":  2891156
+                     },
                      {
                          "version":  "1.13.41",
                          "createdAt":  "2026-07-21T14:36:43+03:00",
