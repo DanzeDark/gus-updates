@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.38",
+    "version":  "1.13.39",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T11:25:05+03:00",
-    "notes":  "Version 1.13.38: fixes the PowerShell runtime if error that stopped channel-to-DM forwarding before the first contact."
+    "createdAt":  "2026-07-21T13:20:04+03:00",
+    "notes":  "Version 1.13.39: improves channel tab recovery after adding contacts and restores MAX to an automation-friendly window size."
 }
