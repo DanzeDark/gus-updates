@@ -1,6 +1,6 @@
 ﻿{
     "enabled":  true,
-    "updatedAt":  "2026-07-20T11:43:41+03:00",
+    "updatedAt":  "2026-07-21T08:59:07+03:00",
     "accounts":  [
                      {
                          "login":  "kyzyu",
@@ -184,6 +184,14 @@
                          "keyHash":  "ea2afe378a89122b15f8d3d91f718b0395eec2d947295dd429048cf863509b92",
                          "active":  true,
                          "createdAt":  "2026-07-20 11:43:41",
+                         "note":  ""
+                     },
+                     {
+                         "login":  "minerva",
+                         "name":  "minerva",
+                         "keyHash":  "970df9ebae7d5232a87f73300d1bb49224ec357a150d3ca13d2395d599a3fa3a",
+                         "active":  true,
+                         "createdAt":  "2026-07-21 08:59:07",
                          "note":  ""
                      }
                  ]
