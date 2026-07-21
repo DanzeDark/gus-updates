@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-21T10:55:37+03:00",
+    "updatedAt":  "2026-07-21T11:10:30+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.36",
+                         "createdAt":  "2026-07-21T11:09:36+03:00",
+                         "notes":  "Version 1.13.36: forwards the selected real channel post to client private chats instead of typing text or creating groups.",
+                         "package":  "versions/v1.13.36/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.36/gus_update.json",
+                         "versionFile":  "versions/v1.13.36/VERSION.txt",
+                         "size":  2888272
+                     },
                      {
                          "version":  "1.13.35",
                          "createdAt":  "2026-07-21T10:54:44+03:00",
