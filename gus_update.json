@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.43",
+    "version":  "1.13.44",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T14:54:23+03:00",
-    "notes":  "Version 1.13.43: parses vertical client cards strictly as full name, birth date, and phone, ignoring service metadata lines such as gender/source identifiers."
+    "createdAt":  "2026-07-21T15:08:07+03:00",
+    "notes":  "Version 1.13.44: makes channel post forwarding stricter, clicks the exact Forward menu item, and prevents contacts from being marked successful when the forward dialog closes before the final send button is clicked."
 }
