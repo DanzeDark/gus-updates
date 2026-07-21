@@ -1,0 +1,6 @@
+{
+    "version":  "1.13.33",
+    "package":  "Gus-MaxContactTool-update.zip",
+    "createdAt":  "2026-07-21T10:25:51+03:00",
+    "notes":  "Version 1.13.33: sends the forwarding dialog by the bottom blue arrow, ignores the forwarded-post preview text, and continues only after the dialog closes."
+}
