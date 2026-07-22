@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-22T11:34:52+03:00",
+    "updatedAt":  "2026-07-22T11:47:30+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.48",
+                         "createdAt":  "2026-07-22T11:46:36+03:00",
+                         "notes":  "Version 1.13.48: fixes text-channel opening so the selected chat title is verified in the active MAX header and falls back from Channels to the normal chat list.",
+                         "package":  "versions/v1.13.48/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.48/gus_update.json",
+                         "versionFile":  "versions/v1.13.48/VERSION.txt",
+                         "size":  2895715
+                     },
                      {
                          "version":  "1.13.47",
                          "createdAt":  "2026-07-22T11:33:59+03:00",

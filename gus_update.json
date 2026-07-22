@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.47",
+    "version":  "1.13.48",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-22T11:33:59+03:00",
-    "notes":  "Version 1.13.47: preserves gus_accounts.json during updates and installers, and keeps the published accounts file when building releases."
+    "createdAt":  "2026-07-22T11:46:36+03:00",
+    "notes":  "Version 1.13.48: fixes text-channel opening so the selected chat title is verified in the active MAX header and falls back from Channels to the normal chat list."
 }
