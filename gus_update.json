@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.46",
+    "version":  "1.13.47",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-22T11:26:42+03:00",
-    "notes":  "Version 1.13.46: text channel mode now uses existing MAX channels only and no longer tries to auto-create a channel when the saved channel cannot be read."
+    "createdAt":  "2026-07-22T11:33:59+03:00",
+    "notes":  "Version 1.13.47: preserves gus_accounts.json during updates and installers, and keeps the published accounts file when building releases."
 }

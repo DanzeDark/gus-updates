@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-22T11:27:43+03:00",
+    "updatedAt":  "2026-07-22T11:34:52+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.47",
+                         "createdAt":  "2026-07-22T11:33:59+03:00",
+                         "notes":  "Version 1.13.47: preserves gus_accounts.json during updates and installers, and keeps the published accounts file when building releases.",
+                         "package":  "versions/v1.13.47/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.47/gus_update.json",
+                         "versionFile":  "versions/v1.13.47/VERSION.txt",
+                         "size":  2895169
+                     },
                      {
                          "version":  "1.13.46",
                          "createdAt":  "2026-07-22T11:26:42+03:00",
