@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.45",
+    "version":  "1.13.46",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-21T15:38:33+03:00",
-    "notes":  "Version 1.13.45: clicks the final bottom-right send arrow inside the Forward Post panel after recipient selection, ignoring the background channel send button."
+    "createdAt":  "2026-07-22T11:26:42+03:00",
+    "notes":  "Version 1.13.46: text channel mode now uses existing MAX channels only and no longer tries to auto-create a channel when the saved channel cannot be read."
 }
