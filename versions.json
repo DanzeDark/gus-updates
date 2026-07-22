@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-22T11:47:30+03:00",
+    "updatedAt":  "2026-07-22T12:00:36+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.49",
+                         "createdAt":  "2026-07-22T11:59:47+03:00",
+                         "notes":  "Version 1.13.49: fixes text-channel row opening so MAX clicks the chat/channel row itself instead of the three-dot action menu on some PCs.",
+                         "package":  "versions/v1.13.49/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.49/gus_update.json",
+                         "versionFile":  "versions/v1.13.49/VERSION.txt",
+                         "size":  2896280
+                     },
                      {
                          "version":  "1.13.48",
                          "createdAt":  "2026-07-22T11:46:36+03:00",

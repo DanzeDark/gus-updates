@@ -1,6 +1,6 @@
 {
-    "version":  "1.13.48",
+    "version":  "1.13.49",
     "package":  "Gus-MaxContactTool-update.zip",
-    "createdAt":  "2026-07-22T11:46:36+03:00",
-    "notes":  "Version 1.13.48: fixes text-channel opening so the selected chat title is verified in the active MAX header and falls back from Channels to the normal chat list."
+    "createdAt":  "2026-07-22T11:59:47+03:00",
+    "notes":  "Version 1.13.49: fixes text-channel row opening so MAX clicks the chat/channel row itself instead of the three-dot action menu on some PCs."
 }
