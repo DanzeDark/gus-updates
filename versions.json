@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-22T17:32:16+03:00",
+    "updatedAt":  "2026-07-22T18:06:50+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.52",
+                         "createdAt":  "2026-07-22T18:05:31+03:00",
+                         "notes":  "Исправлен режим Канал текстов: пересылка выбранного поста теперь устойчиво находит карточку поста по нормализованному тексту и пишет диагностику DOM-кандидатов.",
+                         "package":  "versions/v1.13.52/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.52/gus_update.json",
+                         "versionFile":  "versions/v1.13.52/VERSION.txt",
+                         "size":  2908456
+                     },
                      {
                          "version":  "1.13.51",
                          "createdAt":  "2026-07-22T17:31:24+03:00",
