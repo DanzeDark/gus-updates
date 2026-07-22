@@ -1,6 +1,15 @@
 {
-    "updatedAt":  "2026-07-22T12:00:36+03:00",
+    "updatedAt":  "2026-07-22T17:05:18+03:00",
     "versions":  [
+                     {
+                         "version":  "1.13.50",
+                         "createdAt":  "2026-07-22T17:04:29+03:00",
+                         "notes":  "Исправлен режим Канал текстов: актуальный поиск контакта, надёжная кнопка отправки пересланного поста, безопасная обработка ошибок MAX и сохранение позиции очереди.",
+                         "package":  "versions/v1.13.50/Gus-MaxContactTool-update.zip",
+                         "manifest":  "versions/v1.13.50/gus_update.json",
+                         "versionFile":  "versions/v1.13.50/VERSION.txt",
+                         "size":  2900870
+                     },
                      {
                          "version":  "1.13.49",
                          "createdAt":  "2026-07-22T11:59:47+03:00",
