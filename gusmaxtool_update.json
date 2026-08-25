@@ -1,0 +1,10 @@
+﻿{
+    "version":  "2.1.0",
+    "channel":  "stable",
+    "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.0-win-x64.zip",
+    "sha256":  "6cd7e916801fab21a41c48ab634f8b7243ce44519792d2da66e40912d1ddc34c",
+    "releaseNotes":  "Временный канал обновлений через GitHub Pages.",
+    "packageSizeBytes":  70579353,
+    "publishedAtUtc":  "2026-08-25T10:21:07.6758133Z",
+    "mandatory":  false
+}
