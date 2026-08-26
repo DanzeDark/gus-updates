@@ -1,10 +1,10 @@
 {
-    "version":  "2.1.3",
-    "channel":  "stable",
-    "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.3-win-x64.zip",
-    "sha256":  "671a638902c89997e8aec687e07aa21d07627de467bf9488b9c3c2a4946c9944",
-    "releaseNotes":  "Тёмная тема теперь переключается мгновенно без закрытия и перезапуска Gus MAX. Текущая вкладка, очередь, MAX-сессии и фоновые сервисы продолжают работать; выбор темы сохраняется.",
-    "packageSizeBytes":  70609980,
-    "publishedAtUtc":  "2026-08-26T10:53:34.2805014Z",
-    "mandatory":  false
+  "version": "2.1.4",
+  "channel": "stable",
+  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.4/GusMaxTool-2.1.4-win-x64.zip",
+  "sha256": "0c07ddadd4859f051812450ee93e6d0e369240a5808c7b4de4eb44b20297a1bd",
+  "releaseNotes": "Добавлена полная Maxitochka 1.2.44: автоматизация, кампании, CRM, проверка и организация токенов, proxy, переподключение сессий, аналитика, Google Sheets, уведомления и рабочие часы. Maxitochka запускается отдельной кнопкой из MAX Центра; пользовательские токены и профили в обновление не включены.",
+  "packageSizeBytes": 177403411,
+  "publishedAtUtc": "2026-08-26T12:11:47.0016462Z",
+  "mandatory": false
 }

@@ -1,35 +1,45 @@
 {
-    "updatedAtUtc":  "2026-08-26T10:53:34.4160748Z",
-    "versions":  [
-                     {
-                         "version":  "2.1.3",
-                         "channel":  "stable",
-                         "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.3-win-x64.zip",
-                         "sha256":  "671a638902c89997e8aec687e07aa21d07627de467bf9488b9c3c2a4946c9944",
-                         "releaseNotes":  "Тёмная тема теперь переключается мгновенно без закрытия и перезапуска Gus MAX. Текущая вкладка, очередь, MAX-сессии и фоновые сервисы продолжают работать; выбор темы сохраняется.",
-                         "packageSizeBytes":  70609980,
-                         "publishedAtUtc":  "2026-08-26T10:53:34.2805014Z",
-                         "mandatory":  false
-                     },
-                     {
-                         "version":  "2.1.2",
-                         "channel":  "stable",
-                         "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.2-win-x64.zip",
-                         "sha256":  "4ab488a3421ed985cd135ca2583a9521d87ba409a0809e4faa105bcb71e7fa5d",
-                         "releaseNotes":  "Р”РѕР±Р°РІР»РµРЅР° РЅР°СЃС‚РѕСЏС‰Р°СЏ С‚С‘РјРЅР°СЏ С‚РµРјР° Midnight: РѕС‚РґРµР»СЊРЅР°СЏ РіР»СѓР±РѕРєР°СЏ РїР°Р»РёС‚СЂР° РІСЃРµРіРѕ РЅРѕРІРѕРіРѕ РёРЅС‚РµСЂС„РµР№СЃР°, СЃРѕС…СЂР°РЅРµРЅРёРµ РІС‹Р±РѕСЂР° Рё Р±РµР·РѕРїР°СЃРЅРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ СЃ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёРј РїРµСЂРµР·Р°РїСѓСЃРєРѕРј. Carbon РѕСЃС‚Р°С‘С‚СЃСЏ РґРѕСЃС‚СѓРїРЅРѕР№ РґР»СЏ РІРѕР·РІСЂР°С‚Р°.",
-                         "packageSizeBytes":  70608370,
-                         "publishedAtUtc":  "2026-08-26T10:14:39.8145963Z",
-                         "mandatory":  false
-                     },
-                     {
-                         "version":  "2.1.1",
-                         "channel":  "stable",
-                         "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.1-win-x64.zip",
-                         "sha256":  "58e02d3e9b5491eb30e37a2b4a8d5a0c5e63d7818e0b2256851430a539853518",
-                         "releaseNotes":  "Р С™Р С•Р Р…РЎвЂљРЎР‚Р С•Р В»РЎРЉР Р…Р В°РЎРЏ Р Р†Р ВµРЎР‚РЎРѓР С‘РЎРЏ Р Т‘Р В»РЎРЏ Р С—РЎР‚Р С•Р Р†Р ВµРЎР‚Р С”Р С‘ GitHub-Р С•Р В±Р Р…Р С•Р Р†Р В»Р ВµР Р…Р С‘РЎРЏ: РЎРѓР С—Р С‘РЎРѓР С•Р С” Р Р†Р ВµРЎР‚РЎРѓР С‘Р в„–, РЎС“РЎРѓРЎвЂљР В°Р Р…Р С•Р Р†Р С”Р В° Р Р†РЎвЂ№Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р в„– РЎРѓР В±Р С•РЎР‚Р С”Р С‘ Р С‘ Р В±Р ВµР В·Р С•Р С—Р В°РЎРѓР Р…РЎвЂ№Р в„– Р Р†Р С•Р В·Р Р†РЎР‚Р В°РЎвЂљ.",
-                         "packageSizeBytes":  70605389,
-                         "publishedAtUtc":  "2026-08-26T09:51:43.5773087Z",
-                         "mandatory":  false
-                     }
-                 ]
+  "updatedAtUtc": "2026-08-26T12:11:47.0706939Z",
+  "versions": [
+    {
+      "version": "2.1.4",
+      "channel": "stable",
+      "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.4/GusMaxTool-2.1.4-win-x64.zip",
+      "sha256": "0c07ddadd4859f051812450ee93e6d0e369240a5808c7b4de4eb44b20297a1bd",
+      "releaseNotes": "Добавлена полная Maxitochka 1.2.44: автоматизация, кампании, CRM, проверка и организация токенов, proxy, переподключение сессий, аналитика, Google Sheets, уведомления и рабочие часы. Maxitochka запускается отдельной кнопкой из MAX Центра; пользовательские токены и профили в обновление не включены.",
+      "packageSizeBytes": 177403411,
+      "publishedAtUtc": "2026-08-26T12:11:47.0016462Z",
+      "mandatory": false
+    },
+    {
+      "version": "2.1.3",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.3-win-x64.zip",
+      "sha256": "671a638902c89997e8aec687e07aa21d07627de467bf9488b9c3c2a4946c9944",
+      "releaseNotes": "Тёмная тема теперь переключается мгновенно без закрытия и перезапуска Gus MAX. Текущая вкладка, очередь, MAX-сессии и фоновые сервисы продолжают работать; выбор темы сохраняется.",
+      "packageSizeBytes": 70609980,
+      "publishedAtUtc": "2026-08-26T10:53:34.2805014Z",
+      "mandatory": false
+    },
+    {
+      "version": "2.1.2",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.2-win-x64.zip",
+      "sha256": "4ab488a3421ed985cd135ca2583a9521d87ba409a0809e4faa105bcb71e7fa5d",
+      "releaseNotes": "Р”РѕР±Р°РІР»РµРЅР° РЅР°СЃС‚РѕСЏС‰Р°СЏ С‚С‘РјРЅР°СЏ С‚РµРјР° Midnight: РѕС‚РґРµР»СЊРЅР°СЏ РіР»СѓР±РѕРєР°СЏ РїР°Р»РёС‚СЂР° РІСЃРµРіРѕ РЅРѕРІРѕРіРѕ РёРЅС‚РµСЂС„РµР№СЃР°, СЃРѕС…СЂР°РЅРµРЅРёРµ РІС‹Р±РѕСЂР° Рё Р±РµР·РѕРїР°СЃРЅРѕРµ РїРµСЂРµРєР»СЋС‡РµРЅРёРµ СЃ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёРј РїРµСЂРµР·Р°РїСѓСЃРєРѕРј. Carbon РѕСЃС‚Р°С‘С‚СЃСЏ РґРѕСЃС‚СѓРїРЅРѕР№ РґР»СЏ РІРѕР·РІСЂР°С‚Р°.",
+      "packageSizeBytes": 70608370,
+      "publishedAtUtc": "2026-08-26T10:14:39.8145963Z",
+      "mandatory": false
+    },
+    {
+      "version": "2.1.1",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.1-win-x64.zip",
+      "sha256": "58e02d3e9b5491eb30e37a2b4a8d5a0c5e63d7818e0b2256851430a539853518",
+      "releaseNotes": "Р С™Р С•Р Р…РЎвЂљРЎР‚Р С•Р В»РЎРЉР Р…Р В°РЎРЏ Р Р†Р ВµРЎР‚РЎРѓР С‘РЎРЏ Р Т‘Р В»РЎРЏ Р С—РЎР‚Р С•Р Р†Р ВµРЎР‚Р С”Р С‘ GitHub-Р С•Р В±Р Р…Р С•Р Р†Р В»Р ВµР Р…Р С‘РЎРЏ: РЎРѓР С—Р С‘РЎРѓР С•Р С” Р Р†Р ВµРЎР‚РЎРѓР С‘Р в„–, РЎС“РЎРѓРЎвЂљР В°Р Р…Р С•Р Р†Р С”Р В° Р Р†РЎвЂ№Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р в„– РЎРѓР В±Р С•РЎР‚Р С”Р С‘ Р С‘ Р В±Р ВµР В·Р С•Р С—Р В°РЎРѓР Р…РЎвЂ№Р в„– Р Р†Р С•Р В·Р Р†РЎР‚Р В°РЎвЂљ.",
+      "packageSizeBytes": 70605389,
+      "publishedAtUtc": "2026-08-26T09:51:43.5773087Z",
+      "mandatory": false
+    }
+  ]
 }
