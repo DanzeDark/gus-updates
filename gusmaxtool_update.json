@@ -1,10 +1,10 @@
 {
-    "version":  "2.1.1",
+    "version":  "2.1.2",
     "channel":  "stable",
-    "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.1-win-x64.zip",
-    "sha256":  "58e02d3e9b5491eb30e37a2b4a8d5a0c5e63d7818e0b2256851430a539853518",
-    "releaseNotes":  "Контрольная версия для проверки GitHub-обновления: список версий, установка выбранной сборки и безопасный возврат.",
-    "packageSizeBytes":  70605389,
-    "publishedAtUtc":  "2026-08-26T09:51:43.5773087Z",
+    "downloadUrl":  "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.2-win-x64.zip",
+    "sha256":  "4ab488a3421ed985cd135ca2583a9521d87ba409a0809e4faa105bcb71e7fa5d",
+    "releaseNotes":  "Добавлена настоящая тёмная тема Midnight: отдельная глубокая палитра всего нового интерфейса, сохранение выбора и безопасное переключение с автоматическим перезапуском. Carbon остаётся доступной для возврата.",
+    "packageSizeBytes":  70608370,
+    "publishedAtUtc":  "2026-08-26T10:14:39.8145963Z",
     "mandatory":  false
 }
