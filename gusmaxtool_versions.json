@@ -1,6 +1,16 @@
 {
-  "updatedAtUtc": "2026-08-27T06:08:14.5503716Z",
+  "updatedAtUtc": "2026-08-27T08:13:57.0734030Z",
   "versions": [
+    {
+      "version": "2.1.9",
+      "channel": "stable",
+      "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.9/GusMaxTool-2.1.9-win-x64.zip",
+      "sha256": "d9b85192061356a87125d00d8797a59a404ef3a34177cac01f43c5eb9c9cc7c5",
+      "releaseNotes": "Оптимизирован возврат на главную без тяжёлой анимации. Новый общий Dota-фон работает во всех разделах. Добавлено всплывающее меню тем Carbon, Midnight и Dota. Исправлена и расширена пасхалка Dota. Добавлен индикатор новых обновлений возле Настроек.",
+      "packageSizeBytes": 186487629,
+      "publishedAtUtc": "2026-08-27T08:13:56.6203441Z",
+      "mandatory": false
+    },
     {
       "version": "2.1.6",
       "channel": "stable",
