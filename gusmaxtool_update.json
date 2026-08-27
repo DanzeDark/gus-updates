@@ -1,10 +1,10 @@
 {
-  "version": "2.1.4",
+  "version": "2.1.5",
   "channel": "stable",
-  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.4/GusMaxTool-2.1.4-win-x64.zip",
-  "sha256": "0c07ddadd4859f051812450ee93e6d0e369240a5808c7b4de4eb44b20297a1bd",
-  "releaseNotes": "Добавлена полная Maxitochka 1.2.44: автоматизация, кампании, CRM, проверка и организация токенов, proxy, переподключение сессий, аналитика, Google Sheets, уведомления и рабочие часы. Maxitochka запускается отдельной кнопкой из MAX Центра; пользовательские токены и профили в обновление не включены.",
-  "packageSizeBytes": 177403411,
-  "publishedAtUtc": "2026-08-26T12:11:47.0016462Z",
+  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.5/GusMaxTool-2.1.5-win-x64.zip",
+  "sha256": "85ad1afb31419cbc171ecb05cacda9d886391a151cfbced44e5038d9c4a165f5",
+  "releaseNotes": "Список версий теперь встроен прямо в настройки Gus MAX и автоматически загружается из GitHub. Новая версия заметно подсвечивается, установленная отмечается зелёным, а любую опубликованную старую версию можно выбрать нажатием для возврата. Добавлена кнопка обновления списка без отдельного окна.",
+  "packageSizeBytes": 182488349,
+  "publishedAtUtc": "2026-08-27T05:38:56.5601918Z",
   "mandatory": false
 }
