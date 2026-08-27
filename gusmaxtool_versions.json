@@ -1,6 +1,16 @@
 {
-  "updatedAtUtc": "2026-08-27T05:38:56.6477585Z",
+  "updatedAtUtc": "2026-08-27T06:08:14.5503716Z",
   "versions": [
+    {
+      "version": "2.1.6",
+      "channel": "stable",
+      "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.6/GusMaxTool-2.1.6-win-x64.zip",
+      "sha256": "16a840c5805317cdd11d54d6f69b815311f5c942372ee90902ffda138ea3a6ed",
+      "releaseNotes": "Добавлена тема Dota с мгновенным переключением без перезапуска: новая красно-бронзовая палитра, оригинальный фон тёмного MOBA-поля на главной странице и пасхалка в строке темы. Переключение работает по циклу Carbon → Midnight → Dota, выбор сохраняется.",
+      "packageSizeBytes": 184391604,
+      "publishedAtUtc": "2026-08-27T06:08:14.4615631Z",
+      "mandatory": false
+    },
     {
       "version": "2.1.5",
       "channel": "stable",
