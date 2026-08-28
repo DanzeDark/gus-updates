@@ -1,6 +1,16 @@
 {
-  "updatedAtUtc": "2026-08-28T06:56:13.5735955Z",
+  "updatedAtUtc": "2026-08-28T07:44:42.9845720Z",
   "versions": [
+    {
+      "version": "2.1.14",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.14-win-x64.zip",
+      "sha256": "eabbeff9f55b446073817eaf7b28bfff35a7a1792144cb477f28655fa230b336",
+      "releaseNotes": "Полностью переработана тема «Радуга»: настоящий многоцветный aurora-фон, радужные основные кнопки, графики и тонкие цветные линии карточек и боковой панели. Фон кешируется, вкладки переключаются без тяжёлой перерисовки и визуальных артефактов.",
+      "packageSizeBytes": 76809921,
+      "publishedAtUtc": "2026-08-28T07:44:42.9301622Z",
+      "mandatory": false
+    },
     {
       "version": "2.1.13",
       "channel": "stable",
