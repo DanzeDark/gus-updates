@@ -1,6 +1,16 @@
 {
-  "updatedAtUtc": "2026-08-27T09:24:13.0619825Z",
+  "updatedAtUtc": "2026-08-28T06:56:13.5735955Z",
   "versions": [
+    {
+      "version": "2.1.13",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.13-win-x64.zip",
+      "sha256": "43352356600ac65ea7ef0bdabfa15c4c0c84f17451e5c374e0faf59963928415",
+      "releaseNotes": "Добавлена новая тема «Радуга»: глубокий тёмный фон, фиолетовые, голубые, зелёные и янтарные акценты. Тема выбирается из списка в настройках, применяется без перезапуска и сохраняется между запусками. В обновление также вошли последние исправления коллеги.",
+      "packageSizeBytes": 76808334,
+      "publishedAtUtc": "2026-08-28T06:56:13.4980648Z",
+      "mandatory": false
+    },
     {
       "version": "2.1.11",
       "channel": "stable",
