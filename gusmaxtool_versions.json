@@ -1,6 +1,16 @@
 {
-  "updatedAtUtc": "2026-08-28T11:55:17.7811055Z",
+  "updatedAtUtc": "2026-08-31T05:02:50.1645566Z",
   "versions": [
+    {
+      "version": "2.1.21",
+      "channel": "stable",
+      "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.21-win-x64.zip",
+      "sha256": "9edb90e485dd4bf4cbb875b6f294e07ce2e933532da44ccf3afdbad0bd09872b",
+      "releaseNotes": "Исправлен подсчёт базы собственных сообщений: программа больше не удаляет повторяющиеся блоки из TXT. Все сообщения между разделителями сохраняются ровно как в файле; предоставленный файл теперь определяется как 49 вариантов вместо 44.",
+      "packageSizeBytes": 76815838,
+      "publishedAtUtc": "2026-08-31T05:02:50.0043312Z",
+      "mandatory": false
+    },
     {
       "version": "2.1.18",
       "channel": "stable",
