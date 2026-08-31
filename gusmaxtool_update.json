@@ -1,10 +1,10 @@
 {
-  "version": "2.1.21",
+  "version": "2.1.22",
   "channel": "stable",
-  "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.21-win-x64.zip",
-  "sha256": "9edb90e485dd4bf4cbb875b6f294e07ce2e933532da44ccf3afdbad0bd09872b",
-  "releaseNotes": "Исправлен подсчёт базы собственных сообщений: программа больше не удаляет повторяющиеся блоки из TXT. Все сообщения между разделителями сохраняются ровно как в файле; предоставленный файл теперь определяется как 49 вариантов вместо 44.",
-  "packageSizeBytes": 76815838,
-  "publishedAtUtc": "2026-08-31T05:02:50.0043312Z",
+  "downloadUrl": "https://danzedark.github.io/gus-updates/packages/GusMaxTool-2.1.22-win-x64.zip",
+  "sha256": "7ec2532a2f9a16eae0493342c5e9bbc45521d9bcd740bd19e12ee40ae3b519db",
+  "releaseNotes": "Исправлена прокрутка колёсиком мыши в поле «Свой текст». Тёмный редактор теперь прокручивается при наведении на текст и индикатор, учитывает системную скорость колеса и корректно считает длинные строки с визуальными переносами.",
+  "packageSizeBytes": 76816125,
+  "publishedAtUtc": "2026-08-31T05:21:01.5509774Z",
   "mandatory": false
 }
