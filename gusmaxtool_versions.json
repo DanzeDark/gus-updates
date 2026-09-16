@@ -1,14 +1,14 @@
 {
-  "updatedAtUtc": "2026-09-01T08:00:46.6950272Z",
+  "updatedAtUtc": "2026-09-16T06:58:39Z",
   "versions": [
     {
-      "version": "2.1.28",
+      "version": "2.1.31",
       "channel": "stable",
-      "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.28/GusMaxTool-2.1.28-win-x64.zip",
-      "sha256": "c9cd9cd48dc07a3b1b90673374916869f73b5e3094d749dedbc0e06f6fa5377d",
-      "releaseNotes": "Код доступа перенесён с отдельной кнопки Maxitochka на вход во всю вкладку MAX Центр. Без правильного кода вкладка не открывается и текущая страница остаётся на месте. После выхода из MAX Центра следующий вход снова требует код; вложенная кнопка Maxitochka больше не спрашивает его повторно. Защита прямого запуска компонента и запрет отката сохранены.",
-      "packageSizeBytes": 186521851,
-      "publishedAtUtc": "2026-09-01T08:00:46.6784327Z",
+      "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.31/GusMaxTool-2.1.31-win-x64.zip",
+      "sha256": "2d1d312ac624cd03003182bff09536171ade7f337a07551585ea5eaf5acfed0c",
+      "releaseNotes": "Интерфейс адаптирован для компактных, Full HD, ультрашироких и 4K-экранов с масштабированием Windows 100–200%. Добавлены компактная навигация, прокрутка рабочих страниц без потери элементов, адаптивные диалоги и ограничение ширины на больших дисплеях. VK-функции и очередь сохранены.",
+      "packageSizeBytes": 72432261,
+      "publishedAtUtc": "2026-09-16T06:58:39Z",
       "mandatory": false
     }
   ]
