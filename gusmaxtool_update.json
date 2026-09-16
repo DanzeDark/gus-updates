@@ -1,10 +1,10 @@
 {
-  "version": "2.1.31",
+  "version": "2.1.32",
   "channel": "stable",
-  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.31/GusMaxTool-2.1.31-win-x64.zip",
-  "sha256": "2d1d312ac624cd03003182bff09536171ade7f337a07551585ea5eaf5acfed0c",
-  "releaseNotes": "Интерфейс адаптирован для компактных, Full HD, ультрашироких и 4K-экранов с масштабированием Windows 100–200%. Добавлены компактная навигация, прокрутка рабочих страниц без потери элементов, адаптивные диалоги и ограничение ширины на больших дисплеях. VK-функции и очередь сохранены.",
-  "packageSizeBytes": 72432261,
-  "publishedAtUtc": "2026-09-16T06:58:39Z",
+  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.32/GusMaxTool-2.1.32-win-x64.zip",
+  "sha256": "b14684d7c72e3ce2131480de21bb9bae7c74219698e70334b4145da092c1dfc1",
+  "releaseNotes": "Исправлена привязка канала текстов к профилю MAX: после перезапуска профиля и смены DevTools-порта Gus восстанавливает правильную сессию, проверяет канал и не путает несколько открытых профилей. Каталог версий теперь сохраняет старые сборки для отката.",
+  "packageSizeBytes": 186249457,
+  "publishedAtUtc": "2026-09-16T08:44:17.3234340Z",
   "mandatory": false
 }
