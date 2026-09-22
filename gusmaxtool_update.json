@@ -1,10 +1,10 @@
 {
-  "version": "2.1.33",
+  "version": "2.1.34",
   "channel": "stable",
-  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.33/GusMaxTool-2.1.33-win-x64.zip",
-  "sha256": "2a2d821d53ea8a734f84c32734d30d99454a51e303b59d89e83f3b4b7d45858d",
-  "releaseNotes": "Добавлен безопасный откат через список версий Gus MAX: старые выпуски видны в программе, доступны для выбора и устанавливаются после предупреждения с созданием резервной копии. Сохранено исправление привязки текстового канала к правильному профилю MAX после перезапуска и смены DevTools-порта.",
-  "packageSizeBytes": 186249604,
-  "publishedAtUtc": "2026-09-16T08:50:33.4251864Z",
+  "downloadUrl": "https://github.com/DanzeDark/gus-updates/releases/download/gusmax-v2.1.34/GusMaxTool-2.1.34-win-x64.zip",
+  "sha256": "954406df91fc352d1063e15bfdfe7fcb74818e962c175ff3f353b202d70b869f",
+  "releaseNotes": "Исправлена работа Gus на слабых ноутбуках и в маленьких окнах MAX: открытый профиль определяется без ложной ошибки при медленном WMI/DevTools, сохранённый канал можно явно перепривязать к выбранному MAX, а добавление контакта на компактном экране находит и открывает точный результат даже ниже видимой области. Увеличены безопасные ожидания загрузки меню и форм.",
+  "packageSizeBytes": 181851635,
+  "publishedAtUtc": "2026-09-22T07:24:56Z",
   "mandatory": false
 }
